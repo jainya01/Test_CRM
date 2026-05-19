@@ -10,12 +10,15 @@ import "react-toastify/dist/ReactToastify.css";
 // import UserProtected from "./components/UserProtected";
 
 import User from "./User";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/admin" element={<User />}></Route>
+        <Route path="/admin" element={<User />}>
+          <Route path="dashboard" element={<HomePage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
