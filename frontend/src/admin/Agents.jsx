@@ -206,7 +206,15 @@ function Agents() {
                   </div>
 
                   <div className="d-flex mt-2">
-                    <span className="active-status">
+                    <span
+                      className={
+                        user?.status === "Active"
+                          ? "active-status status-per"
+                          : user?.status === "Inactive"
+                            ? "inactive-status status-per"
+                            : ""
+                      }
+                    >
                       {user?.status || "N/A"}
                     </span>
                   </div>

@@ -336,7 +336,7 @@ body {
   margin-bottom: 10px;
   border-radius: 12px;
   height: 37px;
-  font-size: 15px;
+  font-size: 14.4px;
   letter-spacing: 1px;
   word-spacing: 2px;
 }
@@ -356,6 +356,7 @@ body {
 .table-wrapper {
   width: 100%;
   overflow: hidden;
+  border-radius: 12px;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -402,6 +403,7 @@ body {
 
 .walk-source {
   font-size: 13px;
+  font-weight: 550;
 }
 
 .name-span {
@@ -429,10 +431,10 @@ body {
   }
 }
 
-/* .table-hover tbody tr:hover td {
-  background-color: #eef1ee;
-  color: white;
-} */
+.table-hover tbody tr:hover td {
+  background: #eaf5ee;
+  color: #111;
+}
 
 .icon-wrapper {
   width: 35px;
@@ -648,14 +650,139 @@ body {
   font-size: 14px;
 }
 
-.active-status {
-  background-color: #005c4b;
+.status-per {
   color: #fff;
   border-radius: 20px;
   font-size: 12px;
-  padding: 3px 10px;
+  padding: 2px 7px;
+}
+
+.active-status {
+  background-color: #005c4b;
 }
 
 .inactive-status {
-  background-color: #005c4b;
+  background-color: #dc3545;
+}
+
+.status-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: #eef5ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customer-name-passport {
+  font-size: 15px;
+}
+
+.customer-phone-passport {
+  font-size: 11px;
+}
+
+.btn-verify,
+.btn-verify:focus,
+.btn-verify:active,
+.btn-verify:hover {
+  font-size: 11px;
+  padding: 7px 10px;
+  background-color: #00664d !important;
+  color: #fff !important;
+  border-radius: 10px;
+}
+
+.btn-reject {
+  border-radius: 10px;
+  padding: 4px 6px;
+  font-size: 10px;
+  border: none;
+}
+
+.btn-pending,
+.btn-pending:focus,
+.btn-pending:active,
+.btn-pending:hover {
+  background-color: #eaf5ee !important;
+  border-radius: 10px;
+  padding: 4px 6px;
+  font-size: 10px;
+  border: none;
+}
+
+.btn-verified {
+  background-color: #0fa05c !important;
+  border-radius: 10px;
+  padding: 4px 6px;
+  font-size: 10px;
+}
+
+.btn-rejected {
+  border-radius: 11px;
+  padding: 1px 6px;
+  font-size: 10px;
+  border: none;
+}
+
+.btn-rejected:hover,
+.btn-rejected:focus {
+  background-color: #eaf5ee !important;
+}
+
+.custom-short {
+  font-size: 12px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: #073125;
+  color: #111;
+  margin-left: 7px;
+}
+
+.custom-shorts {
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  color: #fff;
+}
+
+.custom-shorts1 {
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: 2.5px;
+  cursor: pointer;
+  color: #dce9de;
+}
+
+.new-leader,
+.new-leader:hover,
+.new-leader:active,
+.new-leader:focus {
+  background-color: #00664d !important;
+  color: #fff !important;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.follow-to {
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.follow-today {
+  background-color: #efa831;
+}
+
+.follow-today:hover {
+  background-color: #00664d;
+  color: #fff;
+}
+
+.follow-missed {
+  background-color: #dc3545;
+  color: #fff;
 }

@@ -287,10 +287,10 @@ function Homepage() {
                     </Link>
                   </div>
 
-                  <div className="table-wrapper">
+                  <div className="table-wrapper rounded-0">
                     <div className="table-responsive custom-scrollbar">
                       <table className="table table-hover mb-0">
-                        <thead className="table-secondary header-table text-nowrap">
+                        <thead className="table-success header-table text-nowrap">
                           <tr>
                             <th>Name</th>
                             <th>Service</th>
@@ -371,97 +371,6 @@ function Homepage() {
                               </td>
                             </tr>
                           )}
-
-                          {/* {Array.isArray(paginatedData) &&
-                          paginatedData.length > 0 ? (
-                            paginatedData
-                              .sort((item) => item.updated_at)
-                              .map((item, index) => (
-                                <tr key={index}>
-                                  <td>
-                                    {(currentPage - 1) * itemsPerPage +
-                                      index +
-                                      1}
-                                  </td>
-
-                                  <td>
-                                    <Link
-                                      className="text-decoration-none text-dark"
-                                      to={`/admin/customers/edit/${item.id}`}
-                                    >
-                                      <span className="d-flex flex-row align-items-center fw-bold">
-                                        <div className="avatar avatar1 me-2 border">
-                                          {item.name
-                                            .split(" ")
-                                            .map((word) => word[0])
-                                            .join("")
-                                            .toUpperCase()}
-                                        </div>
-                                        {item.name || "--"}
-                                      </span>
-                                    </Link>
-                                  </td>
-
-                                  <td>
-                                    {showPassword
-                                      ? item.phone
-                                      : maskPhoneNumber(item.phone)}
-                                  </td>
-
-                                  <td>{item.service || "--"}</td>
-
-                                  <td>
-                                    <span
-                                      className={
-                                        {
-                                          "Follow-up": "follow-up cus-res",
-                                          "Not Interested":
-                                            "non-interested-cust cus-res",
-                                          Interested: "interested-cust cus-res",
-                                          New: "new-customer cus-res",
-                                          Converted: "convert-status cus-res",
-                                        }[item.status] || ""
-                                      }
-                                    >
-                                      {item.status || "--"}
-                                    </span>
-                                  </td>
-
-                                  <td>{item.fullname || "--"}</td>
-
-                                  <td className="text-start">
-                                    <span className="d-flex flex-row flex-nowrap">
-                                      <Link
-                                        to={`/admin/customers/edit/${item.id}`}
-                                        title="Edit"
-                                      >
-                                        <FontAwesomeIcon
-                                          icon={faEdit}
-                                          className="icons-color"
-                                        />
-                                      </Link>
-
-                                      <span title="Delete">
-                                        <FontAwesomeIcon
-                                          icon={faTrash}
-                                          className="icons-color1 ps-2"
-                                          onClick={() => deleteData(item.id)}
-                                        />
-                                      </span>
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))
-                          ) : (
-                            <tr>
-                              <td
-                                colSpan="8"
-                                className="text-center py-3 fw-bold text-muted"
-                              >
-                                No data available
-                              </td>
-                            </tr>
-                          )} */}
                         </tbody>
                       </table>
 

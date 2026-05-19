@@ -16,6 +16,7 @@ import BulkUpload from "./admin/BulkUpload";
 import Settings from "./admin/Settings";
 import Customers from "./admin/Customers";
 import Agents from "./admin/Agents";
+import Passport from "./admin/Passport";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="leads" element={<Leads />} />
           <Route path="agents" element={<Agents />} />
           <Route path="customers" element={<Customers />} />
+          <Route path="passports" element={<Passport />} />
           <Route path="bulk-upload" element={<BulkUpload />} />
           <Route path="settings" element={<Settings />} />
         </Route>

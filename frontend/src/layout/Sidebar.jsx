@@ -113,7 +113,7 @@ export default function Sidebar() {
 
           <hr className="text-light mt-0 mb-2" />
 
-          <div className="list-group list-group-flush ms-2 me-2">
+          <div className="list-group list-group-flush me-3">
             {NAV_LINKS.map((link, index) => (
               <NavLink
                 key={link.path || index}
@@ -133,14 +133,30 @@ export default function Sidebar() {
           </div>
 
           <div className="mt-auto pt-0 mb-2">
-            <hr className="mb-0 text-danger" />
+            <hr className="mt-auto text-danger mb-0" />
 
-            <div className="text-start mt-2 d-flex align-items-center logout-color ps-3 py-2">
-              <FontAwesomeIcon
-                icon={faRightFromBracket}
-                className="fw-light me-2"
-              />
-              Logout
+            <div className="d-block d-flex align-items-center flex-row flex-nowrap justify-content-between rounded p-1 mt-2 w-100">
+              <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center justify-content-center rounded-circle me-2 short-sidebar text-light fw-bold custom-short">
+                  A
+                </div>
+
+                <div className="d-flex flex-column">
+                  <span className="fw-semibold text-nowrap custom-shorts">
+                    Amir Khan
+                  </span>
+
+                  <small className="custom-shorts1">admin@travel.com</small>
+                </div>
+              </div>
+
+              <div>
+                <FontAwesomeIcon
+                  icon={faRightFromBracket}
+                  className="logout-color"
+                  role="button"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -183,14 +199,30 @@ export default function Sidebar() {
           </div>
 
           <div className="mt-auto pt-0 mb-2">
-            <hr className="mb-0 text-danger" />
+            <hr className="mt-auto text-danger mb-0" />
 
-            <div className="text-start mt-2 d-flex align-items-center logout-color ps-3 py-2">
-              <FontAwesomeIcon
-                icon={faRightFromBracket}
-                className="fw-light me-2"
-              />
-              Logout
+            <div className="d-none d-md-flex align-items-center rounded p-1 mt-2 w-100 justify-content-between">
+              <div className="d-flex align-items-center overflow-hidden">
+                <div className="d-flex align-items-center justify-content-center rounded-circle me-2 text-light fw-bold custom-short">
+                  A
+                </div>
+
+                <div className="d-flex flex-column overflow-hidden">
+                  <span className="fw-semibold text-nowrap custom-shorts">
+                    Amir Khan
+                  </span>
+
+                  <small className="custom-shorts1">admin@travel.com</small>
+                </div>
+              </div>
+
+              <div>
+                <FontAwesomeIcon
+                  icon={faRightFromBracket}
+                  className="logout-color"
+                  role="button"
+                />
+              </div>
             </div>
           </div>
         </div>
