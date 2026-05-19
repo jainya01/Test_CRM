@@ -31,6 +31,8 @@ function App() {
           <Route path="bulk-upload" element={<BulkUpload />} />
           <Route path="settings" element={<Settings />} />
         </Route>
+
+        <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   );
