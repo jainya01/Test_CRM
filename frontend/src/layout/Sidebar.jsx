@@ -12,6 +12,9 @@ import {
   faPassport,
   faUserCircle,
   faBorderAll,
+  faPhone,
+  faPlane,
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 
 const NAV_LINKS = [
@@ -27,6 +30,7 @@ const NAV_LINKS = [
   { path: "/admin/agents", label: "Agents", icon: faBriefcase },
   { path: "/admin/passports", label: "Passports", icon: faPassport },
   { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
+  { path: "/admin/settings", label: "Settings", icon: faCog },
 ];
 
 export default function Sidebar() {
@@ -64,13 +68,21 @@ export default function Sidebar() {
             ☰
           </button>
 
-          <Link to="/admin/dashboard" onClick={closeSidebar}>
-            <img
-              alt="logo"
-              className="logo-image mb-2 mt-0"
-              loading="eager"
-              style={{ width: "108px", height: "50px" }}
-            />
+          <Link
+            to="/admin/dashboard"
+            className="text-decoration-none"
+            onClick={closeSidebar}
+          >
+            <div className="d-flex align-items-center ms-2">
+              <div className="custom-box mt-0">
+                <FontAwesomeIcon icon={faPlane} />
+              </div>
+
+              <div className="d-flex flex-column ms-2 font-alfasseh">
+                <span className="text-dark fw-bold">Safar CRM</span>
+                <span className="laundry-app text-dark">Admin Panel</span>
+              </div>
+            </div>
           </Link>
         </div>
       </nav>
@@ -139,18 +151,20 @@ export default function Sidebar() {
         aria-label="Admin sidebar"
       >
         <div className="p-0 d-flex flex-column" style={{ minHeight: "100vh" }}>
-          <Link to="/admin/dashboard">
-            <img
-              alt="logo"
-              className="logo-image mb-2 mt-2"
-              loading="eager"
-              style={{ width: "206px", height: "70px" }}
-            />
+          <Link to="/admin/dashboard" className="text-decoration-none">
+            <div className="d-flex mt-3 align-items-center ms-2">
+              <div className="custom-box mt-0">
+                <FontAwesomeIcon icon={faPlane} />
+              </div>
+
+              <div className="d-flex flex-column ms-2 font-alfasseh">
+                <span className="text-light fw-bold">Safar CRM</span>
+                <span className="laundry-app">Admin Panel</span>
+              </div>
+            </div>
           </Link>
 
-          <hr className="text-light mt-0 mb-2" />
-
-          <div className="list-group me-3">
+          <div className="list-group me-3 mt-3">
             {NAV_LINKS.map((link, index) => (
               <NavLink
                 key={link.path || index}

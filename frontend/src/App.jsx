@@ -10,14 +10,24 @@ import "react-toastify/dist/ReactToastify.css";
 // import UserProtected from "./components/UserProtected";
 
 import User from "./User";
-import HomePage from "./pages/HomePage";
+import Homepage from "./admin/Homepage";
+import Leads from "./admin/Leads";
+import BulkUpload from "./admin/BulkUpload";
+import Settings from "./admin/Settings";
+import Customers from "./admin/Customers";
+import Agents from "./admin/Agents";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/admin" element={<User />}>
-          <Route path="dashboard" element={<HomePage />} />
+          <Route path="dashboard" element={<Homepage />} />
+          <Route path="leads" element={<Leads />} />
+          <Route path="agents" element={<Agents />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="bulk-upload" element={<BulkUpload />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -78,6 +78,43 @@ body {
   }
 }
 
+.custom-box {
+  width: 37px;
+  height: 37px;
+  background: linear-gradient(135deg, #f2d27a, #d6a84f);
+  color: #111;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.laundry-app {
+  color: #fff;
+  font-size: 11px;
+}
+
+.font-alfasseh {
+  font-size: 13px;
+}
+
+.short-name {
+  font-size: 14px;
+}
+
+@media (max-width: 576px) {
+  .font-alfasseh {
+    font-size: 12px;
+  }
+
+  .short-name {
+    font-size: 12px;
+  }
+}
+
 .top-searchbar {
   position: fixed;
   top: 0;
@@ -270,7 +307,7 @@ body {
 }
 
 .discount-text {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .progress-track {
@@ -382,6 +419,16 @@ body {
   font-size: 13px;
 }
 
+@media (max-width: 576px) {
+  .name-span {
+    font-size: 12px;
+  }
+
+  .phone-span {
+    font-size: 11px;
+  }
+}
+
 /* .table-hover tbody tr:hover td {
   background-color: #eef1ee;
   color: white;
@@ -443,6 +490,12 @@ body {
   border-radius: 999px;
 }
 
+@media (max-width: 576px) {
+  .cus-res {
+    font-size: 11px;
+  }
+}
+
 .convert-status {
   background-color: #dff7ea;
   color: #1f8a5b;
@@ -499,20 +552,110 @@ body {
   gap: 4px;
 }
 
-/* Hot */
 .hot-up {
   background: #ffe5e5;
   color: #ff4d4f;
 }
 
-/* Warm */
 .warm-up {
   background: #f6e7c8;
   color: #8b5e00;
 }
 
-/* Cold */
 .cold-status {
   background: #dff1eb;
   color: #008b72;
+}
+
+.overview-dashboard {
+  font-size: 18px;
+}
+
+.overview-lead {
+  font-size: 14px;
+}
+
+.custom-typo {
+  width: 50px;
+  height: 50px;
+  border-radius: 30%;
+}
+
+.select-file-btn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  width: 130px;
+  font-size: 14px;
+}
+
+.submit-file-btn {
+  width: 85px;
+  font-size: 15px;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.dotted-class {
+  border: 1px dotted black;
+  border-radius: 10px;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+.customer-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.avatar-circle {
+  width: 42px;
+  height: 42px;
+  background: #005c4b;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.customer-name {
+  font-size: 16px;
+}
+
+.customer-phone {
+  font-size: 12px;
+}
+
+.service-badge {
+  font-size: 12px;
+  padding: 6px 14px;
+  height: 30px;
+}
+
+.last-service {
+  color: #111;
+  font-size: 11px;
+}
+
+.avatar-agents {
+  background: linear-gradient(135deg, #d98b09, #ebb57d, #d98b09);
+  color: #111;
+}
+
+.agents-data {
+  font-size: 14px;
+}
+
+.active-status {
+  background-color: #005c4b;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 12px;
+  padding: 3px 10px;
+}
+
+.inactive-status {
+  background-color: #005c4b;
 }

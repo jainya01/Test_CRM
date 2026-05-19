@@ -11,7 +11,7 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 
-function HomePage() {
+function Homepage() {
   const users = [
     {
       id: 1,
@@ -109,7 +109,7 @@ function HomePage() {
           <div className="row g-2">
             <div className="d-flex flex-row justify-content-between flex-wrap">
               <div className="d-flex flex-column">
-                <h3>Good morning, Amir 👋</h3>
+                <h3 className="mb-1">Good morning, Amir 👋</h3>
                 <p className="text-muted happened-team">
                   Here's what's happening across your team today.
                 </p>
@@ -122,7 +122,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-6 col-sm-6 col-md-4 col-lg">
+            <div className="col-6 col-sm-6 col-md-6 col-lg">
               <div className="card shadow-sm border-0 h-100 rounded-4">
                 <div className="card-body d-flex justify-content-between">
                   <div>
@@ -138,7 +138,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-6 col-sm-6 col-md-4 col-lg">
+            <div className="col-6 col-sm-6 col-md-6 col-lg">
               <div className="card shadow-sm border-0 h-100 rounded-4">
                 <div className="card-body d-flex justify-content-between">
                   <div>
@@ -154,7 +154,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-6 col-sm-6 col-md-4 col-lg">
+            <div className="col-6 col-sm-6 col-md-6 col-lg">
               <div className="card shadow-sm border-0 h-100 rounded-4">
                 <div className="card-body d-flex justify-content-between">
                   <div>
@@ -170,7 +170,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-6 col-sm-6 col-md-4 col-lg">
+            <div className="col-6 col-sm-6 col-md-6 col-lg">
               <div className="card shadow-sm border-0 h-100 rounded-4">
                 <div className="card-body d-flex justify-content-between">
                   <div>
@@ -189,7 +189,7 @@ function HomePage() {
           <div className="row g-3 mt-1">
             <div className="col-12 col-lg-8">
               <div className="urgency-card">
-                <div className="d-flex justify-content-between align-items-center mb-3">
+                <div className="d-flex justify-content-between align-items-center mt-2 mb-3">
                   <h4 className="urgency-title mb-0">
                     <span className="warning-icon me-2">⚠</span>
                     Urgency Engine
@@ -235,7 +235,7 @@ function HomePage() {
 
             <div className="col-12 col-lg-4">
               <div className="pipeline-card">
-                <h4 className="pipeline-title mb-4">Lead pipeline</h4>
+                <h4 className="pipeline-title mb-3 mt-2">Lead pipeline</h4>
 
                 {[
                   { label: "New", value: 6 },
@@ -514,4 +514,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default Homepage;
