@@ -101,20 +101,6 @@ body {
   font-size: 13px;
 }
 
-.short-name {
-  font-size: 14px;
-}
-
-@media (max-width: 576px) {
-  .font-alfasseh {
-    font-size: 12px;
-  }
-
-  .short-name {
-    font-size: 12px;
-  }
-}
-
 .top-searchbar {
   position: fixed;
   top: 0;
@@ -410,6 +396,8 @@ body {
   font-size: 15px;
   cursor: pointer;
   font-weight: 600;
+  text-decoration: none;
+  color: #111;
 }
 
 .name-span:hover {
@@ -785,4 +773,191 @@ body {
 .follow-missed {
   background-color: #dc3545;
   color: #fff;
+}
+
+.custom-packages {
+  background-color: #eef5f1;
+  width: fit-content;
+  border-radius: 12px;
+  padding: 5px 10px;
+}
+
+.custom-styles {
+  border-radius: 9px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 13px;
+}
+
+.custom-pad {
+  padding: 5px 15px;
+}
+
+.common-code {
+  height: 128px;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.hajj-premium {
+  background: linear-gradient(135deg, #00664d, #00372c);
+}
+
+.umrah-premium {
+  background: linear-gradient(135deg, #ebbd57, #d98b09);
+}
+
+.ticket-premium {
+  background: linear-gradient(135deg, #00664d, #d9f7e5);
+}
+
+.medical-premium {
+  background: linear-gradient(135deg, #0fa05c, #00664d);
+}
+
+.package-name {
+  font-size: 17px;
+  line-height: 22.5px;
+}
+
+.ramains-day {
+  font-size: 14px;
+  color: #586761;
+}
+
+.price-package {
+  font-size: 18px;
+}
+
+.seats-left {
+  font-size: 12px;
+  color: #586761;
+}
+
+.hajj-package {
+  border-radius: 10px;
+  padding: 3px 8px;
+  width: fit-content;
+  background-color: #fff;
+  font-size: 12px;
+  position: relative;
+  top: 10px;
+  font-weight: 550;
+}
+
+.hajj-trend {
+  border-radius: 10px;
+  padding: 3px 8px;
+  width: fit-content;
+  background-color: #df202e;
+  color: #fff;
+  font-size: 11px;
+  position: relative;
+  top: 10px;
+}
+
+.icons-color {
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.icons-color:hover {
+  color: #0d6efd;
+}
+
+.icons-color1 {
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.icons-color1:hover {
+  color: #dc3545;
+}
+
+.icons-color2 {
+  color: #6c757d;
+}
+
+.icons-color2:hover {
+  color: #198754;
+}
+
+@media (max-width: 768px) {
+  .icons-color {
+    font-size: 14px;
+  }
+
+  .icons-color1 {
+    font-size: 14px;
+  }
+}
+
+.custom-success {
+  width: 6px;
+  height: 6.4px;
+  background-color: #4fa08f;
+  border-radius: 10px;
+}
+
+.convert-no {
+  color: #4fa08f !important;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.convert-call {
+  color: #dc3545 !important;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.custom-active {
+  width: 6px;
+  height: 6.37px;
+  background-color: #dc3545;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .convert-call {
+    font-size: 13px;
+  }
+
+  .convert-code {
+    font-size: 13px;
+  }
+}
+
+.badge {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 12px;
+}
+
+.convert-percent {
+  color: #111;
+  font-size: 15px;
+}
+
+.short-name {
+  font-size: 15px;
+}
+
+@media (max-width: 576px) {
+  .badge {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .font-alfasseh {
+    font-size: 12px;
+  }
+
+  .short-name {
+    font-size: 12px;
+  }
 }

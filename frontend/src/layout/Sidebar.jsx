@@ -15,6 +15,7 @@ import {
   faPhone,
   faPlane,
   faCog,
+  faHeadset,
 } from "@fortawesome/free-solid-svg-icons";
 
 const NAV_LINKS = [
@@ -25,6 +26,7 @@ const NAV_LINKS = [
     icon: faBorderAll,
   },
   { path: "/admin/leads", label: "Leads", icon: faUsers },
+  { path: "/admin/callers", label: "Caller Executive", icon: faHeadset },
   { path: "/admin/packages", label: "Packages", icon: faBoxOpen },
   { path: "/admin/customers", label: "Customers", icon: faUserCircle },
   { path: "/admin/agents", label: "Agents", icon: faBriefcase },

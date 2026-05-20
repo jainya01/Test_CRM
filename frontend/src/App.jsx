@@ -12,11 +12,13 @@ import "react-toastify/dist/ReactToastify.css";
 import User from "./User";
 import Homepage from "./admin/Homepage";
 import Leads from "./admin/Leads";
+import Packages from "./admin/Packages";
 import BulkUpload from "./admin/BulkUpload";
 import Settings from "./admin/Settings";
 import Customers from "./admin/Customers";
 import Agents from "./admin/Agents";
 import Passport from "./admin/Passport";
+import CallerExecutive from "./admin/CallerExecutive";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path="/admin" element={<User />}>
           <Route path="dashboard" element={<Homepage />} />
           <Route path="leads" element={<Leads />} />
+          <Route path="callers" element={<CallerExecutive />} />
+          <Route path="packages" element={<Packages />} />
           <Route path="agents" element={<Agents />} />
           <Route path="customers" element={<Customers />} />
           <Route path="passports" element={<Passport />} />

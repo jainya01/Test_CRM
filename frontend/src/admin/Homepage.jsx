@@ -18,7 +18,7 @@ function Homepage() {
       name: "Muhammad Tariq",
       phone: "+92 300 10000",
       Service: "Hajj",
-      Source: "Walk-in",
+      Source: "Website",
       Status: "New",
       Temp: "Hot",
     },
@@ -27,7 +27,7 @@ function Homepage() {
       name: "Ayesha Siddiqui",
       phone: "+92 301 10101",
       Service: "Umrah",
-      Source: "Walk-in",
+      Source: "Agent",
       Status: "Contacted",
       Temp: "Warm",
     },
@@ -36,7 +36,7 @@ function Homepage() {
       name: "Imran Malik",
       phone: "+92 302 10202",
       Service: "Ticket",
-      Source: "Walk-in",
+      Source: "Facebook",
       Status: "Interested",
       Temp: "Cold",
     },
@@ -54,7 +54,7 @@ function Homepage() {
       name: "Zain Abbas",
       phone: "+92 304 10404",
       Service: "Hajj",
-      Source: "Walk-in",
+      Source: "Website",
       Status: "Converted",
       Temp: "Warm",
     },
@@ -116,7 +116,10 @@ function Homepage() {
               </div>
 
               <div>
-                <Link className="btn lead-btn text-nowrap mb-3">
+                <Link
+                  className="btn lead-btn text-nowrap mb-3"
+                  to="/admin/leads"
+                >
                   View all leads
                 </Link>
               </div>
@@ -305,9 +308,9 @@ function Homepage() {
                             users.map((data) => (
                               <tr key={data.id}>
                                 <td className="d-flex flex-column">
-                                  <span className="name-span">
+                                  <Link className="name-span" to="/admin/leads">
                                     {data.name || "--"}
-                                  </span>
+                                  </Link>
 
                                   <span className="phone-span">
                                     {data.phone || "--"}
