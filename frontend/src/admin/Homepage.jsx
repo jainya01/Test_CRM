@@ -109,7 +109,7 @@ function Homepage() {
           <div className="row g-2">
             <div className="d-flex flex-row justify-content-between flex-wrap">
               <div className="d-flex flex-column">
-                <h3 className="mb-1">Good morning, Amir 👋</h3>
+                <h3 className="mb-1 main-size">Good morning, Amir 👋</h3>
                 <p className="text-muted happened-team">
                   Here's what's happening across your team today.
                 </p>

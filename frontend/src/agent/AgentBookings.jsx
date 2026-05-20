@@ -2,131 +2,59 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-function Customers() {
+function AgentBookings() {
   const data = [
     {
       id: 1,
+      airline: "Umrah Express Airlines — 10 Days",
       name: "Muhammad Tariq",
-      phone: "+92 300 10000",
-      service: "Hajj",
+      passport: "AB1000000",
+      status: "confirmed",
+      price: "INR 285,000",
     },
     {
       id: 2,
+      airline: "Hajj Connect Airlines — 15 Days",
       name: "Fatima Noor",
-      phone: "+92 303 10303",
-      service: "Medical",
+      passport: "AB1000003",
+      status: "pending",
+      price: "INR 310,000",
     },
     {
       id: 3,
-      name: "Zain Abbas",
-      phone: "+92 304 10404",
-      service: "Hajj",
+      airline: "Saudi Travel Air — 12 Days",
+      name: "Usman Raza",
+      passport: "AB1000006",
+      status: "pending",
+      price: "INR 265,000",
     },
     {
       id: 4,
-      name: "Usman Raza",
-      phone: "+92 306 10606",
-      service: "Ticket",
+      airline: "Medina Sky Flights — 20 Days",
+      name: "Mariam Yusuf",
+      passport: "AB1000009",
+      status: "confirmed",
+      price: "INR 340,000",
     },
     {
       id: 5,
-      name: "Mariam Yusuf",
-      phone: "+92 309 10909",
-      service: "Umrah",
+      airline: "Al Safa Air Services — 8 Days",
+      name: "Faisal Mehmood",
+      passport: "AB1000012",
+      status: "pending",
+      price: "INR 240,000",
     },
     {
       id: 6,
-      name: "Faisal Mehmood",
-      phone: "+92 302 11212",
-      service: "Hajj",
-    },
-    {
-      id: 7,
-      name: "Kamran Akmal",
-      phone: "+92 304 11414",
-      service: "Ticket",
-    },
-    {
-      id: 8,
+      airline: "Noor Air International — 14 Days",
       name: "Saima Jamil",
-      phone: "+92 305 11515",
-      service: "Medical",
-    },
-    {
-      id: 9,
-      name: "Imran Malik",
-      phone: "+92 308 11818",
-      service: "Ticket",
-    },
-    {
-      id: 10,
-      name: "Fatima Noor",
-      phone: "+92 309 11919",
-      service: "Medical",
-    },
-    {
-      id: 11,
-      name: "Hira Sheikh",
-      phone: "+92 301 12121",
-      service: "Umrah",
-    },
-    {
-      id: 12,
-      name: "Bilal Hussain",
-      phone: "+92 304 12424",
-      service: "Hajj",
-    },
-    {
-      id: 13,
-      name: "Sana Javed",
-      phone: "+92 307 12727",
-      service: "Medical",
-    },
-    {
-      id: 14,
-      name: "Ahmed Khan",
-      phone: "+92 311 1414141",
-      service: "Umrah",
-    },
-    {
-      id: 15,
-      name: "Ayesha Malik",
-      phone: "+92 312 1515151",
-      service: "Medical",
-    },
-    {
-      id: 16,
-      name: "Hassan Raza",
-      phone: "+92 313 1616161",
-      service: "Ticket",
-    },
-    {
-      id: 17,
-      name: "Noor Fatima",
-      phone: "+92 314 1717171",
-      service: "Hajj",
-    },
-    {
-      id: 18,
-      name: "Ali Hamza",
-      phone: "+92 315 1818181",
-      service: "Umrah",
-    },
-    {
-      id: 19,
-      name: "Zoya Sheikh",
-      phone: "+92 316 1919191",
-      service: "Medical",
-    },
-    {
-      id: 20,
-      name: "Talha Javed",
-      phone: "+92 317 2020202",
-      service: "Ticket",
+      passport: "AB1000015",
+      status: "confirmed",
+      price: "INR 295,000",
     },
   ];
 
-  const itemsPerPage = 24;
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -170,50 +98,51 @@ function Customers() {
 
       <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
         <div>
-          <h5 className="fw-bold overview-dashboard">Customers</h5>
-          <p className="text-muted mb-md-0 overview-lead fw-bold">
-            {paginatedData.length} customers
+          <h5 className="fw-bold overview-dashboard">Bookings</h5>
+          <p className="text-muted overview-lead fw-bold">
+            {paginatedData.length} booking requests
           </p>
         </div>
 
         {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
           paginatedData.map((user) => (
-            <div
-              className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3"
-              key={user.id}
-            >
-              <div className="customer-card p-3 bg-white rounded-3 h-100">
-                <div className="d-flex align-items-start gap-2">
-                  <div className="avatar-circle">
-                    {user?.name?.charAt(0) || "N"}
+            <div className="col-12 col-lg-8" key={user.id}>
+              <div className="customer-card p-3 bg-white rounded-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center gap-3">
+                    <div>
+                      <h5 className="fw-semibold mb-1 customer-name-passport">
+                        {user?.airline || "N/A"}
+                      </h5>
+
+                      <p className="text-secondary mb-0 customer-phone-passport">
+                        Customer: {user?.name || "N/A"} {user?.price || "N/A"}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex-grow-1">
-                    <h5 className="fw-semibold mb-1 customer-name">
-                      {user?.name || "N/A"}
-                    </h5>
+                  <div>
+                    {user.status === "confirmed" && (
+                      <button className="btn btn-success fw-semibold btn-verified">
+                        Confirmed
+                      </button>
+                    )}
 
-                    <p className="text-secondary customer-phone">
-                      {user?.phone || "N/A"}
-                    </p>
+                    {user.status === "pending" && (
+                      <div className="d-flex gap-2">
+                        <button className="btn btn-light fw-semibold btn-pending">
+                          Pending
+                        </button>
+                      </div>
+                    )}
                   </div>
-                </div>
-
-                <div className="d-flex justify-content-between">
-                  <span className="badge rounded-pill text-dark border service-badge d-flex align-items-center">
-                    {user?.service || "N/A"}
-                  </span>
-
-                  <span className="last-service text-end text-muted">
-                    Last: Umrah 2023
-                  </span>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <div className="">
-            <div className="text-center py-5 rounded-3">No Customers Found</div>
+          <div className="col-12">
+            <div className="text-center py-5 rounded-3">No bookings Found</div>
           </div>
         )}
 
@@ -255,4 +184,4 @@ function Customers() {
   );
 }
 
-export default Customers;
+export default AgentBookings;

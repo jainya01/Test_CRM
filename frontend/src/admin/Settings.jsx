@@ -418,7 +418,7 @@ function Settings() {
       <div className="row ms-1 me-1 gy-2 mt-2">
         <div className="col-12 col-lg-6">
           <div className="d-flex justify-content-between align-items-center mb-2">
-            <h6 className="mb-0 fw-semibold">Admin Accounts</h6>
+            <h6 className="mb-0 fw-semibold">Admin Account</h6>
           </div>
 
           {Array.isArray(adminEmail) && adminEmail.length > 0 ? (
@@ -427,9 +427,6 @@ function Settings() {
                 <div className="card-body py-3 px-3 d-flex justify-content-between align-items-center">
                   <div className="text-truncate me-3">
                     <span className="fw-medium accounts-email">
-                      <span className="custom-name-change me-2">
-                        {index === 0 ? "Admin" : "Sub-admin"}
-                      </span>
                       {data.email}
                     </span>
                   </div>

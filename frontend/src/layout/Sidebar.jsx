@@ -16,6 +16,8 @@ import {
   faPlane,
   faCog,
   faHeadset,
+  faArrowTrendUp,
+  faCube,
 } from "@fortawesome/free-solid-svg-icons";
 
 const NAV_LINKS = [
@@ -33,6 +35,17 @@ const NAV_LINKS = [
   { path: "/admin/passports", label: "Passports", icon: faPassport },
   { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
   { path: "/admin/settings", label: "Settings", icon: faCog },
+
+  // Agent Pages
+
+  { path: "/admin/overview", label: "Agent Overview", icon: faArrowTrendUp },
+  { path: "/admin/customer", label: "Agent Customers", icon: faUserCircle },
+  { path: "/admin/package", label: "Agent Packages", icon: faCube },
+  { path: "/admin/bookings", label: "Agent Bookings", icon: faBriefcase },
+
+  // Caller Pages
+
+  { path: "/admin/lead", label: "Caller My Leads", icon: faPhone },
 ];
 
 export default function Sidebar() {
@@ -94,13 +107,21 @@ export default function Sidebar() {
       <div className={`mobile-sidebar d-md-none ${isOpen ? "open" : ""}`}>
         <div className="p-0 d-flex flex-column" style={{ minHeight: "100vh" }}>
           <div className="d-flex justify-content-between align-items-center">
-            <Link to="/admin/dashboard" onClick={closeSidebar}>
-              <img
-                alt="logo"
-                className="logo-image mb-2 mt-2"
-                loading="eager"
-                style={{ width: "106px", height: "50px" }}
-              />
+            <Link
+              to="/admin/dashboard"
+              className="text-decoration-none"
+              onClick={closeSidebar}
+            >
+              <div className="d-flex mt-2">
+                <div className="custom-box mt-0">
+                  <FontAwesomeIcon icon={faPlane} />
+                </div>
+
+                <div className="d-flex flex-column ms-2 font-alfasseh">
+                  <span className="text-light fw-bold">CallTrack CRM</span>
+                  <span className="laundry-app">Laraib Travels</span>
+                </div>
+              </div>
             </Link>
 
             <button
@@ -113,7 +134,7 @@ export default function Sidebar() {
             </button>
           </div>
 
-          <hr className="text-light mt-0 mb-2" />
+          <hr className="text-dark mt-0 mb-2" />
 
           <div className="list-group list-group-flush me-3">
             {NAV_LINKS.map((link, index) => (
@@ -137,13 +158,13 @@ export default function Sidebar() {
           <div className="mt-auto pt-0 mb-2">
             <hr className="mt-auto text-danger mb-0" />
 
-            <div className="d-block d-flex align-items-center flex-row flex-nowrap justify-content-between rounded p-1 mt-2 w-100">
-              <div className="d-flex align-items-center">
-                <div className="d-flex align-items-center justify-content-center rounded-circle me-2 short-sidebar text-light fw-bold custom-short">
+            <div className="d-none d-md-flex align-items-center rounded p-1 mt-2 w-100 justify-content-between">
+              <div className="d-flex align-items-center overflow-hidden">
+                <div className="d-flex align-items-center justify-content-center rounded-circle me-2 text-light fw-bold custom-short">
                   A
                 </div>
 
-                <div className="d-flex flex-column">
+                <div className="d-flex flex-column overflow-hidden">
                   <span className="fw-semibold text-nowrap custom-shorts">
                     Amir Khan
                   </span>

@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
-  faEdit,
   faEye,
+  faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -199,7 +199,9 @@ function CallerExecutive() {
         <div className="d-flex justify-content-between flex-wrap">
           <div>
             <h5 className="fw-bold overview-dashboard">Callers</h5>
-            <p className="text-muted overview-lead fw-bold">10 callers</p>
+            <p className="text-muted overview-lead fw-bold">
+              {paginatedData.length} callers
+            </p>
           </div>
 
           <div>

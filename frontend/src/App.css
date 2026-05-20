@@ -83,7 +83,7 @@ body {
   height: 37px;
   background: linear-gradient(135deg, #f2d27a, #d6a84f);
   color: #111;
-  border-radius: 12px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,7 +207,8 @@ body {
 }
 
 ::placeholder {
-  font-size: 14px;
+  letter-spacing: 1px;
+  word-spacing: 2px;
 }
 
 .logout-color {
@@ -224,6 +225,10 @@ body {
   background-color: #ef43431a;
 }
 
+.main-size {
+  font-size: 25px;
+}
+
 .lead-btn,
 .lead-btn:hover,
 .lead-btn:active,
@@ -237,10 +242,6 @@ body {
 
 .happened-team {
   font-size: 15px;
-}
-
-.express-special {
-  background-color: #df202e0d;
 }
 
 .urgency-card,
@@ -274,9 +275,18 @@ body {
 }
 
 .offer-card {
+  background-color: #df202e0d;
   border: 1px solid #f3b5bc;
   border-radius: 16px;
   padding: 10px 10px;
+}
+
+.offer-trend {
+  background-color: #eaf5ee;
+}
+
+.price-span {
+  font-size: 14.5px;
 }
 
 .offer-card h5 {
@@ -452,6 +462,11 @@ body {
   background-color: #eaf5ee;
 }
 
+.icon-booking1 {
+  background: #df202e1a;
+  color: #df202e;
+}
+
 .week-muted {
   font-size: 12px;
 }
@@ -558,7 +573,7 @@ body {
 }
 
 .overview-dashboard {
-  font-size: 18px;
+  font-size: 24px;
 }
 
 .overview-lead {
@@ -668,7 +683,7 @@ body {
 }
 
 .customer-phone-passport {
-  font-size: 11px;
+  font-size: 12.2px;
 }
 
 .btn-verify,
@@ -787,6 +802,7 @@ body {
   cursor: pointer;
   transition: 0.3s;
   font-size: 13px;
+  font-weight: 560;
 }
 
 .custom-pad {
@@ -959,5 +975,140 @@ body {
 
   .short-name {
     font-size: 12px;
+  }
+}
+
+/* login */
+
+.convert-metric {
+  background: linear-gradient(135deg, #00664d, #00372c);
+}
+
+.signal-crm {
+  color: #fff;
+  font-size: 20px;
+}
+
+.track-calls {
+  font-size: 33px;
+}
+
+.telecalls-admin {
+  font-size: 15px;
+  line-height: 25px;
+  color: #faf9f1b3;
+}
+
+@media (max-width: 992px) {
+  .track-calls {
+    font-size: 22px;
+    margin-top: 40px;
+  }
+
+  .telecalls-admin {
+    font-size: 14px;
+  }
+}
+
+.role-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.full-control {
+  font-size: 12px;
+  font-weight: 540;
+}
+
+.control-condition {
+  border: 2px solid #d9d9d9;
+  border-radius: 16px;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.phone-awesome {
+  height: 42px;
+  width: 42px;
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eaf5ee;
+  color: #7d7d7d;
+}
+
+.role-wrapper .control-condition:first-child {
+  border-color: #0b5a4a;
+}
+
+.role-wrapper .control-condition:first-child .phone-awesome {
+  background: #0b5a4a;
+  border-color: #0b5a4a;
+  color: #fff;
+}
+
+.role-wrapper:hover .control-condition:first-child {
+  border-color: #d9d9d9;
+}
+
+.role-wrapper:hover .control-condition:first-child .phone-awesome {
+  background: #f5f5f5;
+  border-color: #d9d9d9;
+  color: #7d7d7d;
+}
+
+.control-condition:hover {
+  border-color: #0b5a4a !important;
+}
+
+.control-condition:hover .phone-awesome {
+  background: #0b5a4a !important;
+  border-color: #0b5a4a !important;
+  color: #fff !important;
+}
+
+.eye-login {
+  position: absolute;
+  right: 15px;
+  top: 71%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.sign-in-btn,
+.sign-in-btn:hover,
+.sign-in-btn:active,
+.sign-in-btn:focus {
+  background-color: #0b5a4a !important;
+  color: #fff !important;
+  border-radius: 10px;
+}
+
+/* login */
+
+.copyright-travel {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  font-size: 14px;
+  color: #faf9f180;
+}
+
+@media (max-width: 992px) {
+  .copyright-travel {
+    position: relative;
+    bottom: auto;
+    left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .copyright-travel {
+    margin-top: 15px;
+    font-size: 12px;
+    left: 0;
   }
 }

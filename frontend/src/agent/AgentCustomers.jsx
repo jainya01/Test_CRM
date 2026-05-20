@@ -2,128 +2,53 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-function Customers() {
+function AgentCustomers() {
   const data = [
-    {
-      id: 1,
-      name: "Muhammad Tariq",
-      phone: "+92 300 10000",
-      service: "Hajj",
-    },
-    {
-      id: 2,
-      name: "Fatima Noor",
-      phone: "+92 303 10303",
-      service: "Medical",
-    },
-    {
-      id: 3,
-      name: "Zain Abbas",
-      phone: "+92 304 10404",
-      service: "Hajj",
-    },
-    {
-      id: 4,
-      name: "Usman Raza",
-      phone: "+92 306 10606",
-      service: "Ticket",
-    },
-    {
-      id: 5,
-      name: "Mariam Yusuf",
-      phone: "+92 309 10909",
-      service: "Umrah",
-    },
-    {
-      id: 6,
-      name: "Faisal Mehmood",
-      phone: "+92 302 11212",
-      service: "Hajj",
-    },
-    {
-      id: 7,
-      name: "Kamran Akmal",
-      phone: "+92 304 11414",
-      service: "Ticket",
-    },
-    {
-      id: 8,
-      name: "Saima Jamil",
-      phone: "+92 305 11515",
-      service: "Medical",
-    },
-    {
-      id: 9,
-      name: "Imran Malik",
-      phone: "+92 308 11818",
-      service: "Ticket",
-    },
+    { id: 1, name: "Ahsan Ali", phone: "+92 300 11001", service: "Hajj" },
+    { id: 2, name: "Zoya Khan", phone: "+92 303 22002", service: "Medical" },
+    { id: 3, name: "Usman Tariq", phone: "+92 304 33003", service: "Hajj" },
+    { id: 4, name: "Hina Shah", phone: "+92 306 44004", service: "Ticket" },
+    { id: 5, name: "Ali Raza", phone: "+92 309 55005", service: "Umrah" },
+    { id: 6, name: "Sara Mehmood", phone: "+92 302 66006", service: "Hajj" },
+    { id: 7, name: "Bilal Ahmed", phone: "+92 304 77007", service: "Ticket" },
+    { id: 8, name: "Ayesha Noor", phone: "+92 305 88008", service: "Medical" },
+    { id: 9, name: "Hamza Malik", phone: "+92 308 99009", service: "Ticket" },
     {
       id: 10,
-      name: "Fatima Noor",
-      phone: "+92 309 11919",
+      name: "Fatima Zahra",
+      phone: "+92 309 101010",
       service: "Medical",
     },
-    {
-      id: 11,
-      name: "Hira Sheikh",
-      phone: "+92 301 12121",
-      service: "Umrah",
-    },
-    {
-      id: 12,
-      name: "Bilal Hussain",
-      phone: "+92 304 12424",
-      service: "Hajj",
-    },
+    { id: 11, name: "Imran Shah", phone: "+92 301 111011", service: "Umrah" },
+    { id: 12, name: "Khadija Ali", phone: "+92 304 121212", service: "Hajj" },
     {
       id: 13,
-      name: "Sana Javed",
-      phone: "+92 307 12727",
+      name: "Omar Farooq",
+      phone: "+92 307 131313",
       service: "Medical",
     },
-    {
-      id: 14,
-      name: "Ahmed Khan",
-      phone: "+92 311 1414141",
-      service: "Umrah",
-    },
+    { id: 14, name: "Hassan Iqbal", phone: "+92 311 141414", service: "Umrah" },
     {
       id: 15,
-      name: "Ayesha Malik",
-      phone: "+92 312 1515151",
+      name: "Mariam Saeed",
+      phone: "+92 312 151515",
       service: "Medical",
     },
-    {
-      id: 16,
-      name: "Hassan Raza",
-      phone: "+92 313 1616161",
-      service: "Ticket",
-    },
+    { id: 16, name: "Noman Javed", phone: "+92 313 161616", service: "Ticket" },
     {
       id: 17,
-      name: "Noor Fatima",
-      phone: "+92 314 1717171",
+      name: "Zainab Hussain",
+      phone: "+92 314 171717",
       service: "Hajj",
     },
-    {
-      id: 18,
-      name: "Ali Hamza",
-      phone: "+92 315 1818181",
-      service: "Umrah",
-    },
+    { id: 18, name: "Saad Khan", phone: "+92 315 181818", service: "Umrah" },
     {
       id: 19,
-      name: "Zoya Sheikh",
-      phone: "+92 316 1919191",
+      name: "Laiba Sheikh",
+      phone: "+92 316 191919",
       service: "Medical",
     },
-    {
-      id: 20,
-      name: "Talha Javed",
-      phone: "+92 317 2020202",
-      service: "Ticket",
-    },
+    { id: 20, name: "Talha Ahmed", phone: "+92 317 202020", service: "Ticket" },
   ];
 
   const itemsPerPage = 24;
@@ -255,4 +180,4 @@ function Customers() {
   );
 }
 
-export default Customers;
+export default AgentCustomers;
