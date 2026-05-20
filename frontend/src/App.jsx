@@ -4,8 +4,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./components/Login";
 import AdminLogin from "./components/AdminLogin";
-import CallerLogin from "./components/CallerLogin";
 import AgentLogin from "./components/AgentLogin";
+import CallerLogin from "./components/CallerLogin";
 
 // import AdminProtected from "./components/AdminProtected";
 // import UserProtected from "./components/UserProtected";
@@ -20,10 +20,12 @@ import Customers from "./admin/Customers";
 import Agents from "./admin/Agents";
 import Passport from "./admin/Passport";
 import CallerExecutive from "./admin/CallerExecutive";
+
 import AgentDashboard from "./agent/AgentDashboard";
 import AgentCustomers from "./agent/AgentCustomers";
 import AgentPackages from "./agent/AgentPackages";
 import AgentBookings from "./agent/AgentBookings";
+
 import CallerDashboard from "./caller/CallerDashboard";
 
 function App() {

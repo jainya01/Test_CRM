@@ -64,7 +64,7 @@ function CallerDashboard() {
                     <h4 className="card-value mb-0">8</h4>
                   </div>
 
-                  <div className="icon-wrapper icon-wrapper1">
+                  <div className="icon-wrapper icon-phone border">
                     <FontAwesomeIcon icon={faPhone} />
                   </div>
                 </div>

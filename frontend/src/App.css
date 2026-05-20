@@ -188,8 +188,8 @@ body {
 }
 
 .card-title-text {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 550;
   color: #6c757d;
 }
 
@@ -446,6 +446,10 @@ body {
 
 .icon-wrapper1 {
   background-color: #eaf5ee;
+}
+
+.icon-phone {
+  background: linear-gradient(135deg, #efa83126, transparent);
 }
 
 .icon-check {
