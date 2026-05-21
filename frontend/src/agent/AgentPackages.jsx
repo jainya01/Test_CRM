@@ -187,11 +187,21 @@ function AgentPackages() {
                   <div className="mt-2 px-3 py-1">
                     <div className="package-name">{item.package_name}</div>
                     <div className="ramains-day">{item.remaining_days}</div>
-                    <div className="price-package mt-2">{item.price}</div>
 
-                    <div className="seats-left mt-1 mb-2">
-                      <FontAwesomeIcon icon={faUsers} className="me-2" />
-                      {item.seats}
+                    <div className="d-flex justify-content-between align-items-center flex-wrap">
+                      <div className="d-flex flex-column">
+                        <div className="price-package mt-2">{item.price}</div>
+                        <div className="seats-left mt-1 mb-2">
+                          <FontAwesomeIcon icon={faUsers} className="me-2" />
+                          {item.seats}
+                        </div>
+                      </div>
+
+                      <div>
+                        <button className="btn new-leader px-2 py-1 new-books">
+                          Book
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -11,40 +11,41 @@ const AgentLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const [admin, setAdmin] = useState({
+  const [agent, setAgent] = useState({
     email: "",
     password: "",
   });
 
-  const { email, password } = admin;
+  const { email, password } = agent;
 
   const handleAgentLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${API_URL}/adminlogin`, admin);
+      const response = await axios.post(`${API_URL}/agentlogin`, agent);
       const { token, role, id } = response.data;
-      localStorage.setItem("adminToken", token);
+
+      localStorage.setItem("agentToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("id", id);
 
-      navigate("/admin/dashboard", { replace: true });
+      navigate("/agent/overview", { replace: true });
     } catch (error) {
-      navigate("/admin/login", { replace: true });
+      console.error("error", error);
     }
   };
 
   const handleChange = (e) => {
-    setAdmin({
-      ...admin,
+    setAgent({
+      ...agent,
       [e.target.name]: e.target.value,
     });
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem("agentToken");
     if (token) {
-      navigate("/admin/dashboard", { replace: true });
+      navigate("/agent/overview", { replace: true });
     }
   }, []);
 

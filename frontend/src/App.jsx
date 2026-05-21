@@ -4,29 +4,30 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./components/Login";
 import AdminLogin from "./components/AdminLogin";
+import StaffLogin from "./components/StaffLogin";
 import AgentLogin from "./components/AgentLogin";
-import CallerLogin from "./components/CallerLogin";
-
-// import AdminProtected from "./components/AdminProtected";
-// import UserProtected from "./components/UserProtected";
 
 import User from "./User";
+import Protected from "./components/Protected";
+
 import Homepage from "./admin/Homepage";
 import Leads from "./admin/Leads";
+import CallerExecutive from "./admin/CallerExecutive";
 import Packages from "./admin/Packages";
-import BulkUpload from "./admin/BulkUpload";
-import Settings from "./admin/Settings";
 import Customers from "./admin/Customers";
 import Agents from "./admin/Agents";
 import Passport from "./admin/Passport";
-import CallerExecutive from "./admin/CallerExecutive";
+import BulkUpload from "./admin/BulkUpload";
+import Settings from "./admin/Settings";
 
 import AgentDashboard from "./agent/AgentDashboard";
 import AgentCustomers from "./agent/AgentCustomers";
 import AgentPackages from "./agent/AgentPackages";
 import AgentBookings from "./agent/AgentBookings";
 
-import CallerDashboard from "./caller/CallerDashboard";
+import StaffDashboard from "./caller/StaffDashboard";
+import StaffPackage from "./caller/StaffPackage";
+import StaffFollowup from "./caller/StaffFollowup";
 
 function App() {
   return (
@@ -34,39 +35,35 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="admin/login" element={<AdminLogin />} />
-        <Route path="caller/login" element={<CallerLogin />} />
+        <Route path="staff/login" element={<StaffLogin />} />
         <Route path="agent/login" element={<AgentLogin />} />
 
-        <Route path="/admin" element={<User />}>
-          <Route path="dashboard" element={<Homepage />} />
-          <Route path="leads" element={<Leads />} />
-          <Route path="callers" element={<CallerExecutive />} />
-          <Route path="packages" element={<Packages />} />
-          <Route path="agents" element={<Agents />} />
-          <Route path="customers" element={<Customers />} />
-          <Route path="passports" element={<Passport />} />
-          <Route path="bulk-upload" element={<BulkUpload />} />
-          <Route path="settings" element={<Settings />} />
+        <Route element={<Protected />}>
+          <Route path="/admin" element={<User />}>
+            <Route path="dashboard" element={<Homepage />} />
+            <Route path="leads" element={<Leads />} />
+            <Route path="callers" element={<CallerExecutive />} />
+            <Route path="packages" element={<Packages />} />
+            <Route path="agents" element={<Agents />} />
+            <Route path="customers" element={<Customers />} />
+            <Route path="passports" element={<Passport />} />
+            <Route path="bulk-upload" element={<BulkUpload />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
 
-          {/* Agent */}
+          <Route path="/agent" element={<User />}>
+            <Route path="overview" element={<AgentDashboard />} />
+            <Route path="customers" element={<AgentCustomers />} />
+            <Route path="packages" element={<AgentPackages />} />
+            <Route path="bookings" element={<AgentBookings />} />
+          </Route>
 
-          <Route path="overview" element={<AgentDashboard />} />
-          <Route path="customer" element={<AgentCustomers />} />
-          <Route path="package" element={<AgentPackages />} />
-          <Route path="bookings" element={<AgentBookings />} />
-
-          {/* Agent */}
-
-          <Route path="lead" element={<CallerDashboard />} />
+          <Route path="/staff" element={<User />}>
+            <Route path="leads" element={<StaffDashboard />} />
+            <Route path="packages" element={<StaffPackage />} />
+            <Route path="followups" element={<StaffFollowup />} />
+          </Route>
         </Route>
-
-        {/* <Route path="/agent" element={<User />}>
-          <Route path="dashboard" element={<AgentDashboard />} />
-        </Route> */}
-
-        {/* <Route path="/caller" element={<User />}>
-          <Route path="leads" element={<AgentDashboard />} />
-        </Route> */}
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

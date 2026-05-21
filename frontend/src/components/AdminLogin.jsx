@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import { authHeader } from "../utils/authHeader";
+import { authHeader } from "../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faPlane } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,7 +22,10 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${API_URL}/adminlogin`, admin);
+      const response = await axios.post(`${API_URL}/adminlogin`, admin, {
+        headers: authHeader(),
+      });
+
       const { token, role, id } = response.data;
       localStorage.setItem("adminToken", token);
       localStorage.setItem("role", role);

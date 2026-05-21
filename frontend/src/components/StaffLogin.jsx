@@ -4,46 +4,46 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faPlane } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 
-const CallerLogin = () => {
+const StaffLogin = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const [admin, setAdmin] = useState({
+  const [staff, setStaff] = useState({
     email: "",
     password: "",
   });
+  const { email, password } = staff;
 
-  const { email, password } = admin;
-
-  const handleCallerLogin = async (e) => {
+  const handleStaffLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/callerlogin`, admin);
+      const response = await axios.post(`${API_URL}/stafflogin`, staff);
       const { token, role, id } = response.data;
-      localStorage.setItem("callerToken", token);
+
+      localStorage.setItem("staffToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("id", id);
 
-      navigate("/caller/leads", { replace: true });
+      navigate("/staff/leads", { replace: true });
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
     }
   };
 
   const handleChange = (e) => {
-    setAdmin({
-      ...admin,
+    setStaff({
+      ...staff,
       [e.target.name]: e.target.value,
     });
   };
 
   useEffect(() => {
-    const callerToken = localStorage.getItem("callerToken");
+    const staffToken = localStorage.getItem("staffToken");
 
-    if (callerToken) {
-      navigate("/caller/leads", { replace: true });
+    if (staffToken) {
+      navigate("/staff/leads", { replace: true });
     }
   }, [navigate]);
 
@@ -75,12 +75,12 @@ const CallerLogin = () => {
 
         <div className="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light mt-lg-4 mt-0">
           <div className="w-100 px-0" style={{ maxWidth: "450px" }}>
-            <h3 className="fw-bold mb-2">Caller Sign in to your account</h3>
+            <h3 className="fw-bold mb-2">Staff Sign in to your account</h3>
             <p className="text-muted mb-4">
               Enter your credentials to continue.
             </p>
 
-            <form onSubmit={handleCallerLogin}>
+            <form onSubmit={handleStaffLogin}>
               <div className="mb-3">
                 <label className="form-label">Email</label>
 
@@ -137,4 +137,4 @@ const CallerLogin = () => {
   );
 };
 
-export default CallerLogin;
+export default StaffLogin;

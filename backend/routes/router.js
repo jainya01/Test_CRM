@@ -26,64 +26,184 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// router.post(
-//   "/adminlogin",
-//   asyncHandler(async (req, res) => {
-//     const { email, password } = req.body;
+router.post(
+  "/adminlogin",
+  asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
 
-//     if (!email || !password) {
-//       const error = new Error("Email and password are required");
-//       error.statusCode = 400;
-//       throw error;
-//     }
+    if (!email || !password) {
+      const error = new Error("Email and password are required");
+      error.statusCode = 400;
+      throw error;
+    }
 
-//     const [rows] = await pool.execute(
-//       "SELECT id, email, password, role FROM admin WHERE email = ?",
-//       [email],
-//     );
+    const [rows] = await pool.execute(
+      "SELECT id, email, password, role FROM admin WHERE email = ?",
+      [email],
+    );
 
-//     if (rows.length === 0) {
-//       const error = new Error("Invalid email or password");
-//       error.statusCode = 401;
-//       throw error;
-//     }
+    if (rows.length === 0) {
+      const error = new Error("Invalid email or password");
+      error.statusCode = 401;
+      throw error;
+    }
 
-//     const admin = rows[0];
+    const admin = rows[0];
 
-//     const isMatch = await bcrypt.compare(password, admin.password);
+    const isMatch = await bcrypt.compare(password, admin.password);
 
-//     if (!isMatch) {
-//       const error = new Error("Invalid email or password");
-//       error.statusCode = 401;
-//       throw error;
-//     }
+    if (!isMatch) {
+      const error = new Error("Invalid email or password");
+      error.statusCode = 401;
+      throw error;
+    }
 
-//     if (admin.role !== "admin") {
-//       const error = new Error("You are not allowed to login as admin");
-//       error.statusCode = 403;
-//       throw error;
-//     }
+    if (admin.role !== "admin") {
+      const error = new Error("You are not allowed to login as admin");
+      error.statusCode = 403;
+      throw error;
+    }
 
-//     const token = jwt.sign(
-//       {
-//         id: admin.id,
-//         email: admin.email,
-//         role: admin.role,
-//       },
-//       process.env.JWT_SECRET,
-//       { expiresIn: "9h" },
-//     );
+    const token = jwt.sign(
+      {
+        id: admin.id,
+        email: admin.email,
+        role: admin.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "9h" },
+    );
 
-//     return res.status(200).json({
-//       success: true,
-//       message: "Login successful",
-//       token,
-//       role: admin.role,
-//       id: admin.id,
-//       email: admin.email,
-//     });
-//   }),
-// );
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      role: admin.role,
+      id: admin.id,
+      email: admin.email,
+    });
+  }),
+);
+
+router.post(
+  "/agentlogin",
+  asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      const error = new Error("Email and password are required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const [rows] = await pool.execute(
+      "SELECT id, email, password, role FROM agent WHERE email = ?",
+      [email],
+    );
+
+    if (rows.length === 0) {
+      const error = new Error("Invalid email or password");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const agent = rows[0];
+    const isMatch = await bcrypt.compare(password, agent.password);
+
+    if (!isMatch) {
+      const error = new Error("Invalid email or password");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    if (agent.role !== "agent") {
+      const error = new Error("You are not allowed to login as agent");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    const token = jwt.sign(
+      {
+        id: agent.id,
+        email: agent.email,
+        role: agent.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "9h" },
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      role: agent.role,
+      id: agent.id,
+      email: agent.email,
+    });
+  }),
+);
+
+router.post(
+  "/stafflogin",
+  asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      const error = new Error("Email and password are required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const [rows] = await pool.execute(
+      "SELECT id, email, password, role FROM staff WHERE email = ?",
+      [email],
+    );
+
+    if (rows.length === 0) {
+      const error = new Error("Invalid email or password");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const staff = rows[0];
+    const isMatch = await bcrypt.compare(password, staff.password);
+
+    if (!isMatch) {
+      const error = new Error("Invalid email or password");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    if (staff.role !== "staff") {
+      const error = new Error("You are not allowed to login as staff");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    const token = jwt.sign(
+      {
+        id: staff.id,
+        email: staff.email,
+        role: staff.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "9h" },
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      role: staff.role,
+      id: staff.id,
+      email: staff.email,
+    });
+  }),
+);
+
+// console.log(await bcrypt.hash("admin@123", 10));
+// console.log(await bcrypt.hash("agent@123", 10));
+// console.log(await bcrypt.hash("staff@123", 10));
 
 // router.post(
 //   "/adminpost",

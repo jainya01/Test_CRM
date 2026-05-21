@@ -18,9 +18,40 @@ import {
   faHeadset,
   faArrowTrendUp,
   faCube,
+  faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 
-const NAV_LINKS = [
+// const NAV_LINKS = [
+//   {
+//     path: "/admin/dashboard",
+//     label: "Dashboard",
+//     exact: true,
+//     icon: faBorderAll,
+//   },
+//   { path: "/admin/leads", label: "Leads", icon: faUsers },
+//   { path: "/admin/callers", label: "Caller Executive", icon: faHeadset },
+//   { path: "/admin/packages", label: "Packages", icon: faBoxOpen },
+//   { path: "/admin/customers", label: "Customers", icon: faUserCircle },
+//   { path: "/admin/agents", label: "Agents", icon: faBriefcase },
+//   { path: "/admin/passports", label: "Passports", icon: faPassport },
+//   { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
+//   { path: "/admin/settings", label: "Settings", icon: faCog },
+
+//   // Agent Pages
+
+//   { path: "/admin/overview", label: "Agent Overview", icon: faArrowTrendUp },
+//   { path: "/admin/customer", label: "Agent Customers", icon: faUserCircle },
+//   { path: "/admin/package", label: "Agent Packages", icon: faCube },
+//   { path: "/admin/bookings", label: "Agent Bookings", icon: faBriefcase },
+
+//   // Caller Pages
+
+//   { path: "/admin/lead", label: "Caller My Leads", icon: faPhone },
+//   { path: "/admin/followups", label: "Caller Follow-ups", icon: faCalendar },
+//   { path: "/admin/packageses", label: "Caller Packages", icon: faCube },
+// ];
+
+const ADMIN_LINKS = [
   {
     path: "/admin/dashboard",
     label: "Dashboard",
@@ -35,22 +66,66 @@ const NAV_LINKS = [
   { path: "/admin/passports", label: "Passports", icon: faPassport },
   { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
   { path: "/admin/settings", label: "Settings", icon: faCog },
+];
 
-  // Agent Pages
+const AGENT_LINKS = [
+  {
+    path: "/agent/overview",
+    label: "Overview",
+    exact: true,
+    icon: faArrowTrendUp,
+  },
+  {
+    path: "/agent/customers",
+    label: "My Customers",
+    exact: true,
+    icon: faUserCircle,
+  },
+  {
+    path: "/agent/packages",
+    label: "Packages",
+    exact: true,
+    icon: faCube,
+  },
+  {
+    path: "/agent/bookings",
+    label: "Bookings",
+    exact: true,
+    icon: faBriefcase,
+  },
+];
 
-  { path: "/admin/overview", label: "Agent Overview", icon: faArrowTrendUp },
-  { path: "/admin/customer", label: "Agent Customers", icon: faUserCircle },
-  { path: "/admin/package", label: "Agent Packages", icon: faCube },
-  { path: "/admin/bookings", label: "Agent Bookings", icon: faBriefcase },
-
-  // Caller Pages
-
-  { path: "/admin/lead", label: "Caller My Leads", icon: faPhone },
+const STAFF_LINKS = [
+  {
+    path: "/staff/leads",
+    label: "My Leads",
+    exact: true,
+    icon: faPhone,
+  },
+  {
+    path: "/staff/followups",
+    label: "Follow-ups",
+    exact: true,
+    icon: faCalendar,
+  },
+  {
+    path: "/staff/packages",
+    label: "Packages",
+    exact: true,
+    icon: faCube,
+  },
 ];
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const role = localStorage.getItem("role");
+  const navLinks =
+    role === "admin"
+      ? ADMIN_LINKS
+      : role === "agent"
+        ? AGENT_LINKS
+        : STAFF_LINKS;
 
   const toggleSidebar = () => {
     setIsOpen((prev) => {
@@ -69,6 +144,12 @@ export default function Sidebar() {
   const closeSidebar = () => {
     setIsOpen(false);
     document.body.classList.remove("sidebar-open");
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    navigate("/");
   };
 
   return (
@@ -137,7 +218,7 @@ export default function Sidebar() {
           <hr className="text-dark mt-0 mb-2" />
 
           <div className="list-group list-group-flush me-3">
-            {NAV_LINKS.map((link, index) => (
+            {navLinks.map((link, index) => (
               <NavLink
                 key={link.path || index}
                 to={link.path}
@@ -173,7 +254,7 @@ export default function Sidebar() {
                 </div>
               </div>
 
-              <div>
+              <div onClick={handleLogout}>
                 <FontAwesomeIcon
                   icon={faRightFromBracket}
                   className="logout-color"
@@ -204,7 +285,7 @@ export default function Sidebar() {
           </Link>
 
           <div className="list-group me-3 mt-3">
-            {NAV_LINKS.map((link, index) => (
+            {navLinks.map((link, index) => (
               <NavLink
                 key={link.path || index}
                 to={link.path}
@@ -239,7 +320,7 @@ export default function Sidebar() {
                 </div>
               </div>
 
-              <div>
+              <div onClick={handleLogout}>
                 <FontAwesomeIcon
                   icon={faRightFromBracket}
                   className="logout-color"

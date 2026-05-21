@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
   faCircleNotch,
-  faHeadphones,
   faPhone,
   faPlane,
 } from "@fortawesome/free-solid-svg-icons";
@@ -18,12 +17,15 @@ const Login = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    const callerToken = localStorage.getItem("callerToken");
+    const agentToken = localStorage.getItem("agentToken");
+    const staffToken = localStorage.getItem("staffToken");
 
     if (token) {
       navigate("/admin/dashboard", { replace: true });
-    } else if (callerToken) {
-      navigate("/caller/leads", { replace: true });
+    } else if (agentToken) {
+      navigate("/agent/overview", { replace: true });
+    } else if (staffToken) {
+      navigate("/staff/leads", { replace: true });
     }
   }, []);
 
@@ -82,7 +84,7 @@ const Login = () => {
               <div className="control-condition">
                 <Link
                   className="text-dark text-decoration-none"
-                  to="/caller/login"
+                  to="/staff/login"
                 >
                   <div className="d-flex align-items-center">
                     <div className="phone-awesome me-2">

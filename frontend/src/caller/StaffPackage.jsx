@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-function Packages() {
+function CallerPackage() {
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
 
@@ -170,7 +170,7 @@ function Packages() {
                   <div
                     className={`rounded-3 common-code ${getServiceClass(item.service)}`}
                   >
-                    <span className="d-flex flex-wrap">
+                    <span className="d-flex flex-nowrap">
                       <div className="hajj-package ms-2">{item.service}</div>
 
                       {item.status === "Trending" && (
@@ -218,4 +218,4 @@ function Packages() {
   );
 }
 
-export default Packages;
+export default CallerPackage;
