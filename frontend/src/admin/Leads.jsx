@@ -277,7 +277,7 @@ function Leads() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" style={{ textAlign: "center" }}>
+                    <td colSpan="6" className="text-center">
                       No Data Found
                     </td>
                   </tr>

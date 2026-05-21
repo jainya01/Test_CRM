@@ -380,14 +380,6 @@ function Settings() {
                     icon={showPassword ? faEyeSlash : faEye}
                     className="eye-hover"
                     onClick={() => setShowPassword(!showPassword)}
-                    style={{
-                      position: "absolute",
-                      right: "10px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      cursor: "pointer",
-                      color: "#111",
-                    }}
                   />
                 </div>
 
