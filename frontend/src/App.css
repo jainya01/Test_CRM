@@ -1184,3 +1184,7 @@ body {
 .accounts-email {
   font-size: 15.4px;
 }
+
+.invalid-message {
+  font-size: 15px;
+}

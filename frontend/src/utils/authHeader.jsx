@@ -29,7 +29,14 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const currentPath = window.location.pathname;
+
+    const isLoginPage =
+      currentPath === "/admin/login" ||
+      currentPath === "/agent/login" ||
+      currentPath === "/staff/login";
+
+    if (error.response?.status === 401 && !isLoginPage) {
       localStorage.removeItem("adminToken");
       localStorage.removeItem("agentToken");
       localStorage.removeItem("staffToken");

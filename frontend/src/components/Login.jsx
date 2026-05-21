@@ -16,17 +16,22 @@ const Login = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
+    const role = localStorage.getItem("role");
     const agentToken = localStorage.getItem("agentToken");
     const staffToken = localStorage.getItem("staffToken");
 
-    if (token) {
+    if (token && role === "admin") {
       navigate("/admin/dashboard", { replace: true });
-    } else if (agentToken) {
+    }
+
+    if (agentToken && role === "agent") {
       navigate("/agent/overview", { replace: true });
-    } else if (staffToken) {
+    }
+
+    if (staffToken && role === "staff") {
       navigate("/staff/leads", { replace: true });
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="container-fluid">

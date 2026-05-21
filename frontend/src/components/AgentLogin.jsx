@@ -3,12 +3,14 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faPlane } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const AgentLogin = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [agent, setAgent] = useState({
     email: "",
@@ -17,8 +19,36 @@ const AgentLogin = () => {
 
   const { email, password } = agent;
 
+  const validateForm = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+    const passwordRegex = /^[A-Za-z0-9@#$%^&*!._-]+$/;
+
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email");
+      return false;
+    }
+
+    if (!passwordRegex.test(password)) {
+      toast.warn("Invalid password format");
+      return false;
+    }
+
+    const blockedPatterns =
+      /('|--|;|=|\/\*|\*\/|xp_|drop|select|insert|delete|update)/i;
+
+    if (blockedPatterns.test(email) || blockedPatterns.test(password)) {
+      toast.error("Invalid characters detected");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleAgentLogin = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
+    setErrorMessage("");
 
     try {
       const response = await axios.post(`${API_URL}/agentlogin`, agent);
@@ -30,7 +60,7 @@ const AgentLogin = () => {
 
       navigate("/agent/overview", { replace: true });
     } catch (error) {
-      console.error("error", error);
+      setErrorMessage(error.response?.data?.message || "Login failed");
     }
   };
 
@@ -99,7 +129,7 @@ const AgentLogin = () => {
                 </div>
               </div>
 
-              <div className="position-relative mb-4">
+              <div className="position-relative">
                 <label className="form-label">Password</label>
 
                 <input
@@ -122,7 +152,18 @@ const AgentLogin = () => {
                 </span>
               </div>
 
-              <button type="submit" className="btn sign-in-btn w-100 py-2 mb-2">
+              {errorMessage && (
+                <>
+                  <div className="text-danger mt-0 mb-3 invalid-message">
+                    {errorMessage}
+                  </div>
+                </>
+              )}
+
+              <button
+                type="submit"
+                className="btn sign-in-btn w-100 py-2 mb-2 mt-auto"
+              >
                 Log In
               </button>
 
@@ -133,6 +174,8 @@ const AgentLogin = () => {
           </div>
         </div>
       </div>
+
+      <ToastContainer position="bottom-right" autoClose={1500} />
     </div>
   );
 };

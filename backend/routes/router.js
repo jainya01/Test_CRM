@@ -10,6 +10,7 @@ import bcrypt from "bcrypt";
 import pool from "../config/db.js";
 import authenticate from "../middleware/auth.js";
 import asyncHandler from "../config/asyncHandler.js";
+import LoginLimiter from "../config/rateLimiter.js";
 
 dotenv.config();
 const router = express.Router();
@@ -28,6 +29,7 @@ const upload = multer({ storage });
 
 router.post(
   "/adminlogin",
+  LoginLimiter,
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -43,7 +45,7 @@ router.post(
     );
 
     if (rows.length === 0) {
-      const error = new Error("Invalid email or password");
+      const error = new Error("invalid credentials");
       error.statusCode = 401;
       throw error;
     }
@@ -53,7 +55,7 @@ router.post(
     const isMatch = await bcrypt.compare(password, admin.password);
 
     if (!isMatch) {
-      const error = new Error("Invalid email or password");
+      const error = new Error("invalid credentials");
       error.statusCode = 401;
       throw error;
     }
@@ -87,6 +89,7 @@ router.post(
 
 router.post(
   "/agentlogin",
+  LoginLimiter,
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -102,7 +105,7 @@ router.post(
     );
 
     if (rows.length === 0) {
-      const error = new Error("Invalid email or password");
+      const error = new Error("invalid credentials");
       error.statusCode = 401;
       throw error;
     }
@@ -111,7 +114,7 @@ router.post(
     const isMatch = await bcrypt.compare(password, agent.password);
 
     if (!isMatch) {
-      const error = new Error("Invalid email or password");
+      const error = new Error("invalid credentials");
       error.statusCode = 401;
       throw error;
     }
@@ -145,6 +148,7 @@ router.post(
 
 router.post(
   "/stafflogin",
+  LoginLimiter,
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -160,7 +164,7 @@ router.post(
     );
 
     if (rows.length === 0) {
-      const error = new Error("Invalid email or password");
+      const error = new Error("invalid credentials");
       error.statusCode = 401;
       throw error;
     }
@@ -169,7 +173,7 @@ router.post(
     const isMatch = await bcrypt.compare(password, staff.password);
 
     if (!isMatch) {
-      const error = new Error("Invalid email or password");
+      const error = new Error("invalid credentials");
       error.statusCode = 401;
       throw error;
     }
