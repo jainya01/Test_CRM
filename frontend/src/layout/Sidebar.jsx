@@ -224,7 +224,13 @@ export default function Sidebar() {
           </button>
 
           <Link
-            to="/admin/dashboard"
+            to={
+              localStorage.getItem("role") === "admin"
+                ? "/admin/dashboard"
+                : localStorage.getItem("role") === "agent"
+                  ? "/agent/overview"
+                  : "/staff/leads"
+            }
             className="text-decoration-none"
             onClick={closeSidebar}
           >
@@ -256,7 +262,13 @@ export default function Sidebar() {
         <div className="p-0 d-flex flex-column" style={{ minHeight: "100vh" }}>
           <div className="d-flex justify-content-between align-items-center">
             <Link
-              to="/admin/dashboard"
+              to={
+                localStorage.getItem("role") === "admin"
+                  ? "/admin/dashboard"
+                  : localStorage.getItem("role") === "agent"
+                    ? "/agent/overview"
+                    : "/staff/leads"
+              }
               className="text-decoration-none"
               onClick={closeSidebar}
             >
@@ -342,7 +354,16 @@ export default function Sidebar() {
         aria-label="Admin sidebar"
       >
         <div className="p-0 d-flex flex-column" style={{ minHeight: "100vh" }}>
-          <Link to="/admin/dashboard" className="text-decoration-none">
+          <Link
+            to={
+              localStorage.getItem("role") === "admin"
+                ? "/admin/dashboard"
+                : localStorage.getItem("role") === "agent"
+                  ? "/agent/overview"
+                  : "/staff/leads"
+            }
+            className="text-decoration-none"
+          >
             <div className="d-flex mt-3 align-items-center ms-2">
               <div className="custom-box mt-0">
                 <FontAwesomeIcon icon={faPlane} />

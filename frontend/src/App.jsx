@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+
 import Login from "./components/Login";
 import AdminLogin from "./components/AdminLogin";
 import StaffLogin from "./components/StaffLogin";
@@ -33,11 +34,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="admin/login" element={<AdminLogin />} />
-        <Route path="staff/login" element={<StaffLogin />} />
-        <Route path="agent/login" element={<AgentLogin />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/staff/login" element={<StaffLogin />} />
+        <Route path="/agent/login" element={<AgentLogin />} />
 
-        <Route element={<Protected />}>
+        <Route element={<Protected allow={["admin"]} />}>
           <Route path="/admin" element={<User />}>
             <Route path="dashboard" element={<Homepage />} />
             <Route path="leads" element={<Leads />} />
@@ -49,14 +50,18 @@ function App() {
             <Route path="bulk-upload" element={<BulkUpload />} />
             <Route path="settings" element={<Settings />} />
           </Route>
+        </Route>
 
+        <Route element={<Protected allow={["agent"]} />}>
           <Route path="/agent" element={<User />}>
             <Route path="overview" element={<AgentDashboard />} />
             <Route path="customers" element={<AgentCustomers />} />
             <Route path="packages" element={<AgentPackages />} />
             <Route path="bookings" element={<AgentBookings />} />
           </Route>
+        </Route>
 
+        <Route element={<Protected allow={["staff"]} />}>
           <Route path="/staff" element={<User />}>
             <Route path="leads" element={<StaffDashboard />} />
             <Route path="packages" element={<StaffPackage />} />
@@ -64,7 +69,7 @@ function App() {
           </Route>
         </Route>
 
-        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
