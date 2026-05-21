@@ -10,6 +10,7 @@ const AdminLogin = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const [admin, setAdmin] = useState({
@@ -18,8 +19,6 @@ const AdminLogin = () => {
   });
 
   const { email, password } = admin;
-
-  const [errorMessage, setErrorMessage] = useState("");
 
   const validateForm = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;

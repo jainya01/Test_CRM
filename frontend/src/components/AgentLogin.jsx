@@ -9,8 +9,8 @@ const AgentLogin = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const [agent, setAgent] = useState({
     email: "",
