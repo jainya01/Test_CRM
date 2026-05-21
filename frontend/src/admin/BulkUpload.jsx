@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-// import { authHeader } from "../utils/authHeader";
+import { authHeader } from "../utils/authHeader";
 
 function BulkUpload() {
   const API_URL = import.meta.env.VITE_API_URL;

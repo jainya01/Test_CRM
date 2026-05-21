@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-
 import Login from "./components/Login";
 import AdminLogin from "./components/AdminLogin";
 import StaffLogin from "./components/StaffLogin";

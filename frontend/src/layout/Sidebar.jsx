@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { authHeader } from "../utils/authHeader";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,36 +21,7 @@ import {
   faCube,
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
-
-// const NAV_LINKS = [
-//   {
-//     path: "/admin/dashboard",
-//     label: "Dashboard",
-//     exact: true,
-//     icon: faBorderAll,
-//   },
-//   { path: "/admin/leads", label: "Leads", icon: faUsers },
-//   { path: "/admin/callers", label: "Caller Executive", icon: faHeadset },
-//   { path: "/admin/packages", label: "Packages", icon: faBoxOpen },
-//   { path: "/admin/customers", label: "Customers", icon: faUserCircle },
-//   { path: "/admin/agents", label: "Agents", icon: faBriefcase },
-//   { path: "/admin/passports", label: "Passports", icon: faPassport },
-//   { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
-//   { path: "/admin/settings", label: "Settings", icon: faCog },
-
-//   // Agent Pages
-
-//   { path: "/admin/overview", label: "Agent Overview", icon: faArrowTrendUp },
-//   { path: "/admin/customer", label: "Agent Customers", icon: faUserCircle },
-//   { path: "/admin/package", label: "Agent Packages", icon: faCube },
-//   { path: "/admin/bookings", label: "Agent Bookings", icon: faBriefcase },
-
-//   // Caller Pages
-
-//   { path: "/admin/lead", label: "Caller My Leads", icon: faPhone },
-//   { path: "/admin/followups", label: "Caller Follow-ups", icon: faCalendar },
-//   { path: "/admin/packageses", label: "Caller Packages", icon: faCube },
-// ];
+import axios from "axios";
 
 const ADMIN_LINKS = [
   {
@@ -117,6 +89,8 @@ const STAFF_LINKS = [
 ];
 
 export default function Sidebar() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const role = localStorage.getItem("role");
@@ -152,6 +126,91 @@ export default function Sidebar() {
     navigate("/");
   };
 
+  const [admin, setAdmin] = useState([]);
+  const [staff, setStaff] = useState([]);
+  const [agent, setAgent] = useState([]);
+  const [loggedUser, setLoggedUser] = useState(null);
+
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const [adminRes, staffRes, agentRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/alladmindata`, {
+            headers: authHeader(),
+          }),
+
+          axios.get(`${API_URL}/allstaffs`, {
+            headers: authHeader(),
+          }),
+
+          axios.get(`${API_URL}/allagents`, {
+            headers: authHeader(),
+          }),
+        ]);
+
+        if (adminRes.status === "fulfilled") {
+          setAdmin(adminRes.value.data.result || []);
+        }
+
+        if (staffRes.status === "fulfilled") {
+          setStaff(staffRes.value.data.result || []);
+        }
+
+        if (agentRes.status === "fulfilled") {
+          setAgent(agentRes.value.data.result || []);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+
+    allData();
+  }, []);
+
+  const handleLoggedUser = () => {
+    const role = localStorage.getItem("role");
+    const id = Number(localStorage.getItem("id"));
+
+    if (role === "admin") {
+      const findAdmin = admin.find((item) => Number(item.id) === id);
+
+      if (findAdmin) {
+        setLoggedUser({
+          fullname: findAdmin.fullname,
+          email: findAdmin.email,
+        });
+      }
+    }
+
+    if (role === "staff") {
+      const findStaff = staff.find((item) => Number(item.id) === id);
+
+      if (findStaff) {
+        setLoggedUser({
+          fullname: findStaff.fullname,
+          email: findStaff.email,
+        });
+      }
+    }
+
+    if (role === "agent") {
+      const findAgent = agent.find((item) => Number(item.id) === id);
+
+      if (findAgent) {
+        setLoggedUser({
+          fullname: findAgent.fullname,
+          email: findAgent.email,
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (admin.length > 0 || staff.length > 0 || agent.length > 0) {
+      handleLoggedUser();
+    }
+  }, [admin, staff, agent]);
+
   return (
     <>
       <nav className="navbar navbar-light bg-light d-md-none mobile-navbar-toggle fixed-top border rounded">
@@ -176,7 +235,15 @@ export default function Sidebar() {
 
               <div className="d-flex flex-column ms-2 font-alfasseh">
                 <span className="text-dark fw-bold">Safar CRM</span>
-                <span className="laundry-app text-dark">Admin Panel</span>
+                <span className="laundry-app text-dark">
+                  {localStorage.getItem("role") === "admin"
+                    ? "Admin Panel"
+                    : localStorage.getItem("role") === "agent"
+                      ? "Agent Panel"
+                      : localStorage.getItem("role") === "staff"
+                        ? "Staff Panel"
+                        : "Panel"}
+                </span>
               </div>
             </div>
           </Link>
@@ -239,18 +306,22 @@ export default function Sidebar() {
           <div className="mt-auto pt-0 mb-2">
             <hr className="mt-auto text-danger mb-0" />
 
-            <div className="d-none d-md-flex align-items-center rounded p-1 mt-2 w-100 justify-content-between">
-              <div className="d-flex align-items-center overflow-hidden">
-                <div className="d-flex align-items-center justify-content-center rounded-circle me-2 text-light fw-bold custom-short">
-                  A
+            <div className="d-block d-flex align-items-center flex-row flex-nowrap justify-content-between rounded p-1 mt-2 w-100">
+              <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center justify-content-center rounded-circle me-2 short-sidebar text-white fw-bold custom-short">
+                  {loggedUser?.fullname
+                    ? loggedUser.fullname.charAt(0).toUpperCase()
+                    : "U"}
                 </div>
 
                 <div className="d-flex flex-column overflow-hidden">
                   <span className="fw-semibold text-nowrap custom-shorts">
-                    Amir Khan
+                    {loggedUser?.fullname ?? "N/A"}
                   </span>
 
-                  <small className="custom-shorts1">admin@travel.com</small>
+                  <small className="custom-shorts1">
+                    {loggedUser?.email ?? "N/A"}
+                  </small>
                 </div>
               </div>
 
@@ -279,7 +350,15 @@ export default function Sidebar() {
 
               <div className="d-flex flex-column ms-2 font-alfasseh">
                 <span className="text-light fw-bold">Safar CRM</span>
-                <span className="laundry-app">Admin Panel</span>
+                <span className="laundry-app text-light">
+                  {localStorage.getItem("role") === "admin"
+                    ? "Admin Panel"
+                    : localStorage.getItem("role") === "agent"
+                      ? "Agent Panel"
+                      : localStorage.getItem("role") === "staff"
+                        ? "Staff Panel"
+                        : "Panel"}
+                </span>
               </div>
             </div>
           </Link>
@@ -308,15 +387,19 @@ export default function Sidebar() {
             <div className="d-none d-md-flex align-items-center rounded p-1 mt-2 w-100 justify-content-between">
               <div className="d-flex align-items-center overflow-hidden">
                 <div className="d-flex align-items-center justify-content-center rounded-circle me-2 text-light fw-bold custom-short">
-                  A
+                  {loggedUser?.fullname
+                    ? loggedUser.fullname.charAt(0).toUpperCase()
+                    : "U"}
                 </div>
 
                 <div className="d-flex flex-column overflow-hidden">
                   <span className="fw-semibold text-nowrap custom-shorts">
-                    Amir Khan
+                    {loggedUser?.fullname ?? "N/A"}
                   </span>
 
-                  <small className="custom-shorts1">admin@travel.com</small>
+                  <small className="custom-shorts1">
+                    {loggedUser?.email ?? "N/A"}
+                  </small>
                 </div>
               </div>
 

@@ -377,7 +377,7 @@ function Homepage() {
                         </tbody>
                       </table>
 
-                      {/* {filteredCustomers.length > itemsPerPage && (
+                      {/* {users.length > itemsPerPage && (
                         <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
                           <button
                             className={`btn rounded-pill px-3 py-1 shadow-sm ${

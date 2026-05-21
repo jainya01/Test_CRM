@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { authHeader } from "../utils/authHeader";
 import {
   faBell,
   faTrash,
@@ -16,17 +17,18 @@ function Settings() {
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
-    name: "",
+    fullname: "",
     email: "",
     password: "",
   });
-  const { name, email, password } = formData;
+
+  const { fullname, email, password } = formData;
 
   const validateForm = () => {
     let newErrors = {};
 
-    if (!name.trim()) {
-      newErrors.name = "Name is required";
+    if (!fullname.trim()) {
+      newErrors.name = "Full Name is required";
     }
 
     if (!email.trim()) {
@@ -52,24 +54,20 @@ function Settings() {
     if (!validateForm()) return;
 
     try {
-      const res = await axios.post(
-        `${API_URL}/adminpost`,
-        formData,
-        //     , {
-        //     headers: authHeader(),
-        //   }
-      );
+      const res = await axios.post(`${API_URL}/adminpost`, formData, {
+        headers: authHeader(),
+      });
 
       const newAdmin = {
         id: res.data.insertedId,
-        name: formData.name,
+        fullname: formData.fullname,
         email: formData.email,
       };
 
       setAdminEmail((prev) => [newAdmin, ...prev]);
 
       setFormData({
-        name: "",
+        fullname: "",
         email: "",
         password: "",
       });
@@ -182,7 +180,7 @@ function Settings() {
   const handleCancelled = (e) => {
     e.preventDefault();
     setFormData({
-      name: "",
+      fullname: "",
       email: "",
       password: "",
     });
@@ -247,17 +245,17 @@ function Settings() {
 
                   <input
                     type="text"
-                    className="form-control custom-text"
+                    className="form-control sector-wise"
                     placeholder="Full Name"
-                    name="name"
-                    value={formData.name}
-                    autoComplete="name"
+                    name="fullname"
+                    value={formData.fullname}
+                    autoComplete="fullname"
                     onChange={onInputChange}
                     required
                   />
-                  {errors.name && (
+                  {errors.fullname && (
                     <span className="text-danger error-font">
-                      {errors.name}
+                      {errors.fullname}
                     </span>
                   )}
                 </div>
@@ -271,7 +269,7 @@ function Settings() {
                   </label>
 
                   <input
-                    className="form-control custom-text"
+                    className="form-control sector-wise"
                     type="email"
                     placeholder="admin@company.com"
                     name="email"
@@ -293,7 +291,7 @@ function Settings() {
                   </label>
                   <input
                     type="password"
-                    className="form-control custom-text"
+                    className="form-control sector-wise"
                     placeholder="Create Password"
                     name="password"
                     value={formData.password}
@@ -336,7 +334,7 @@ function Settings() {
               <form onSubmit={handleAdminUpdate}>
                 <div className="mb-2">
                   <select
-                    className="form-select custom-text"
+                    className="form-select sector-wise"
                     value={selectedAdmin}
                     onChange={handleSelectAdmin}
                   >
@@ -356,7 +354,7 @@ function Settings() {
                 <div className="mb-2">
                   <input
                     type="email"
-                    className="form-control custom-text"
+                    className="form-control sector-wise"
                     placeholder="New Email"
                     name="email"
                     value={updateForm.email}
@@ -368,7 +366,7 @@ function Settings() {
 
                 <div className="mb-2" style={{ position: "relative" }}>
                   <input
-                    className="form-control custom-text"
+                    className="form-control sector-wise"
                     type={showPassword ? "text" : "password"}
                     placeholder="New Password"
                     name="password"
