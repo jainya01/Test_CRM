@@ -948,10 +948,6 @@ body {
   .convert-call {
     font-size: 13px;
   }
-
-  .convert-code {
-    font-size: 13px;
-  }
 }
 
 .badge {
@@ -1203,4 +1199,34 @@ body {
 .uploaded-customer {
   font-size: 17px;
   font-weight: 600;
+}
+
+.eye-login1 {
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  cursor: pointer;
+  color: #111;
+  font-size: 15px;
+}
+
+.callers-forms {
+  background-color: #073125;
+  color: #fff;
+}
+
+.profile-header {
+  background-color: #073125;
+  color: #fff;
+}
+
+.btn-update,
+.btn-update:focus,
+.btn-update:active,
+.btn-update:hover {
+  font-size: 14px;
+  padding: 7px 10px;
+  background-color: #00664d !important;
+  color: #fff !important;
+  border-radius: 10px;
 }

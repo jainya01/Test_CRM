@@ -28,6 +28,9 @@ import AgentBookings from "./agent/AgentBookings";
 import StaffDashboard from "./caller/StaffDashboard";
 import StaffPackage from "./caller/StaffPackage";
 import StaffFollowup from "./caller/StaffFollowup";
+import CallersCreate from "./admin/CallerCreate";
+import CallersEdit from "./admin/CallerEdit";
+import AgentEdit from "./agent/AgentEdit";
 
 function App() {
   return (
@@ -42,7 +45,11 @@ function App() {
           <Route path="/admin" element={<User />}>
             <Route path="dashboard" element={<Homepage />} />
             <Route path="leads" element={<Leads />} />
+
             <Route path="callers" element={<CallerExecutive />} />
+            <Route path="callers/create" element={<CallersCreate />} />
+            <Route path="callers/edit/:id" element={<CallersEdit />} />
+
             <Route path="packages" element={<Packages />} />
             <Route path="agents" element={<Agents />} />
             <Route path="customers" element={<Customers />} />
@@ -58,6 +65,8 @@ function App() {
             <Route path="customers" element={<AgentCustomers />} />
             <Route path="packages" element={<AgentPackages />} />
             <Route path="bookings" element={<AgentBookings />} />
+
+            <Route path="profile" element={<AgentEdit />} />
           </Route>
         </Route>
 

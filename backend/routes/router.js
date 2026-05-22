@@ -344,6 +344,34 @@ router.get(
   }),
 );
 
+router.get("/profile", async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "No token" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const [rows] = await pool.execute(
+      "SELECT id, fullname, email, role, profile_image FROM agent WHERE id = ?",
+      [decoded.id],
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Agent not found" });
+    }
+
+    res.json({
+      success: true,
+      result: rows[0],
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // staffs
 
 router.get(
@@ -466,6 +494,232 @@ router.post(
       return res.status(500).json({
         error: "Upload failed",
         details: err.message,
+      });
+    }
+  },
+);
+
+router.get(
+  "/allcustomersdata",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const SQL =
+      "SELECT name, phone, city, service, status, caller FROM customers ORDER BY id DESC";
+    const [result] = await pool.execute(SQL);
+
+    if (result.length <= 0) {
+      const error = new Error("data not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data fetched successfully",
+      result,
+    });
+  }),
+);
+
+router.post(
+  "/callerspost",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { fullname, email, password, status, notes } = req.body;
+
+    if (!fullname || !email || !password || !status) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const [existing] = await pool.execute(
+      "SELECT id FROM staff WHERE email = ?",
+      [email],
+    );
+
+    if (existing.length > 0) {
+      const error = new Error("Email already exists");
+      error.statusCode = 409;
+      throw error;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const [result] = await pool.execute(
+      "INSERT INTO staff (fullname, email, password, status, notes) VALUES (?, ?, ?, ?, ?)",
+      [fullname, email, hashedPassword, status, notes],
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: "Caller created successfully",
+      callerId: result.insertId,
+    });
+  }),
+);
+
+router.put(
+  "/callerupdate/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { fullname, email, status, password, notes } = req.body;
+
+    if (!fullname || !email || !status) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    let query =
+      "UPDATE staff SET fullname = ?, email = ?, status = ?, notes = ?";
+    let values = [fullname, email, status, notes];
+
+    if (password && password.trim() !== "") {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      query += ", password = ?";
+      values.push(hashedPassword);
+    }
+
+    query += " WHERE id = ?";
+    values.push(id);
+
+    const [result] = await pool.execute(query, values);
+
+    if (result.affectedRows === 0) {
+      const error = new Error("Staff not found or not updated");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Staff updated successfully",
+      result,
+    });
+  }),
+);
+
+router.delete(
+  "/callerdelete/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const [result] = await pool.execute("DELETE FROM staff WHERE id = ?", [id]);
+
+    if (result.affectedRows === 0) {
+      const error = new Error("Staff not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Staff deleted successfully",
+    });
+  }),
+);
+
+router.get(
+  "/allcallers",
+  asyncHandler(async (req, res) => {
+    const SQL =
+      "SELECT id, fullname, email, role, status, role, notes, created_at FROM staff ORDER BY id DESC LIMIT 20";
+
+    const [result] = await pool.execute(SQL);
+
+    if (result.length === 0) {
+      const error = new Error("Staff not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Data fetched successfully",
+      data: result,
+    });
+  }),
+);
+
+router.get(
+  "/somecallers/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const SQL =
+      "SELECT id, fullname, email, role, status, notes FROM staff WHERE id = ?";
+
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.length === 0) {
+      const error = new Error("Staff not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Data fetched successfully",
+      data: result[0],
+    });
+  }),
+);
+
+router.put(
+  "/editprofile/:id",
+  upload.single("profile_image"),
+  authenticate,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { fullname, email, password } = req.body;
+      const [agentData] = await pool.execute(
+        "SELECT * FROM agent WHERE id = ?",
+        [id],
+      );
+
+      if (agentData.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Agent not found",
+        });
+      }
+
+      const oldAgent = agentData[0];
+      let updatedPassword = oldAgent.password;
+      if (password && password.trim() !== "") {
+        updatedPassword = await bcrypt.hash(password, 10);
+      }
+
+      let updatedImage = oldAgent.profile_image;
+      if (req.file) {
+        updatedImage = req.file.filename;
+      }
+
+      await pool.execute(
+        `UPDATE agent 
+         SET fullname = ?, 
+             email = ?, 
+             password = ?, 
+             profile_image = ?
+         WHERE id = ?`,
+        [fullname, email, updatedPassword, updatedImage, id],
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Profile updated successfully",
+      });
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).json({
+        success: false,
+        message: "Server error",
       });
     }
   },

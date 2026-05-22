@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { authHeader } from "../utils/authHeader";
 import "../App.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,150 +9,30 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function CallerExecutive() {
-  const callers = [
-    {
-      rank: 1,
-      caller: "John Doe",
-      conversion: "70%",
-      badge: "Good",
-      status: "Active",
-    },
-    {
-      rank: 2,
-      caller: "Sarah Khan",
-      conversion: "85%",
-      badge: "Excellent",
-      status: "Active",
-    },
-    {
-      rank: 3,
-      caller: "Ali Raza",
-      conversion: "65%",
-      badge: "Good",
-      status: "Inactive",
-    },
-    {
-      rank: 4,
-      caller: "Michael Smith",
-      conversion: "60%",
-      badge: "Average",
-      status: "Active",
-    },
-    {
-      rank: 5,
-      caller: "Ayesha Malik",
-      conversion: "78%",
-      badge: "Very Good",
-      status: "Active",
-    },
-    {
-      rank: 6,
-      caller: "David Johnson",
-      conversion: "55%",
-      badge: "Average",
-      status: "Inactive",
-    },
-    {
-      rank: 7,
-      caller: "Fatima Noor",
-      conversion: "82%",
-      badge: "Excellent",
-      status: "Active",
-    },
-    {
-      rank: 8,
-      caller: "Usman Tariq",
-      conversion: "68%",
-      badge: "Good",
-      status: "Active",
-    },
-    {
-      rank: 9,
-      caller: "Emily Brown",
-      conversion: "74%",
-      badge: "Very Good",
-      status: "Inactive",
-    },
-    {
-      rank: 10,
-      caller: "Hassan Ali",
-      conversion: "90%",
-      badge: "Top Performer",
-      status: "Active",
-    },
-    {
-      rank: 11,
-      caller: "Imran Shah",
-      conversion: "72%",
-      badge: "Good",
-      status: "Active",
-    },
-    {
-      rank: 12,
-      caller: "Nadia Ali",
-      conversion: "88%",
-      badge: "Excellent",
-      status: "Active",
-    },
-    {
-      rank: 13,
-      caller: "Zeeshan Malik",
-      conversion: "64%",
-      badge: "Average",
-      status: "Inactive",
-    },
-    {
-      rank: 14,
-      caller: "Areeba Khan",
-      conversion: "79%",
-      badge: "Very Good",
-      status: "Active",
-    },
-    {
-      rank: 15,
-      caller: "Hamza Raza",
-      conversion: "58%",
-      badge: "Average",
-      status: "Inactive",
-    },
-    {
-      rank: 16,
-      caller: "Sana Iqbal",
-      conversion: "83%",
-      badge: "Excellent",
-      status: "Active",
-    },
-    {
-      rank: 17,
-      caller: "Bilal Ahmed",
-      conversion: "69%",
-      badge: "Good",
-      status: "Active",
-    },
-    {
-      rank: 18,
-      caller: "Hina Noor",
-      conversion: "91%",
-      badge: "Top Performer",
-      status: "Active",
-    },
-    {
-      rank: 19,
-      caller: "Usama Khan",
-      conversion: "62%",
-      badge: "Average",
-      status: "Inactive",
-    },
-    {
-      rank: 20,
-      caller: "Maria Sheikh",
-      conversion: "87%",
-      badge: "Excellent",
-      status: "Active",
-    },
-  ];
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const [callers, setCallers] = useState([]);
+
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const [callerRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/allcallers`, { headers: authHeader() }),
+        ]);
+
+        if (callerRes.status === "fulfilled") {
+          setCallers(callerRes.value.data.data);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+    allData();
+  }, []);
 
   const itemsPerPage = 14;
   const [currentPage, setCurrentPage] = useState(1);
@@ -159,6 +40,24 @@ function CallerExecutive() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = callers.slice(startIndex, endIndex);
   const totalPages = Math.ceil(callers.length / itemsPerPage);
+
+  const deleteData = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this caller?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${API_URL}/callerdelete/${id}`, {
+        headers: authHeader(),
+      });
+      setCallers((prev) => prev.filter((item) => item.id !== id));
+      toast.success("Caller deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete caller");
+    }
+  };
 
   return (
     <div className="content-wrapper">
@@ -205,7 +104,10 @@ function CallerExecutive() {
           </div>
 
           <div>
-            <Link className="text-decoration-none btn new-leader text-nowrap">
+            <Link
+              className="text-decoration-none btn new-leader text-nowrap"
+              to="/admin/callers/create"
+            >
               + New Caller
             </Link>
           </div>
@@ -227,20 +129,20 @@ function CallerExecutive() {
               <tbody>
                 {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
                   paginatedData.map((item, index) => (
-                    <tr key={item.id || index}>
-                      <td>{item.rank || ""}</td>
+                    <tr key={item.id}>
+                      <td>{index + 1}</td>
                       <td>
                         <span className="short-name">
-                          {item?.caller || "N/A"}
+                          {item?.fullname || "N/A"}
                         </span>
                       </td>
 
                       <td className="convert-percent">
-                        {item.conversion || ""}
+                        {item.conversion || "10%"}
                       </td>
 
                       <td>
-                        {item.badge || ""}
+                        {item.badge || "--"}
                         {/* <span
                           className={`badge ${
                             item.id === 100
@@ -291,14 +193,20 @@ function CallerExecutive() {
                             />
                           </Link>
 
-                          <Link title="Edit">
+                          <Link
+                            title="Edit"
+                            to={`/admin/callers/edit/${item.id}`}
+                          >
                             <FontAwesomeIcon
                               icon={faEdit}
                               className="icons-color"
                             />
                           </Link>
 
-                          <span title="Delete">
+                          <span
+                            title="Delete"
+                            onClick={() => deleteData(item.id)}
+                          >
                             <FontAwesomeIcon
                               icon={faTrash}
                               className="icons-color1 ps-1"
@@ -356,6 +264,8 @@ function CallerExecutive() {
           </div>
         </div>
       </div>
+
+      <ToastContainer position="bottom-right" autoClose={1500} />
     </div>
   );
 }
