@@ -368,4 +368,107 @@ router.get(
   }),
 );
 
+// customers bulk uploaded
+
+router.post(
+  "/upload-stock",
+  authenticate,
+  upload.single("file"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          error: "No file uploaded",
+        });
+      }
+
+      const uploadsDir = path.resolve("uploads");
+      fs.readdirSync(uploadsDir).forEach((file) => {
+        const fileExt = path.extname(file).toLowerCase();
+        if (file !== req.file.filename && [".xlsx", ".csv"].includes(fileExt)) {
+          fs.unlinkSync(path.join(uploadsDir, file));
+        }
+      });
+
+      const filePath = path.join(uploadsDir, req.file.filename);
+      const ext = path.extname(req.file.originalname).toLowerCase();
+      let values = [];
+
+      if (ext === ".xlsx") {
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.readFile(filePath);
+        workbook.worksheets[0].eachRow(
+          { includeEmpty: false },
+          (row, rowNumber) => {
+            if (rowNumber === 1) return;
+            const name = row.getCell(2).value;
+            const phone = row.getCell(3).value;
+            if (!name || !phone) return;
+            values.push([
+              String(name).trim(),
+              String(phone).replace(/\D/g, "").trim(),
+              row.getCell(4).value ? String(row.getCell(4).value).trim() : null,
+              row.getCell(5).value ? String(row.getCell(5).value).trim() : null,
+            ]);
+          },
+        );
+      } else if (ext === ".csv") {
+        const rows = await new Promise((resolve, reject) => {
+          const data = [];
+
+          fs.createReadStream(filePath)
+            .pipe(csvParser())
+            .on("data", (row) => data.push(row))
+            .on("end", () => resolve(data))
+            .on("error", reject);
+        });
+
+        rows.forEach((row) => {
+          const name = row.Name || row.name;
+          const phone = row.Phone || row.phone;
+          const city = row.City || row.city;
+          const service = row.Service || row.service;
+
+          if (!name || !phone) return;
+
+          values.push([
+            String(name).trim(),
+            String(phone).replace(/\D/g, "").trim(),
+            city ? String(city).trim() : null,
+            service ? String(service).trim() : null,
+          ]);
+        });
+      } else {
+        return res.status(400).json({
+          error: "Only .xlsx and .csv files are allowed",
+        });
+      }
+
+      if (!values.length) {
+        return res.status(400).json({
+          error: "No valid rows found",
+        });
+      }
+
+      await pool.query(
+        `INSERT INTO customers (name, phone, city, service) VALUES ?`,
+        [values],
+      );
+
+      return res.json({
+        success: true,
+        message: "Bulk upload successfully",
+        rowsInserted: values.length,
+        file: req.file.filename,
+      });
+    } catch (err) {
+      console.error("UPLOAD ERROR:", err);
+      return res.status(500).json({
+        error: "Upload failed",
+        details: err.message,
+      });
+    }
+  },
+);
+
 export default router;

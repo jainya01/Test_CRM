@@ -89,7 +89,7 @@ const StaffLogin = () => {
             </div>
 
             <div className="d-flex flex-column ms-2">
-              <span className="fw-bold text-white signal-crm">Safar CRM</span>
+              <span className="fw-bold text-white signal-crm">Jainya CRM</span>
             </div>
           </div>
 
@@ -101,7 +101,7 @@ const StaffLogin = () => {
           </p>
 
           <div className="copyright-travel">
-            © {new Date().getFullYear()} Safar Travel Group
+            © {new Date().getFullYear()} Jainya Travel Group
           </div>
         </div>
 

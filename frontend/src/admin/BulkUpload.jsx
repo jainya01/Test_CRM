@@ -109,6 +109,8 @@ function BulkUpload() {
         <div className="col-12 col-lg-6 col-md-6 d-flex flex-column">
           <form onSubmit={handleBulkSubmit}>
             <div className="card rounded-3 h-100 px-3 py-3 border-0">
+              <span className="mb-2 uploaded-customer">Customers Upload</span>
+
               <div className="dotted-class">
                 <div className="dotted-class p-5 text-center bg-light">
                   <div className="mb-3">

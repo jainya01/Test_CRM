@@ -1199,3 +1199,8 @@ body {
   color: #111;
   font-size: 15px;
 }
+
+.uploaded-customer {
+  font-size: 17px;
+  font-weight: 600;
+}

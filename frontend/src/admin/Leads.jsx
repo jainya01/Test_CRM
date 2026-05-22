@@ -11,7 +11,7 @@ function Leads() {
       name: "Muhammad Tariq",
       phone: "+92 300 10000",
       Service: "Hajj",
-      Source: "Website",
+      Source: "John Doe",
       Status: "New",
       Temp: "Hot",
       Followup: "Today",
@@ -21,7 +21,7 @@ function Leads() {
       name: "Ayesha Siddiqui",
       phone: "+92 301 10101",
       Service: "Umrah",
-      Source: "Referral",
+      Source: "Sarah Khan",
       Status: "Contacted",
       Temp: "Warm",
       Followup: "in 1d",
@@ -31,7 +31,7 @@ function Leads() {
       name: "Imran Malik",
       phone: "+92 302 10202",
       Service: "Ticket",
-      Source: "Facebook",
+      Source: "Ali Raza",
       Status: "Interested",
       Temp: "Cold",
       Followup: "in 2d",
@@ -41,7 +41,7 @@ function Leads() {
       name: "Fatima Noor",
       phone: "+92 303 10303",
       Service: "Medical",
-      Source: "Website",
+      Source: "Michael Smith",
       Status: "Not Interested",
       Temp: "Hot",
       Followup: "in 3d",
@@ -51,7 +51,7 @@ function Leads() {
       name: "Zain Abbas",
       phone: "+92 304 10404",
       Service: "Hajj",
-      Source: "Website",
+      Source: "Ayesha Malik",
       Status: "Converted",
       Temp: "Warm",
       Followup: "Today",
@@ -61,7 +61,7 @@ function Leads() {
       name: "Hira Sheikh",
       phone: "+92 305 10505",
       Service: "Umrah",
-      Source: "Website",
+      Source: "David Johnson",
       Status: "New",
       Temp: "Cold",
       Followup: "Missed 1d",
@@ -71,7 +71,7 @@ function Leads() {
       name: "Ayesha Khan",
       phone: "+92 311 4455667",
       Service: "Hajj",
-      Source: "Facebook",
+      Source: "Fatima Noor",
       Status: "Contacted",
       Temp: "Warm",
       Followup: "Today",
@@ -81,7 +81,7 @@ function Leads() {
       name: "Bilal Ahmed",
       phone: "+92 300 7788991",
       Service: "Umrah",
-      Source: "Instagram",
+      Source: "Usman Tariq",
       Status: "New",
       Temp: "Cold",
       Followup: "Missed 2d",
@@ -91,7 +91,7 @@ function Leads() {
       name: "Sara Malik",
       phone: "+92 322 5566778",
       Service: "Visa",
-      Source: "Referral",
+      Source: "Emily Brown",
       Status: "Qualified",
       Temp: "Hot",
       Followup: "Tomorrow",
@@ -197,9 +197,9 @@ function Leads() {
                   <th>Service</th>
                   <th>Source</th>
                   <th>Status</th>
-                  <th>Temp</th>
+                  <th>Temperature</th>
                   <th>Follow-up</th>
-                  <th></th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody className="body-table">

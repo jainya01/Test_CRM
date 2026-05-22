@@ -18,7 +18,7 @@ function Homepage() {
       name: "Muhammad Tariq",
       phone: "+92 300 10000",
       Service: "Hajj",
-      Source: "Website",
+      Source: "John Doe",
       Status: "New",
       Temp: "Hot",
     },
@@ -27,7 +27,7 @@ function Homepage() {
       name: "Ayesha Siddiqui",
       phone: "+92 301 10101",
       Service: "Umrah",
-      Source: "Agent",
+      Source: "Sarah Khan",
       Status: "Contacted",
       Temp: "Warm",
     },
@@ -36,7 +36,7 @@ function Homepage() {
       name: "Imran Malik",
       phone: "+92 302 10202",
       Service: "Ticket",
-      Source: "Facebook",
+      Source: "Ali Raza",
       Status: "Interested",
       Temp: "Cold",
     },
@@ -45,7 +45,7 @@ function Homepage() {
       name: "Fatima Noor",
       phone: "+92 303 10303",
       Service: "Medical",
-      Source: "Walk-in",
+      Source: "Michael Smith",
       Status: "Not Interested",
       Temp: "Hot",
     },
@@ -54,7 +54,7 @@ function Homepage() {
       name: "Zain Abbas",
       phone: "+92 304 10404",
       Service: "Hajj",
-      Source: "Website",
+      Source: "Ayesha Malik",
       Status: "Converted",
       Temp: "Warm",
     },
@@ -63,7 +63,7 @@ function Homepage() {
       name: "Hira Sheikh",
       phone: "+92 305 10505",
       Service: "Umrah",
-      Source: "Walk-in",
+      Source: "David Johnson",
       Status: "New",
       Temp: "Cold",
     },
@@ -285,7 +285,10 @@ function Homepage() {
                       </h5>
                     </div>
 
-                    <Link className="seen-arrow d-flex align-items-center text-decoration-none">
+                    <Link
+                      className="seen-arrow d-flex align-items-center text-decoration-none"
+                      to="/admin/leads"
+                    >
                       See all <FontAwesomeIcon icon={faArrowRight} />
                     </Link>
                   </div>

@@ -240,7 +240,7 @@ export default function Sidebar() {
               </div>
 
               <div className="d-flex flex-column ms-2 font-alfasseh">
-                <span className="text-dark fw-bold">Safar CRM</span>
+                <span className="text-dark fw-bold">Jainya CRM</span>
                 <span className="laundry-app text-dark">
                   {localStorage.getItem("role") === "admin"
                     ? "Admin Panel"
@@ -370,7 +370,7 @@ export default function Sidebar() {
               </div>
 
               <div className="d-flex flex-column ms-2 font-alfasseh">
-                <span className="text-light fw-bold">Safar CRM</span>
+                <span className="text-light fw-bold">Jainya CRM</span>
                 <span className="laundry-app text-light">
                   {localStorage.getItem("role") === "admin"
                     ? "Admin Panel"

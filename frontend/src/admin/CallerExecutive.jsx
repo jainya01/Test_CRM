@@ -219,9 +219,9 @@ function CallerExecutive() {
                   <th className="py-2">Rank</th>
                   <th>Caller</th>
                   <th>Conversion</th>
-                  <th>Badge</th>
+                  <th>Performance</th>
                   <th>Status</th>
-                  <th>Act</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -230,7 +230,6 @@ function CallerExecutive() {
                     <tr key={item.id || index}>
                       <td>{item.rank || ""}</td>
                       <td>
-                        {" "}
                         <span className="short-name">
                           {item?.caller || "N/A"}
                         </span>
