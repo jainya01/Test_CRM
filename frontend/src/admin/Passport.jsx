@@ -114,7 +114,7 @@ function Passport() {
         </div>
       </div>
 
-      <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
+      <div className="row mt-2 gx-2 ms-2 me-2 gy-2 mb-3">
         <div>
           <h5 className="fw-bold overview-dashboard">Passport Verification</h5>
           <p className="text-muted overview-lead fw-bold">
