@@ -6,6 +6,7 @@ import {
   faFileCircleCheck,
   faFileCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import "../App.css";
 
 function Passport() {
   const data = [

@@ -135,7 +135,6 @@ function AgentEdit() {
         <div className="col-12">
           <div className="card shadow border-0">
             <div className="card-header profile-header">Update Profile</div>
-
             <div className="card-body">
               <form onSubmit={handleUpdateProfile}>
                 <div className="row">

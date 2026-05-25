@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../App.css";
 
 const Login = () => {
   const API_URL = import.meta.env.VITE_API_URL;

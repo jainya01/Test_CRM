@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import "../App.css";
 
 function Settings() {
   const API_URL = import.meta.env.VITE_API_URL;

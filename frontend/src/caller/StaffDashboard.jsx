@@ -1,4 +1,3 @@
-import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
@@ -7,6 +6,7 @@ import {
   faPhone,
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
+import "../App.css";
 
 function CallerDashboard() {
   const data = [
