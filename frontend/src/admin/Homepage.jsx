@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import "../App.css";
-
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,8 +10,11 @@ import {
   faCube,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 
 function Homepage() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const users = [
     {
       id: 1,
@@ -69,6 +71,24 @@ function Homepage() {
       Temp: "Cold",
     },
   ];
+
+  const [admin, setAdmin] = useState([]);
+
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const [adminRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/alladmindata`),
+        ]);
+
+        if (adminRes.status === "fulfilled") {
+          setAdmin(adminRes.value.data.result);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+  }, []);
 
   return (
     <>

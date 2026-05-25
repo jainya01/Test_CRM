@@ -1,147 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { authHeader } from "../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "../App.css";
 
 function Agents() {
-  const data = [
-    {
-      id: 1,
-      name: "Hassan Travels",
-      email: "agent@travel.com",
-      status: "Active",
-      customers: 5,
-      bookings: 3,
-    },
-    {
-      id: 2,
-      name: "Al Noor Travels",
-      email: "info@alnoor.com",
-      status: "Inactive",
-      customers: 8,
-      bookings: 2,
-    },
-    {
-      id: 3,
-      name: "Skyline Tours",
-      email: "contact@skyline.com",
-      status: "Active",
-      customers: 12,
-      bookings: 7,
-    },
-    {
-      id: 4,
-      name: "Royal Travel Agency",
-      email: "support@royaltravel.com",
-      status: "Active",
-      customers: 20,
-      bookings: 15,
-    },
-    {
-      id: 5,
-      name: "Dream Holidays",
-      email: "info@dreamholidays.com",
-      status: "Inactive",
-      customers: 4,
-      bookings: 1,
-    },
-    {
-      id: 6,
-      name: "Air Link Travels",
-      email: "airlink@travel.com",
-      status: "Active",
-      customers: 10,
-      bookings: 6,
-    },
-    {
-      id: 7,
-      name: "Global Wings",
-      email: "global@wings.com",
-      status: "Active",
-      customers: 18,
-      bookings: 9,
-    },
-    {
-      id: 8,
-      name: "Elite Travel Hub",
-      email: "elite@travelhub.com",
-      status: "Inactive",
-      customers: 6,
-      bookings: 2,
-    },
-    {
-      id: 9,
-      name: "Pearl Travels",
-      email: "info@pearltravels.com",
-      status: "Active",
-      customers: 14,
-      bookings: 11,
-    },
-    {
-      id: 10,
-      name: "Starline Tours",
-      email: "contact@starline.com",
-      status: "Active",
-      customers: 9,
-      bookings: 4,
-    },
-    {
-      id: 11,
-      name: "Moonlight Travels",
-      email: "moonlight@travel.com",
-      status: "Inactive",
-      customers: 7,
-      bookings: 2,
-    },
-    {
-      id: 12,
-      name: "Blue Sky Agency",
-      email: "bluesky@agency.com",
-      status: "Active",
-      customers: 16,
-      bookings: 10,
-    },
-    {
-      id: 13,
-      name: "Everest Tours",
-      email: "everest@tours.com",
-      status: "Active",
-      customers: 11,
-      bookings: 5,
-    },
-    {
-      id: 14,
-      name: "Falcon Travels",
-      email: "falcon@travel.com",
-      status: "Inactive",
-      customers: 3,
-      bookings: 1,
-    },
-    {
-      id: 15,
-      name: "Sunrise Holidays",
-      email: "sunrise@holidays.com",
-      status: "Active",
-      customers: 22,
-      bookings: 18,
-    },
-    {
-      id: 16,
-      name: "Ocean View Travels",
-      email: "ocean@view.com",
-      status: "Active",
-      customers: 13,
-      bookings: 6,
-    },
-  ];
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const [agents, setAgents] = useState([]);
+
+  useEffect(() => {
+    const alldata = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/allagents`, {
+          headers: authHeader(),
+        });
+        setAgents(response.data.data || []);
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+
+    alldata();
+  }, []);
 
   const itemsPerPage = 24;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const paginatedData = agents.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(agents.length / itemsPerPage);
+
+  const uploadsBase = API_URL
+    ? API_URL.replace(/\/api\/?$/, "") + "/uploads"
+    : "/uploads";
 
   return (
     <div className="content-wrapper">
@@ -179,9 +73,20 @@ function Agents() {
       </div>
 
       <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
-        <div>
-          <h5 className="fw-bold overview-dashboard">Agents</h5>
-          <p className="text-muted overview-lead fw-bold">B2B partners</p>
+        <div className="d-flex justify-content-between flex-wrap">
+          <div>
+            <h5 className="fw-bold overview-dashboard">Agents</h5>
+            <p className="text-muted overview-lead fw-bold">B2B partners</p>
+          </div>
+
+          <div>
+            <Link
+              className="text-decoration-none btn new-leader text-nowrap"
+              to="/admin/agents/create"
+            >
+              + New Agents
+            </Link>
+          </div>
         </div>
 
         {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
@@ -193,12 +98,22 @@ function Agents() {
               <div className="customer-card p-3 bg-white rounded-3 h-100">
                 <div className="d-flex align-items-start gap-3">
                   <div className="avatar-circle avatar-agents">
-                    {user?.name?.charAt(0) || "N"}
+                    {user?.profile_image ? (
+                      <img
+                        src={`${uploadsBase}/${user.profile_image}`}
+                        alt={user.fullname}
+                        className="img-fluid rounded-circle"
+                      />
+                    ) : (
+                      <span>
+                        {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex-grow-1">
                     <h5 className="fw-semibold mb-1 customer-name">
-                      {user?.name || "N/A"}
+                      {user?.fullname || "N/A"}
                     </h5>
 
                     <p className="text-secondary customer-phone">
@@ -226,12 +141,12 @@ function Agents() {
                 <div className="d-flex justify-content-between">
                   <div className="d-flex flex-column">
                     <span className="agents-data">Customers</span>
-                    <span>{user?.customers || "N/A"}</span>
+                    <span>{user?.customers || 0}</span>
                   </div>
 
                   <div className="d-flex flex-column">
                     <span className="agents-data">Bookings</span>
-                    <span>{user?.bookings || "N/A"}</span>
+                    <span>{user?.bookings || 0}</span>
                   </div>
                 </div>
               </div>
@@ -239,11 +154,11 @@ function Agents() {
           ))
         ) : (
           <div className="">
-            <div className="text-center py-5 rounded-3">No Customers Found</div>
+            <div className="text-center py-5 rounded-3">No Agents Found</div>
           </div>
         )}
 
-        {data.length > itemsPerPage && (
+        {agents.length > itemsPerPage && (
           <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
             <button
               className={`btn rounded-pill px-3 py-1 shadow-sm ${

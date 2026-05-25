@@ -140,7 +140,7 @@ function AgentEdit() {
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Full Name <span className="text-danger">*</span>
+                      Full Name <span className="text-danger fw-bolder">*</span>
                     </label>
 
                     <input
@@ -160,7 +160,8 @@ function AgentEdit() {
 
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Email Address <span className="text-danger">*</span>
+                      Email Address{" "}
+                      <span className="text-danger fw-bolder">*</span>
                     </label>
 
                     <input

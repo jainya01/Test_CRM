@@ -320,30 +320,6 @@ router.put(
   }),
 );
 
-// agent
-
-router.get(
-  "/allagents",
-  authenticate,
-  asyncHandler(async (req, res) => {
-    const SQL = "SELECT id, fullname, email, role FROM agent";
-    const [result] = await pool.execute(SQL);
-
-    if (result.affectedRows <= 0) {
-      const error = new Error("data not found");
-      error.statusCode = 404;
-      throw error;
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "data fetched successfully",
-      count: result.length,
-      result,
-    });
-  }),
-);
-
 router.get("/profile", async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -723,6 +699,83 @@ router.put(
       });
     }
   },
+);
+
+router.post(
+  "/agentpost",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { fullname, phone, email, password, status, notes = null } = req.body;
+
+    if (!fullname || !phone || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    if (fullname.length < 3) {
+      return res.status(400).json({
+        success: false,
+        message: "fullname at least 3 characters",
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password at least 6 characters",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const SQL =
+      "INSERT INTO agent(fullname, phone, email, password, status, notes) VALUES(?, ?, ?, ?, ?, ?)";
+    const [result] = await pool.execute(SQL, [
+      fullname,
+      phone,
+      email,
+      hashedPassword,
+      status,
+      notes,
+    ]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("data post failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data sent successfully",
+      result,
+    });
+  }),
+);
+
+router.get(
+  "/allagents",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const SQL =
+      "SELECT id, fullname, phone, email, status, profile_image from agent ORDER BY id DESC";
+    const [result] = await pool.execute(SQL);
+
+    if (result.length <= 0) {
+      const error = new Error("data fetched failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data fetched successfully",
+      count: result.length,
+      data: result,
+    });
+  }),
 );
 
 export default router;

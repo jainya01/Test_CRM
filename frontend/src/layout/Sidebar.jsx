@@ -164,7 +164,7 @@ export default function Sidebar() {
         }
 
         if (agentRes.status === "fulfilled") {
-          setAgent(agentRes.value.data.result || []);
+          setAgent(agentRes.value.data.data || []);
         }
       } catch (error) {
         console.error("error", error);

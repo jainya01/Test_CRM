@@ -131,7 +131,7 @@ function CallersCreate() {
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Full Name <span className="text-danger">*</span>
+                      Full Name <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="text"
@@ -151,7 +151,7 @@ function CallersCreate() {
 
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Email <span className="text-danger">*</span>
+                      Email <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="email"
@@ -169,7 +169,7 @@ function CallersCreate() {
 
                   <div className="position-relative col-md-6">
                     <label className="form-label">
-                      Password <span className="text-danger">*</span>
+                      Password <span className="text-danger fw-bolder">*</span>
                     </label>
 
                     <input
@@ -202,7 +202,7 @@ function CallersCreate() {
 
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Status <span className="text-danger">*</span>
+                      Status <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
                       className="form-select sector-wise mb-1"

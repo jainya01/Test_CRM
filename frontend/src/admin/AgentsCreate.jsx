@@ -3,106 +3,92 @@ import { authHeader } from "../utils/authHeader";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-function CallersEdit() {
+function AgentsCreate() {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const { id } = useParams();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
 
-  const [call, setCall] = useState({
+  const [agent, SetAgent] = useState({
     fullname: "",
+    phone: "",
     email: "",
     password: "",
-    confirmPassword: "",
     status: "",
     notes: "",
   });
 
-  const { fullname, email, password, confirmPassword, status, notes } = call;
+  const { fullname, phone, email, password, status, notes } = agent;
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!fullname.trim()) {
+      newErrors.fullname = "Full name is required";
+    }
+
+    if (!phone.trim()) {
+      newErrors.phone = "Phone is required";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    if (!status) {
+      newErrors.status = "Status is required";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (password && password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (call.password || call.confirmPassword) {
-      if (call.password !== call.confirmPassword) {
-        toast.error("Passwords do not match");
-        return;
-      }
-    }
+    const isValid = validateForm();
+
+    if (!isValid) return;
 
     try {
-      await axios.put(`${API_URL}/callerupdate/${id}`, call, {
+      await axios.post(`${API_URL}/agentpost`, agent, {
         headers: authHeader(),
       });
 
-      toast.success("Caller credentials updated successfully");
+      toast.success("Agent created successfully");
 
       setTimeout(() => {
-        navigate("/admin/callers");
+        navigate("/admin/agents");
       }, 1000);
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to update caller");
+      toast.error("Failed to add agent");
     }
   };
 
   const onInputChange = (e) => {
-    setCall({
-      ...call,
+    SetAgent({
+      ...agent,
       [e.target.name]: e.target.value,
     });
   };
-
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-
-    const updatedCall = {
-      ...call,
-      [name]: value,
-    };
-
-    setCall(updatedCall);
-
-    if (updatedCall.password && updatedCall.confirmPassword) {
-      if (updatedCall.password !== updatedCall.confirmPassword) {
-        setPasswordError("Passwords do not match");
-      } else {
-        setPasswordError("");
-      }
-    } else {
-      setPasswordError("");
-    }
-  };
-
-  useEffect(() => {
-    const fetchCaller = async () => {
-      try {
-        const res = await axios.get(`${API_URL}/somecallers/${id}`, {
-          headers: authHeader(),
-        });
-        setCall({
-          fullname: res.data?.data?.fullname || "",
-          email: res.data?.data?.email || "",
-          password: "",
-          confirmPassword: "",
-          status: res.data?.data?.status || "",
-          notes: res.data?.data?.notes || "",
-        });
-      } catch (error) {
-        console.error("error", error);
-      }
-    };
-
-    if (id) {
-      fetchCaller();
-    }
-  }, [id]);
 
   return (
     <div className="content-wrapper">
@@ -142,9 +128,7 @@ function CallersEdit() {
       <div className="p-2 p-lg-3 mt-2">
         <div className="col-12">
           <div className="card shadow border-0">
-            <div className="card-header profile-header">
-              Edit Caller: {call.fullname}
-            </div>
+            <div className="card-header profile-header">Create New Agents</div>
 
             <div className="card-body">
               <form onSubmit={handleFormSubmit}>
@@ -162,6 +146,29 @@ function CallersEdit() {
                       onChange={onInputChange}
                       required
                     />
+                    {errors.fullname && (
+                      <small className="text-danger mt-1">
+                        {errors.fullname}
+                      </small>
+                    )}
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">
+                      Phone <span className="text-danger fw-bolder">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      className="form-control sector-wise mb-1"
+                      placeholder="Enter phone number (e.g. 9876543210)"
+                      name="phone"
+                      value={phone}
+                      onChange={onInputChange}
+                      required
+                    />
+                    {errors.phone && (
+                      <small className="text-danger mt-1">{errors.phone}</small>
+                    )}
                   </div>
 
                   <div className="col-md-6 mb-3">
@@ -171,75 +178,51 @@ function CallersEdit() {
                     <input
                       type="email"
                       className="form-control sector-wise mb-1"
-                      placeholder="Enter email"
+                      placeholder="Enter email (e.g. user@gmail.com)"
                       name="email"
                       value={email}
                       onChange={onInputChange}
                       required
                     />
-                  </div>
-
-                  <div className="position-relative col-md-6">
-                    <label className="form-label">
-                      New Password{" "}
-                      <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className={`form-control sector-wise pe-5 ${
-                        passwordError ? "border border-danger" : ""
-                      }`}
-                      placeholder="New Password"
-                      name="password"
-                      value={password || ""}
-                      autoComplete="password"
-                      onChange={handlePasswordChange}
-                    />
-
-                    <span
-                      className="eye-login1"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        className="me-1"
-                      />
-                    </span>
-                  </div>
-
-                  <div className="position-relative col-md-6">
-                    <label className="form-label">
-                      Confirm Password{" "}
-                      <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className={`form-control sector-wise pe-5 ${
-                        passwordError ? "border border-danger" : ""
-                      }`}
-                      placeholder="Confirm Password"
-                      name="confirmPassword"
-                      value={confirmPassword || ""}
-                      autoComplete="confirm password"
-                      onChange={handlePasswordChange}
-                    />
-                    <span
-                      className="eye-login1"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        className="me-1"
-                      />
-                    </span>
-                    {passwordError && (
-                      <small className="text-danger d-block mt-1">
-                        {passwordError}
-                      </small>
+                    {errors.email && (
+                      <small className="text-danger mt-1">{errors.email}</small>
                     )}
                   </div>
 
-                  <div className="col-md-6 mt-2">
+                  <div className="position-relative col-md-6">
+                    <label className="form-label">
+                      Password <span className="text-danger fw-bolder">*</span>
+                    </label>
+
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control sector-wise pe-5"
+                      placeholder="Enter Password"
+                      name="password"
+                      value={password}
+                      onChange={onInputChange}
+                      autoComplete="password"
+                      required
+                    />
+
+                    {errors.password && (
+                      <small className="text-danger mt-1">
+                        {errors.password}
+                      </small>
+                    )}
+
+                    <span
+                      className="eye-login1"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="me-2"
+                      />
+                    </span>
+                  </div>
+
+                  <div className="col-md-6">
                     <label className="form-label">
                       Status <span className="text-danger fw-bolder">*</span>
                     </label>
@@ -254,9 +237,15 @@ function CallersEdit() {
                       <option value="Active">Active</option>
                       <option value="Inactive">Inactive</option>
                     </select>
+
+                    {errors.status && (
+                      <small className="text-danger mt-1">
+                        {errors.status}
+                      </small>
+                    )}
                   </div>
 
-                  <div className="col-md-6 mt-2">
+                  <div className="col-md-6">
                     <label className="form-label">Notes (optional)</label>
                     <textarea
                       className="form-control py-2 sector-wise"
@@ -269,14 +258,14 @@ function CallersEdit() {
                   </div>
                 </div>
 
-                <div className="col-md-6 d-flex flex-column mt-2">
+                <div className="col-md-6 d-flex flex-column">
                   <div>
                     <button type="submit" className="btn btn-update mb-2">
-                      Update
+                      Submit
                     </button>
                   </div>
 
-                  <Link className="text-success" to="/admin/callers">
+                  <Link className="text-success" to="/admin/agents">
                     Back
                   </Link>
                 </div>
@@ -291,4 +280,4 @@ function CallersEdit() {
   );
 }
 
-export default CallersEdit;
+export default AgentsCreate;

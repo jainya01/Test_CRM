@@ -10,6 +10,7 @@ const AgentLogin = lazy(() => import("./components/AgentLogin"));
 
 import User from "./User";
 import Protected from "./components/Protected";
+import AgentsCreate from "./admin/AgentsCreate";
 
 // const User = lazy(() => import("./User"));
 // const Protected = lazy(() => import("./components/Protected"));
@@ -56,7 +57,10 @@ function App() {
               <Route path="callers/edit/:id" element={<CallersEdit />} />
 
               <Route path="packages" element={<Packages />} />
+
               <Route path="agents" element={<Agents />} />
+              <Route path="agents/create" element={<AgentsCreate />} />
+
               <Route path="customers" element={<Customers />} />
               <Route path="passports" element={<Passport />} />
               <Route path="bulk-upload" element={<BulkUpload />} />
