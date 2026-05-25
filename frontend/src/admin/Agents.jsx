@@ -153,9 +153,7 @@ function Agents() {
             </div>
           ))
         ) : (
-          <div className="">
-            <div className="text-center py-5 rounded-3">No Agents Found</div>
-          </div>
+          <div className="text-center py-5 rounded-3">No Agents Found</div>
         )}
 
         {agents.length > itemsPerPage && (

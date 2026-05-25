@@ -138,9 +138,7 @@ function AgentCustomers() {
             </div>
           ))
         ) : (
-          <div className="">
-            <div className="text-center py-5 rounded-3">No Customers Found</div>
-          </div>
+          <div className="text-center py-5 rounded-3">No Customers Found</div>
         )}
 
         {data.length > itemsPerPage && (
