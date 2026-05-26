@@ -4,6 +4,8 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 
 function Customers() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const data = [
     {
       id: 1,
@@ -127,12 +129,23 @@ function Customers() {
     },
   ];
 
+  const [search, setSearch] = useState("");
+
+  const filteredCustomers = data.filter((item) => {
+    const keyword = search.toLowerCase();
+    return (
+      item.name?.toLowerCase().includes(keyword) ||
+      item.service?.toLowerCase().includes(keyword) ||
+      item.phone?.toLowerCase().includes(keyword)
+    );
+  });
+
   const itemsPerPage = 24;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const paginatedData = filteredCustomers.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
   return (
     <div className="content-wrapper">
@@ -145,6 +158,8 @@ function Customers() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>

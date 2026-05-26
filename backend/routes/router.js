@@ -100,7 +100,7 @@ router.post(
     }
 
     const [rows] = await pool.execute(
-      "SELECT id, email, password, role FROM agent WHERE email = ?",
+      "SELECT id, email, password, role from agents WHERE email = ?",
       [email],
     );
 
@@ -330,7 +330,7 @@ router.get("/profile", async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const [rows] = await pool.execute(
-      "SELECT id, fullname, email, role, profile_image FROM agent WHERE id = ?",
+      "SELECT id, fullname, email, role, profile_image from agents WHERE id = ?",
       [decoded.id],
     );
 
@@ -395,7 +395,9 @@ router.post(
       });
 
       const filePath = path.join(uploadsDir, req.file.filename);
+
       const ext = path.extname(req.file.originalname).toLowerCase();
+
       let values = [];
 
       if (ext === ".xlsx") {
@@ -405,12 +407,17 @@ router.post(
           { includeEmpty: false },
           (row, rowNumber) => {
             if (rowNumber === 1) return;
+
             const name = row.getCell(2).value;
-            const phone = row.getCell(3).value;
+            const phone = String(row.getCell(3).value || "")
+              .replace(/\D/g, "")
+              .trim();
+
             if (!name || !phone) return;
+
             values.push([
               String(name).trim(),
-              String(phone).replace(/\D/g, "").trim(),
+              phone,
               row.getCell(4).value ? String(row.getCell(4).value).trim() : null,
               row.getCell(5).value ? String(row.getCell(5).value).trim() : null,
             ]);
@@ -419,7 +426,6 @@ router.post(
       } else if (ext === ".csv") {
         const rows = await new Promise((resolve, reject) => {
           const data = [];
-
           fs.createReadStream(filePath)
             .pipe(csvParser())
             .on("data", (row) => data.push(row))
@@ -429,15 +435,16 @@ router.post(
 
         rows.forEach((row) => {
           const name = row.Name || row.name;
-          const phone = row.Phone || row.phone;
+          const phone = String(row.Phone || row.phone || "")
+            .replace(/\D/g, "")
+            .trim();
+
           const city = row.City || row.city;
           const service = row.Service || row.service;
-
           if (!name || !phone) return;
-
           values.push([
             String(name).trim(),
-            String(phone).replace(/\D/g, "").trim(),
+            phone,
             city ? String(city).trim() : null,
             service ? String(service).trim() : null,
           ]);
@@ -454,19 +461,35 @@ router.post(
         });
       }
 
-      await pool.query(
-        `INSERT INTO customers (name, phone, city, service) VALUES ?`,
-        [values],
+      const uniqueMap = new Map();
+      values.forEach((row) => {
+        const phone = row[1];
+        if (!uniqueMap.has(phone)) {
+          uniqueMap.set(phone, row);
+        }
+      });
+
+      const uniqueValues = [...uniqueMap.values()];
+      const [result] = await pool.query(
+        `
+        INSERT IGNORE INTO customers
+        (name, phone, city, service)
+        VALUES ?
+        `,
+        [uniqueValues],
       );
 
+      const insertedCount = result.affectedRows;
+      const skippedCount = uniqueValues.length - insertedCount;
       return res.json({
         success: true,
-        message: "Bulk upload successfully",
-        rowsInserted: values.length,
+        message: "Bulk upload completed",
+        inserted: insertedCount,
+        skippedDuplicates: skippedCount,
+        totalProcessed: uniqueValues.length,
         file: req.file.filename,
       });
     } catch (err) {
-      console.error("UPLOAD ERROR:", err);
       return res.status(500).json({
         error: "Upload failed",
         details: err.message,
@@ -474,6 +497,107 @@ router.post(
     }
   },
 );
+
+// router.post(
+//   "/upload-stock",
+//   authenticate,
+//   upload.single("file"),
+//   async (req, res) => {
+//     try {
+//       if (!req.file) {
+//         return res.status(400).json({
+//           error: "No file uploaded",
+//         });
+//       }
+
+//       const uploadsDir = path.resolve("uploads");
+//       fs.readdirSync(uploadsDir).forEach((file) => {
+//         const fileExt = path.extname(file).toLowerCase();
+//         if (file !== req.file.filename && [".xlsx", ".csv"].includes(fileExt)) {
+//           fs.unlinkSync(path.join(uploadsDir, file));
+//         }
+//       });
+
+//       const filePath = path.join(uploadsDir, req.file.filename);
+//       const ext = path.extname(req.file.originalname).toLowerCase();
+//       let values = [];
+
+//       if (ext === ".xlsx") {
+//         const workbook = new ExcelJS.Workbook();
+//         await workbook.xlsx.readFile(filePath);
+//         workbook.worksheets[0].eachRow(
+//           { includeEmpty: false },
+//           (row, rowNumber) => {
+//             if (rowNumber === 1) return;
+//             const name = row.getCell(2).value;
+//             const phone = row.getCell(3).value;
+//             if (!name || !phone) return;
+//             values.push([
+//               String(name).trim(),
+//               String(phone).replace(/\D/g, "").trim(),
+//               row.getCell(4).value ? String(row.getCell(4).value).trim() : null,
+//               row.getCell(5).value ? String(row.getCell(5).value).trim() : null,
+//             ]);
+//           },
+//         );
+//       } else if (ext === ".csv") {
+//         const rows = await new Promise((resolve, reject) => {
+//           const data = [];
+
+//           fs.createReadStream(filePath)
+//             .pipe(csvParser())
+//             .on("data", (row) => data.push(row))
+//             .on("end", () => resolve(data))
+//             .on("error", reject);
+//         });
+
+//         rows.forEach((row) => {
+//           const name = row.Name || row.name;
+//           const phone = row.Phone || row.phone;
+//           const city = row.City || row.city;
+//           const service = row.Service || row.service;
+
+//           if (!name || !phone) return;
+
+//           values.push([
+//             String(name).trim(),
+//             String(phone).replace(/\D/g, "").trim(),
+//             city ? String(city).trim() : null,
+//             service ? String(service).trim() : null,
+//           ]);
+//         });
+//       } else {
+//         return res.status(400).json({
+//           error: "Only .xlsx and .csv files are allowed",
+//         });
+//       }
+
+//       if (!values.length) {
+//         return res.status(400).json({
+//           error: "No valid rows found",
+//         });
+//       }
+
+//       await pool.query(
+//         `INSERT INTO customers (name, phone, city, service) VALUES ?`,
+//         [values],
+//       );
+
+//       return res.json({
+//         success: true,
+//         message: "Bulk upload successfully",
+//         rowsInserted: values.length,
+//         file: req.file.filename,
+//       });
+//     } catch (err) {
+//       console.error("UPLOAD ERROR:", err);
+//       return res.status(500).json({
+//         error: "Upload failed",
+//         details: err.message,
+//       });
+//     }
+//   },
+// );
 
 router.get(
   "/allcustomersdata",
@@ -654,7 +778,7 @@ router.put(
       const { id } = req.params;
       const { fullname, email, password } = req.body;
       const [agentData] = await pool.execute(
-        "SELECT * FROM agent WHERE id = ?",
+        "SELECT * from agents WHERE id = ?",
         [id],
       );
 
@@ -677,7 +801,7 @@ router.put(
       }
 
       await pool.execute(
-        `UPDATE agent 
+        `UPDATE agents 
          SET fullname = ?, 
              email = ?, 
              password = ?, 
@@ -717,7 +841,7 @@ router.post(
     if (fullname.length < 3) {
       return res.status(400).json({
         success: false,
-        message: "fullname at least 3 characters",
+        message: "Fullname at least 3 characters",
       });
     }
 
@@ -728,28 +852,50 @@ router.post(
       });
     }
 
+    const [existingEmail] = await pool.execute(
+      "SELECT id FROM agents WHERE email = ?",
+      [email],
+    );
+
+    if (existingEmail.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
+
+    const [existingPhone] = await pool.execute(
+      "SELECT id FROM agents WHERE phone = ?",
+      [phone],
+    );
+
+    if (existingPhone.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: "Phone number already exists",
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const SQL =
-      "INSERT INTO agent(fullname, phone, email, password, status, notes) VALUES(?, ?, ?, ?, ?, ?)";
+    const SQL = `
+      INSERT INTO agents
+      (fullname, phone, email, password, status, notes)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
     const [result] = await pool.execute(SQL, [
       fullname,
       phone,
       email,
       hashedPassword,
-      status,
+      status || "Active",
       notes,
     ]);
 
-    if (result.affectedRows <= 0) {
-      const error = new Error("data post failed");
-      error.statusCode = 404;
-      throw error;
-    }
-
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
-      message: "data sent successfully",
+      message: "Agent created successfully",
       result,
     });
   }),
@@ -760,7 +906,7 @@ router.get(
   authenticate,
   asyncHandler(async (req, res) => {
     const SQL =
-      "SELECT id, fullname, phone, email, status, profile_image from agent ORDER BY id DESC";
+      "SELECT id, fullname, phone, email, status, profile_image from agents ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
     if (result.length <= 0) {
@@ -776,6 +922,175 @@ router.get(
       data: result,
     });
   }),
+);
+
+// agents bulk
+
+router.post(
+  "/agents-uploads",
+  authenticate,
+  upload.single("file"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          error: "No file uploaded",
+        });
+      }
+
+      const uploadsDir = path.resolve("uploads");
+
+      fs.readdirSync(uploadsDir).forEach((file) => {
+        const fileExt = path.extname(file).toLowerCase();
+
+        if (file !== req.file.filename && [".xlsx", ".csv"].includes(fileExt)) {
+          fs.unlinkSync(path.join(uploadsDir, file));
+        }
+      });
+
+      const filePath = path.join(uploadsDir, req.file.filename);
+      const ext = path.extname(req.file.originalname).toLowerCase();
+      let rows = [];
+
+      if (ext === ".xlsx") {
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.readFile(filePath);
+        const worksheet = workbook.worksheets[0];
+        worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+          if (rowNumber === 1) return;
+
+          const fullname = row.getCell(1).value
+            ? String(row.getCell(1).value).trim()
+            : "";
+
+          const phone = row.getCell(2).value
+            ? String(row.getCell(2).value).replace(/\D/g, "").trim()
+            : "";
+
+          const email = row.getCell(3).value
+            ? String(row.getCell(3).value).trim()
+            : "";
+
+          const password = row.getCell(4).value
+            ? String(row.getCell(4).value).trim()
+            : "";
+
+          const status = row.getCell(5).value
+            ? String(row.getCell(5).value).trim()
+            : "Active";
+
+          if (!fullname || !phone || !email || !password) return;
+
+          rows.push({
+            fullname,
+            phone,
+            email,
+            password,
+            status,
+          });
+        });
+      } else if (ext === ".csv") {
+        const csvRows = await new Promise((resolve, reject) => {
+          const data = [];
+
+          fs.createReadStream(filePath)
+            .pipe(csvParser())
+            .on("data", (row) => data.push(row))
+            .on("end", () => resolve(data))
+            .on("error", reject);
+        });
+
+        csvRows.forEach((row) => {
+          const fullname = row.fullname ? String(row.fullname).trim() : "";
+
+          const phone = row.phone
+            ? String(row.phone).replace(/\D/g, "").trim()
+            : "";
+
+          const email = row.email ? String(row.email).trim() : "";
+          const password = row.password ? String(row.password).trim() : "";
+          const status = row.status ? String(row.status).trim() : "Active";
+          if (!fullname || !phone || !email || !password) return;
+          rows.push({
+            fullname,
+            phone,
+            email,
+            password,
+            status,
+          });
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          error: "Only .xlsx and .csv files are allowed",
+        });
+      }
+
+      if (!rows.length) {
+        return res.status(400).json({
+          success: false,
+          error: "No valid rows found",
+        });
+      }
+
+      const uniqueMap = new Map();
+      rows.forEach((row) => {
+        if (!uniqueMap.has(row.phone)) {
+          uniqueMap.set(row.phone, row);
+        }
+      });
+
+      const uniqueRows = [...uniqueMap.values()];
+      const insertValues = [];
+
+      for (const item of uniqueRows) {
+        const hashedPassword = await bcrypt.hash(item.password, 10);
+        insertValues.push([
+          item.fullname,
+          item.phone,
+          item.email,
+          hashedPassword,
+          item.status,
+        ]);
+      }
+
+      const [result] = await pool.query(
+        `
+        INSERT IGNORE INTO agents
+        (
+          fullname,
+          phone,
+          email,
+          password,
+          status
+        )
+        VALUES ?
+        `,
+        [insertValues],
+      );
+
+      const insertedCount = result.affectedRows;
+      const skippedCount = uniqueRows.length - insertedCount;
+
+      return res.status(200).json({
+        success: true,
+        message: "Agents bulk upload completed",
+        inserted: insertedCount,
+        skippedDuplicates: skippedCount,
+        totalProcessed: uniqueRows.length,
+        file: req.file.filename,
+      });
+    } catch (err) {
+      console.log(err);
+
+      return res.status(500).json({
+        success: false,
+        error: "Upload failed",
+        details: err.message,
+      });
+    }
+  },
 );
 
 export default router;

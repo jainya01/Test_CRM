@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { authHeader } from "../utils/authHeader";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { ToastContainer, toast } from "react-toastify";
+import { authHeader } from "../utils/authHeader";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function AgentEdit() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -43,10 +43,7 @@ function AgentEdit() {
       }
 
       await axios.put(`${API_URL}/editprofile/${id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
+        headers: authHeader(),
       });
 
       toast.success("Profile updated successfully");

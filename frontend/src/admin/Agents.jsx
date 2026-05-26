@@ -10,6 +10,7 @@ function Agents() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [agents, setAgents] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const alldata = async () => {
@@ -26,12 +27,26 @@ function Agents() {
     alldata();
   }, []);
 
+  const filteredAgents = agents.filter((item) => {
+    const keyword = search.toLowerCase();
+    return (
+      item.fullname?.toLowerCase().includes(keyword) ||
+      item.email?.toLowerCase().includes(keyword)
+    );
+  });
+
   const itemsPerPage = 24;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = agents.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(agents.length / itemsPerPage);
+  const paginatedData = filteredAgents.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredAgents.length / itemsPerPage);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredAgents]);
 
   const uploadsBase = API_URL
     ? API_URL.replace(/\/api\/?$/, "") + "/uploads"
@@ -48,6 +63,8 @@ function Agents() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -156,7 +173,7 @@ function Agents() {
           <div className="text-center py-5 rounded-3">No Agents Found</div>
         )}
 
-        {agents.length > itemsPerPage && (
+        {filteredAgents.length > itemsPerPage && (
           <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
             <button
               className={`btn rounded-pill px-3 py-1 shadow-sm ${

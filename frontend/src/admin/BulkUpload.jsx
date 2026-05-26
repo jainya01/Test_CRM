@@ -17,16 +17,23 @@ function BulkUpload() {
 
   const [bulk, setBulk] = useState([]);
   const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
   const [customers, setCustomers] = useState(0);
+  const [agents, setAgents] = useState(0);
 
   const fetchCustomers = async () => {
     try {
-      const [customerRes] = await Promise.allSettled([
-        axios.get(`${API_URL}/allcustomersdata`),
+      const [customerRes, agentRes] = await Promise.allSettled([
+        axios.get(`${API_URL}/allcustomersdata`, { headers: authHeader() }),
+        axios.get(`${API_URL}/allagents`, { headers: authHeader() }),
       ]);
 
       if (customerRes.status === "fulfilled") {
         setCustomers(customerRes.value.data.result.length);
+      }
+
+      if (agentRes.status === "fulfilled") {
+        setAgents(agentRes.value.data.data.length);
       }
     } catch (error) {
       console.error("error", error);
@@ -62,6 +69,39 @@ function BulkUpload() {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+  };
+
+  const handleBulkAgent = async (e) => {
+    e.preventDefault();
+
+    if (!files) {
+      toast.error("Please select a .xlsx or .csv file first");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", files);
+
+    try {
+      await axios.post(`${API_URL}/agents-uploads`, formData, {
+        headers: {
+          ...authHeader(),
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success("Bulk upload successfully");
+
+      setFiles(null);
+
+      fetchCustomers();
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Bulk upload failed");
+    }
+  };
+
+  const handleChange = (e) => {
+    setFiles(e.target.files[0]);
   };
 
   return (
@@ -103,7 +143,7 @@ function BulkUpload() {
         <div>
           <h5 className="fw-bold overview-dashboard">Bulk Upload</h5>
           <p className="text-muted mb-md-0 overview-lead fw-bold">
-            Import Contacts from Excel
+            Import Contacts from Excel. Duplicates auto-skipped
           </p>
         </div>
 
@@ -183,10 +223,9 @@ function BulkUpload() {
         </div>
 
         <div className="col-12 col-lg-6 col-md-6 d-flex flex-column">
-          <form onSubmit={handleBulkSubmit}>
+          <form onSubmit={handleBulkAgent}>
             <div className="card rounded-3 h-100 px-3 py-3 border-0">
               <span className="mb-2 uploaded-customer">Agents Upload</span>
-
               <div className="dotted-class">
                 <div className="dotted-class p-5 text-center bg-light">
                   <div className="mb-3">
@@ -203,13 +242,13 @@ function BulkUpload() {
                     .xlsx, .csv up to 10MB
                   </p>
 
-                  {file && (
+                  {files && (
                     <div className="text-success small fw-semibold mb-2">
-                      Selected File: {file.name}
+                      Selected File: {files.name}
                       <FontAwesomeIcon
                         icon={faX}
                         className="text-danger fw-bold pointer-cursor ms-2"
-                        onClick={() => setFile(null)}
+                        onClick={() => setFiles(null)}
                       />
                     </div>
                   )}
@@ -221,7 +260,7 @@ function BulkUpload() {
                         type="file"
                         hidden
                         accept=".xlsx,.csv"
-                        onChange={handleFileChange}
+                        onChange={handleChange}
                       />
                     </label>
 
@@ -233,7 +272,7 @@ function BulkUpload() {
                     </button>
 
                     <div className="mt-3 text-success fw-bold">
-                      Total Agent Records: {customers}
+                      Total Agent Records: {agents}
                     </div>
                   </div>
                 </div>

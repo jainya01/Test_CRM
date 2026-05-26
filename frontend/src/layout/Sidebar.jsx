@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { authHeader } from "../utils/authHeader";
-
+import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXmark,
@@ -95,7 +95,7 @@ const STAFF_LINKS = [
   },
 ];
 
-export default function Sidebar() {
+function Sidebar() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
@@ -445,3 +445,5 @@ export default function Sidebar() {
     </>
   );
 }
+
+export default Sidebar;

@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import "../App.css";
 
 function Packages() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
 
@@ -141,7 +143,10 @@ function Packages() {
           </div>
 
           <div>
-            <Link className="text-decoration-none btn new-leader text-nowrap">
+            <Link
+              className="text-decoration-none btn new-leader text-nowrap"
+              to="/admin/packages/create"
+            >
               + New Package
             </Link>
           </div>
