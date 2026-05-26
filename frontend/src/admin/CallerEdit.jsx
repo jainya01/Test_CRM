@@ -264,7 +264,7 @@ function CallersEdit() {
                       name="notes"
                       value={notes}
                       onChange={onInputChange}
-                      style={{ height: "90px" }}
+                      style={{ height: "60px" }}
                     ></textarea>
                   </div>
                 </div>
