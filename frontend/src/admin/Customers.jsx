@@ -168,10 +168,10 @@ function Customers() {
           <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
             <button className="btn border-0 position-relative">
               <FontAwesomeIcon icon={faBell} />
-              <span className="notification-corner bg-danger">0</span>
+              <div className="notification-corner bg-danger">0</div>
             </button>
 
-            <span className="text-nowrap ms-2 date-days">
+            <div className="text-nowrap ms-2 date-days">
               {new Date()
                 .toLocaleDateString("en-GB", {
                   weekday: "short",
@@ -179,7 +179,7 @@ function Customers() {
                   month: "short",
                 })
                 .replace(",", "")}
-            </span>
+            </div>
           </div>
         </div>
       </div>
@@ -216,19 +216,19 @@ function Customers() {
                 </div>
 
                 <div className="d-flex justify-content-between">
-                  <span className="badge rounded-pill text-dark border service-badge d-flex align-items-center">
+                  <div className="badge rounded-pill text-dark border service-badge d-flex align-items-center">
                     {user?.service || "N/A"}
-                  </span>
+                  </div>
 
-                  <span className="last-service text-end text-muted">
+                  <div className="last-service text-end text-muted">
                     Last: Umrah 2023
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center py-5 rounded-3">No Customers Found</div>
+          <div className="text-center py-2 rounded-3">No Customers Found</div>
         )}
 
         {data.length > itemsPerPage && (
@@ -245,9 +245,9 @@ function Customers() {
               ← Prev
             </button>
 
-            <span className="fw-semibold px-2">
+            <div className="fw-semibold px-2">
               Page {currentPage} of {totalPages}
-            </span>
+            </div>
 
             <button
               className={`btn rounded-pill px-3 py-1 shadow-sm ${

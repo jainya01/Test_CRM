@@ -189,6 +189,7 @@ function Settings() {
 
   const handleCancelled1 = (e) => {
     e.preventDefault();
+    setSelectedAdmin("");
     setUpdateForm({
       email: "",
       password: "",
@@ -406,8 +407,8 @@ function Settings() {
         </div>
       </div>
 
-      <div className="row ms-1 gy-2 mt-2">
-        <div className="col-12 col-lg-6">
+      <div className="row mt-1 gx-2 ms-2 me-2 gy-2">
+        <div className="col-12 col-lg-6 mt-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h6 className="mb-0 fw-semibold">Admin Account</h6>
           </div>
@@ -417,18 +418,16 @@ function Settings() {
               <div key={index} className="card mb-2 border-0 shadow-sm">
                 <div className="card-body py-3 px-3 d-flex justify-content-between align-items-center">
                   <div className="text-truncate me-3">
-                    <span className="fw-medium accounts-email">
-                      {data.email}
-                    </span>
+                    <div className="fw-medium accounts-email">{data.email}</div>
                   </div>
 
-                  <span
+                  <div
                     className="delete-trash"
                     title="Admin Delete"
                     onClick={() => deleteData(data.id)}
                   >
                     <FontAwesomeIcon icon={faTrash} className="icons-color1" />
-                  </span>
+                  </div>
                 </div>
               </div>
             ))

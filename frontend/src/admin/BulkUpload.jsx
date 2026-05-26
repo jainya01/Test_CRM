@@ -139,15 +139,15 @@ function BulkUpload() {
         </div>
       </div>
 
-      <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
-        <div>
+      <div className="row mt-2 gx-2 ms-2 me-2 gy-12">
+        <div className="mb-3">
           <h5 className="fw-bold overview-dashboard">Bulk Upload</h5>
           <p className="text-muted mb-md-0 overview-lead fw-bold">
             Import Contacts from Excel. Duplicates auto-skipped
           </p>
         </div>
 
-        <div className="col-12 col-lg-6 col-md-6 d-flex flex-column h-100">
+        <div className="col-12 col-lg-6 d-flex flex-column h-100">
           <form onSubmit={handleBulkSubmit}>
             <div className="card rounded-3 h-100 px-3 py-3 border-0">
               <span className="mb-2 uploaded-customer">Customers Upload</span>
@@ -222,7 +222,7 @@ function BulkUpload() {
           </div>
         </div>
 
-        <div className="col-12 col-lg-6 col-md-6 d-flex flex-column">
+        <div className="col-12 col-lg-6 d-flex flex-column">
           <form onSubmit={handleBulkAgent}>
             <div className="card rounded-3 h-100 px-3 py-3 border-0">
               <span className="mb-2 uploaded-customer">Agents Upload</span>
@@ -288,8 +288,8 @@ function BulkUpload() {
             <div className="ms-0">
               <div className="fw-semibold mb-1">Required columns</div>
               <small className="text-muted fw-medium">
-                name, phone, email, password source. Phone numbers are checked
-                for duplicates across your entire database.
+                name, phone, email, password source. Phone numbers and email are
+                checked for duplicates across your entire database.
               </small>
             </div>
           </div>
