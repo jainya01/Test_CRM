@@ -141,28 +141,7 @@ function CallerExecutive() {
                         {item.conversion || "10%"}
                       </td>
 
-                      <td>
-                        {item.badge || "--"}
-                        {/* <span
-                          className={`badge ${
-                            item.id === 100
-                              ? "bg-success"
-                              : item.id >= 80
-                                ? "bg-primary"
-                                : item.id >= 50
-                                  ? "bg-warning text-dark"
-                                  : "bg-danger"
-                          }`}
-                        >
-                          {item.id === 100
-                            ? "Excellent"
-                            : item.id >= 80
-                              ? "Good"
-                              : item.id >= 50
-                                ? "Avg"
-                                : "Need Improvement"}
-                        </span> */}
-                      </td>
+                      <td>{item.badge || "--"}</td>
 
                       <td
                         className={

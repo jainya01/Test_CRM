@@ -129,7 +129,7 @@ function Customers() {
     },
   ];
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(" ");
 
   const filteredCustomers = data.filter((item) => {
     const keyword = search.toLowerCase();
@@ -158,8 +158,8 @@ function Customers() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  // value={search}
+                  // onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>

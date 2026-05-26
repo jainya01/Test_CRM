@@ -400,44 +400,6 @@ function Homepage() {
                           )}
                         </tbody>
                       </table>
-
-                      {/* {users.length > itemsPerPage && (
-                        <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
-                          <button
-                            className={`btn rounded-pill px-3 py-1 shadow-sm ${
-                              currentPage <= 1
-                                ? "btn-light border text-muted"
-                                : "btn-success border-0"
-                            }`}
-                            disabled={currentPage <= 1}
-                            onClick={() =>
-                              setCurrentPage((prev) => Math.max(prev - 1, 1))
-                            }
-                          >
-                            ← Prev
-                          </button>
-
-                          <span className="fw-semibold px-2">
-                            Page {currentPage} of {totalPages}
-                          </span>
-
-                          <button
-                            className={`btn rounded-pill px-3 py-1 shadow-sm ${
-                              currentPage >= totalPages
-                                ? "btn-light border text-muted"
-                                : "btn-success border-0"
-                            }`}
-                            disabled={currentPage >= totalPages}
-                            onClick={() =>
-                              setCurrentPage((prev) =>
-                                Math.min(prev + 1, totalPages),
-                              )
-                            }
-                          >
-                            Next →
-                          </button>
-                        </div>
-                      )} */}
                     </div>
                   </div>
                 </div>

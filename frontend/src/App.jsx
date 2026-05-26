@@ -10,18 +10,18 @@ const AgentLogin = lazy(() => import("./components/AgentLogin"));
 
 import User from "./User";
 import Protected from "./components/Protected";
-import AgentsCreate from "./admin/AgentsCreate";
-import PackagesCreate from "./admin/PackagesCreate";
-
-// const User = lazy(() => import("./User"));
-// const Protected = lazy(() => import("./components/Protected"));
 
 const Homepage = lazy(() => import("./admin/Homepage"));
+const Customers = lazy(() => import("./admin/Customers"));
 const Leads = lazy(() => import("./admin/Leads"));
 const CallerExecutive = lazy(() => import("./admin/CallerExecutive"));
+
 const Packages = lazy(() => import("./admin/Packages"));
-const Customers = lazy(() => import("./admin/Customers"));
+const PackagesCreate = lazy(() => import("./admin/PackagesCreate"));
+
 const Agents = lazy(() => import("./admin/Agents"));
+const AgentsCreate = lazy(() => import("./admin/AgentsCreate"));
+
 const Passport = lazy(() => import("./admin/Passport"));
 const BulkUpload = lazy(() => import("./admin/BulkUpload"));
 const Settings = lazy(() => import("./admin/Settings"));
