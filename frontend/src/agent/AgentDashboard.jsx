@@ -15,6 +15,39 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function AgentDashboard() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const [agentName, setAgentName] = useState("");
+
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const agentId = localStorage.getItem("id");
+
+        const [agentRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/allagents`, {
+            headers: authHeader(),
+          }),
+        ]);
+
+        if (agentRes.status === "fulfilled") {
+          const agentData = agentRes.value.data.data;
+          const currentAgent = agentData.find(
+            (item) => item.id === Number(agentId),
+          );
+
+          if (currentAgent) {
+            setAgentName(currentAgent.fullname);
+          }
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+
+    allData();
+  }, []);
+
   return (
     <>
       <div className="content-wrapper">
@@ -55,7 +88,7 @@ function AgentDashboard() {
           <div className="row g-2">
             <div className="d-flex flex-row justify-content-between flex-wrap">
               <div className="d-flex flex-column">
-                <h3 className="mb-1 main-size">Welcome back, Hassan Travels</h3>
+                <h3 className="mb-1 main-size">Welcome back, {agentName}</h3>
                 <p className="text-muted happened-team">
                   Your B2B partner dashboard
                 </p>

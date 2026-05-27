@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { authHeader } from "../utils/authHeader";
-import "../App.css";
 import { Link } from "react-router-dom";
+import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
@@ -52,11 +52,20 @@ function CallerExecutive() {
       await axios.delete(`${API_URL}/callerdelete/${id}`, {
         headers: authHeader(),
       });
+
       setCallers((prev) => prev.filter((item) => item.id !== id));
       toast.success("Caller deleted successfully");
     } catch (error) {
       toast.error("Failed to delete caller");
     }
+  };
+
+  const handleShare = () => {
+    navigator.share({
+      title: "My App",
+      text: "Check this out!",
+      url: window.location.href,
+    });
   };
 
   return (
@@ -131,6 +140,7 @@ function CallerExecutive() {
                   paginatedData.map((item, index) => (
                     <tr key={item.id}>
                       <td>{index + 1}</td>
+
                       <td>
                         <span className="short-name">
                           {item?.fullname || "N/A"}
@@ -204,6 +214,12 @@ function CallerExecutive() {
                 )}
               </tbody>
             </table>
+
+            <div className="text-center">
+              <button className="table-shared" onClick={handleShare}>
+                Share
+              </button>
+            </div>
 
             {callers.length > itemsPerPage && (
               <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">

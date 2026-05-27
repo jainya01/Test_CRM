@@ -31,7 +31,8 @@ function Agents() {
     const keyword = search.toLowerCase();
     return (
       item.fullname?.toLowerCase().includes(keyword) ||
-      item.email?.toLowerCase().includes(keyword)
+      item.email?.toLowerCase().includes(keyword) ||
+      item.status?.toLowerCase() === keyword
     );
   });
 
@@ -122,9 +123,9 @@ function Agents() {
                         className="img-fluid rounded-circle"
                       />
                     ) : (
-                      <span>
+                      <div>
                         {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
-                      </span>
+                      </div>
                     )}
                   </div>
 
@@ -139,7 +140,7 @@ function Agents() {
                   </div>
 
                   <div className="d-flex mt-2">
-                    <span
+                    <div
                       className={
                         user?.status === "Active"
                           ? "active-status status-per"
@@ -149,7 +150,7 @@ function Agents() {
                       }
                     >
                       {user?.status || "N/A"}
-                    </span>
+                    </div>
                   </div>
                 </div>
 
@@ -157,13 +158,13 @@ function Agents() {
 
                 <div className="d-flex justify-content-between">
                   <div className="d-flex flex-column">
-                    <span className="agents-data">Customers</span>
-                    <span>{user?.customers || 0}</span>
+                    <div className="agents-data">Customers</div>
+                    <div>{user?.customers || 0}</div>
                   </div>
 
                   <div className="d-flex flex-column">
-                    <span className="agents-data">Bookings</span>
-                    <span>{user?.bookings || 0}</span>
+                    <div className="agents-data">Bookings</div>
+                    <div>{user?.bookings || 0}</div>
                   </div>
                 </div>
               </div>
@@ -187,9 +188,9 @@ function Agents() {
               ← Prev
             </button>
 
-            <span className="fw-semibold px-2">
+            <div className="fw-semibold px-2">
               Page {currentPage} of {totalPages}
-            </span>
+            </div>
 
             <button
               className={`btn rounded-pill px-3 py-1 shadow-sm ${

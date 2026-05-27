@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
+import { authHeader } from "../utils/authHeader";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,7 +12,6 @@ import {
   faCube,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
 
 function Homepage() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -72,23 +73,47 @@ function Homepage() {
     },
   ];
 
-  const [admin, setAdmin] = useState([]);
+  const [adminName, setAdminName] = useState("");
 
   useEffect(() => {
     const allData = async () => {
       try {
+        const adminId = localStorage.getItem("id");
+
         const [adminRes] = await Promise.allSettled([
-          axios.get(`${API_URL}/alladmindata`),
+          axios.get(`${API_URL}/alladmindata`, {
+            headers: authHeader(),
+          }),
         ]);
 
         if (adminRes.status === "fulfilled") {
-          setAdmin(adminRes.value.data.result);
+          const adminData = adminRes.value.data.result;
+          const currentAdmin = adminData.find(
+            (item) => item.id === Number(adminId),
+          );
+
+          if (currentAdmin) {
+            setAdminName(currentAdmin.fullname);
+          }
         }
       } catch (error) {
         console.error("error", error);
       }
     };
+
+    allData();
   }, []);
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      return "Good morning";
+    } else if (hour < 17) {
+      return "Good afternoon";
+    } else {
+      return "Good evening";
+    }
+  };
 
   return (
     <>
@@ -130,7 +155,13 @@ function Homepage() {
           <div className="row g-2">
             <div className="d-flex flex-row justify-content-between flex-wrap">
               <div className="d-flex flex-column">
-                <h3 className="mb-1 main-size">Good morning, Amir 👋</h3>
+                <h3 className="mb-1 main-size">
+                  {getGreeting()}{" "}
+                  {adminName
+                    ? adminName[0].toUpperCase() + adminName.slice(1)
+                    : ""}
+                </h3>
+
                 <p className="text-muted happened-team">
                   Here's what's happening across your team today.
                 </p>
@@ -151,7 +182,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Total Leads</p>
-                    <h4 className="card-value mb-0">111</h4>
+                    <h4 className="card-value mb-0">11</h4>
                     <span className="text-muted week-muted">+12 this week</span>
                   </div>
 
@@ -167,7 +198,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Converted</p>
-                    <h4 className="card-value mb-0">111</h4>
+                    <h4 className="card-value mb-0">12</h4>
                     <span className="text-muted week-muted">18% rate</span>
                   </div>
 
@@ -183,7 +214,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Follow-ups Due</p>
-                    <h4 className="card-value mb-0">111</h4>
+                    <h4 className="card-value mb-0">13</h4>
                     <span className="text-muted week-muted">Action needed</span>
                   </div>
 
@@ -199,7 +230,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Active Bookings</p>
-                    <h4 className="card-value">111</h4>
+                    <h4 className="card-value">14</h4>
                   </div>
 
                   <div className="icon-wrapper icon-booking">
