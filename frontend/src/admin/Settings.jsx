@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { authHeader } from "../utils/authHeader";
+import "../App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faTrash,
@@ -9,7 +10,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import "../App.css";
 
 function Settings() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -66,7 +66,6 @@ function Settings() {
       };
 
       setAdminEmail((prev) => [newAdmin, ...prev]);
-
       setFormData({
         fullname: "",
         email: "",

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import "../App.css";
-import { faBell, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 function Leads() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const users = [
     {
       id: 1,
@@ -193,6 +195,9 @@ function Leads() {
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
                 <tr>
+                  <th>
+                    <input type="checkbox" className="form-check-input" />
+                  </th>
                   <th>Lead</th>
                   <th>Service</th>
                   <th>Source</th>
@@ -206,9 +211,12 @@ function Leads() {
                 {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
                   paginatedData.map((data) => (
                     <tr key={data.id}>
+                      <td>
+                        <input type="checkbox" className="form-check-input" />
+                      </td>
+
                       <td className="d-flex flex-column">
                         <span className="name-span">{data.name || "--"}</span>
-
                         <span className="phone-span">{data.phone || "--"}</span>
                       </td>
 
@@ -249,7 +257,7 @@ function Leads() {
                             }[data.Temp] || ""
                           }
                         >
-                          {data.Temp === "Hot" && "🔥 "}
+                          {data.Temp === "Hot" && "🔥"}
                           {data.Temp || "--"}
                         </span>
                       </td>

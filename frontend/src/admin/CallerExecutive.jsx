@@ -54,6 +54,7 @@ function CallerExecutive() {
       });
 
       setCallers((prev) => prev.filter((item) => item.id !== id));
+
       toast.success("Caller deleted successfully");
     } catch (error) {
       toast.error("Failed to delete caller");
@@ -127,6 +128,10 @@ function CallerExecutive() {
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
                 <tr>
+                  <th>
+                    <input type="checkbox" className="form-check-input" />
+                  </th>
+
                   <th className="py-2">Rank</th>
                   <th>Caller</th>
                   <th>Conversion</th>
@@ -139,6 +144,10 @@ function CallerExecutive() {
                 {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
                   paginatedData.map((item, index) => (
                     <tr key={item.id}>
+                      <td>
+                        <input type="checkbox" className="form-check-input" />
+                      </td>
+
                       <td>{index + 1}</td>
 
                       <td>

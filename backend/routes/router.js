@@ -842,7 +842,6 @@ router.post(
 
       fs.readdirSync(uploadsDir).forEach((file) => {
         const fileExt = path.extname(file).toLowerCase();
-
         if (file !== req.file.filename && [".xlsx", ".csv"].includes(fileExt)) {
           fs.unlinkSync(path.join(uploadsDir, file));
         }
