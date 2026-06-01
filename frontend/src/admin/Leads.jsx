@@ -7,6 +7,11 @@ import { Link } from "react-router-dom";
 function Leads() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
+  const [search1, setSearch1] = useState("");
+  const [service, setService] = useState("");
+  const [status, setStatus] = useState("");
+
   const users = [
     {
       id: 1,
@@ -100,12 +105,24 @@ function Leads() {
     },
   ];
 
+  const keyword = (search || search1 || "").toLowerCase().trim();
+
+  const filteredLeads = users.filter((item) => {
+    return (
+      (service === "" || item.Service === service) &&
+      (status === "" || item.Status === status) &&
+      (item.name?.toLowerCase().includes(keyword) ||
+        item.phone?.toString().toLowerCase().includes(keyword) ||
+        item.Service?.toLowerCase().includes(keyword))
+    );
+  });
+
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = users.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const paginatedData = filteredLeads.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
 
   return (
     <div className="content-wrapper">
@@ -118,6 +135,8 @@ function Leads() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -164,11 +183,17 @@ function Leads() {
               type="search"
               className="form-control sector-wise"
               placeholder="Search name, phone, passport, city..."
+              value={search1}
+              onChange={(e) => setSearch1(e.target.value)}
             />
           </div>
 
           <div className="d-flex align-items-center gap-2 p-1 rounded-4">
-            <select className="form-select rounded-3 sector-wise">
+            <select
+              className="form-select rounded-3 sector-wise"
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+            >
               <option value="">All</option>
               <option value="Hajj">Hajj</option>
               <option value="Umrah">Umrah</option>
@@ -179,7 +204,11 @@ function Leads() {
           </div>
 
           <div>
-            <select className="form-select rounded-3 sector-wise">
+            <select
+              className="form-select rounded-3 sector-wise"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
               <option value="">All</option>
               <option value="New">New</option>
               <option value="Contacted">Contacted</option>
@@ -190,7 +219,7 @@ function Leads() {
           </div>
         </div>
 
-        <div className="table-wrapper border p-0">
+        <div className="table-wrapper border p-0 mb-3">
           <div className="table-responsive custom-scrollbar">
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
@@ -269,7 +298,7 @@ function Leads() {
                         </span>
                       </td>
 
-                      <td>
+                      <td className="text-nowrap">
                         <span
                           className={
                             data.Followup === "Today"
@@ -292,13 +321,17 @@ function Leads() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="text-center">
+                    <td colSpan="8" className="text-center">
                       No Data Found
                     </td>
                   </tr>
                 )}
               </tbody>
             </table>
+
+            <div className="d-flex justify-content-center mt-2 mb-2">
+              <button className="btn download-btn">Download</button>
+            </div>
 
             {users.length > itemsPerPage && (
               <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">

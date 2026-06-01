@@ -9,8 +9,8 @@ import "../App.css";
 function Agents() {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const [agents, setAgents] = useState([]);
   const [search, setSearch] = useState("");
+  const [agents, setAgents] = useState([]);
 
   useEffect(() => {
     const alldata = async () => {

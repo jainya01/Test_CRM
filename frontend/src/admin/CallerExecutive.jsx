@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 function CallerExecutive() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const [callers, setCallers] = useState([]);
 
   useEffect(() => {
@@ -34,12 +35,17 @@ function CallerExecutive() {
     allData();
   }, []);
 
+  const filteredCallers = callers.filter((item) => {
+    const keyword = search.toLowerCase().trim();
+    return item.fullname?.toLowerCase().includes(keyword);
+  });
+
   const itemsPerPage = 14;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = callers.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(callers.length / itemsPerPage);
+  const paginatedData = filteredCallers.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredCallers.length / itemsPerPage);
 
   const deleteData = async (id) => {
     const confirmDelete = window.confirm(
@@ -80,6 +86,8 @@ function CallerExecutive() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -222,7 +230,7 @@ function CallerExecutive() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="text-center text-muted">
+                    <td colSpan="7" className="text-center text-muted">
                       No data available
                     </td>
                   </tr>
@@ -236,7 +244,7 @@ function CallerExecutive() {
               </button>
             </div>
 
-            {callers.length > itemsPerPage && (
+            {paginatedData.length > itemsPerPage && (
               <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
                 <button
                   className={`btn rounded-pill px-3 py-1 shadow-sm ${

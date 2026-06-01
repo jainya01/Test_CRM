@@ -1264,3 +1264,18 @@ body {
   background-color: #00372c;
   border-color: #00372c;
 }
+
+.download-btn,
+.download-btn:hover,
+.download-btn:active,
+.download-btn:focus {
+  background-color: #00372c !important;
+  color: #fff !important;
+  padding: 4px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.custom-card {
+  background-color: #005c4b;
+}

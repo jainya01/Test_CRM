@@ -9,6 +9,10 @@ import {
 import "../App.css";
 
 function Passport() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const [search, setSearch] = useState("");
+
   const data = [
     {
       id: 1,
@@ -72,12 +76,21 @@ function Passport() {
     },
   ];
 
+  const filteredPassports = data.filter((item) => {
+    const keyword = search.toLowerCase();
+    return (
+      item.name?.toLowerCase().includes(keyword) ||
+      item.passport?.toLowerCase().includes(keyword) ||
+      item.status?.toLowerCase().includes(keyword)
+    );
+  });
+
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const paginatedData = filteredPassports.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredPassports.length / itemsPerPage);
 
   return (
     <div className="content-wrapper">
@@ -90,6 +103,8 @@ function Passport() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
