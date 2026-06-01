@@ -12,31 +12,34 @@ import User from "./User";
 import Protected from "./components/Protected";
 
 const Homepage = lazy(() => import("./admin/Homepage"));
-const Customers = lazy(() => import("./admin/Customers"));
 const Leads = lazy(() => import("./admin/Leads"));
-const CallerExecutive = lazy(() => import("./admin/CallerExecutive"));
 
 const Packages = lazy(() => import("./admin/Packages"));
 const PackagesCreate = lazy(() => import("./admin/PackagesCreate"));
+
+const Customers = lazy(() => import("./admin/Customers"));
 
 const Agents = lazy(() => import("./admin/Agents"));
 const AgentsCreate = lazy(() => import("./admin/AgentsCreate"));
 
 const Passport = lazy(() => import("./admin/Passport"));
 const BulkUpload = lazy(() => import("./admin/BulkUpload"));
+
+const CallerExecutive = lazy(() => import("./admin/CallerExecutive"));
+const CallersCreate = lazy(() => import("./admin/CallerCreate"));
+const CallersEdit = lazy(() => import("./admin/CallerEdit"));
+
 const Settings = lazy(() => import("./admin/Settings"));
 
 const AgentDashboard = lazy(() => import("./agent/AgentDashboard"));
 const AgentCustomers = lazy(() => import("./agent/AgentCustomers"));
 const AgentPackages = lazy(() => import("./agent/AgentPackages"));
 const AgentBookings = lazy(() => import("./agent/AgentBookings"));
+const AgentEdit = lazy(() => import("./agent/AgentEdit"));
 
 const StaffDashboard = lazy(() => import("./caller/StaffDashboard"));
 const StaffPackage = lazy(() => import("./caller/StaffPackage"));
 const StaffFollowup = lazy(() => import("./caller/StaffFollowup"));
-const CallersCreate = lazy(() => import("./admin/CallerCreate"));
-const CallersEdit = lazy(() => import("./admin/CallerEdit"));
-const AgentEdit = lazy(() => import("./agent/AgentEdit"));
 
 function App() {
   return (
