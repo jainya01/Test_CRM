@@ -85,12 +85,16 @@ function CallerPackage() {
     switch (service) {
       case "Hajj":
         return "hajj-premium";
+
       case "Umrah":
         return "umrah-premium";
+
       case "Ticket":
         return "ticket-premium";
+
       case "Medical":
         return "medical-premium";
+
       default:
         return "";
     }
@@ -141,12 +145,6 @@ function CallerPackage() {
             <p className="text-muted overview-lead fw-bold">
               {filteredData.length} active packages
             </p>
-          </div>
-
-          <div>
-            <Link className="text-decoration-none btn new-leader text-nowrap">
-              + New Package
-            </Link>
           </div>
         </div>
 

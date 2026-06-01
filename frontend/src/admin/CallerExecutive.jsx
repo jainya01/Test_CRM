@@ -231,18 +231,24 @@ function CallerExecutive() {
                 ) : (
                   <tr>
                     <td colSpan="7" className="text-center text-muted">
-                      No data available
+                      No callers found
                     </td>
                   </tr>
                 )}
               </tbody>
             </table>
 
-            <div className="text-center">
-              <button className="table-shared" onClick={handleShare}>
-                Share
-              </button>
-            </div>
+            {paginatedData.length > 0 && (
+              <>
+                <div className="d-flex justify-content-center">
+                  <button className="table-shared">Download</button>
+
+                  <button className="table-shared" onClick={handleShare}>
+                    Share
+                  </button>
+                </div>
+              </>
+            )}
 
             {paginatedData.length > itemsPerPage && (
               <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
