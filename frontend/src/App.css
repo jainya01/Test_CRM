@@ -1259,3 +1259,8 @@ body {
 .table-shared:active {
   transform: scale(0.97);
 }
+
+.custom-input:checked {
+  background-color: #00372c;
+  border-color: #00372c;
+}

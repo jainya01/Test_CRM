@@ -129,7 +129,10 @@ function CallerExecutive() {
               <thead className="table-success header-table text-nowrap">
                 <tr>
                   <th>
-                    <input type="checkbox" className="form-check-input" />
+                    <input
+                      type="checkbox"
+                      className="form-check-input custom-input"
+                    />
                   </th>
 
                   <th className="py-2">Rank</th>
@@ -145,7 +148,10 @@ function CallerExecutive() {
                   paginatedData.map((item, index) => (
                     <tr key={item.id}>
                       <td>
-                        <input type="checkbox" className="form-check-input" />
+                        <input
+                          type="checkbox"
+                          className="form-check-input custom-input"
+                        />
                       </td>
 
                       <td>{index + 1}</td>

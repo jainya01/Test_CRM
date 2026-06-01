@@ -196,8 +196,12 @@ function Leads() {
               <thead className="table-success header-table text-nowrap">
                 <tr>
                   <th>
-                    <input type="checkbox" className="form-check-input" />
+                    <input
+                      type="checkbox"
+                      className="form-check-input custom-input"
+                    />
                   </th>
+
                   <th>Lead</th>
                   <th>Service</th>
                   <th>Source</th>
@@ -212,7 +216,10 @@ function Leads() {
                   paginatedData.map((data) => (
                     <tr key={data.id}>
                       <td>
-                        <input type="checkbox" className="form-check-input" />
+                        <input
+                          type="checkbox"
+                          className="form-check-input custom-input"
+                        />
                       </td>
 
                       <td className="d-flex flex-column">
@@ -257,7 +264,7 @@ function Leads() {
                             }[data.Temp] || ""
                           }
                         >
-                          {data.Temp === "Hot" && "🔥"}
+                          {data.Temp === "Hot" && "🔥 "}
                           {data.Temp || "--"}
                         </span>
                       </td>

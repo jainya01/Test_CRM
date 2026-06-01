@@ -7,9 +7,12 @@ import {
   faPhone,
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
+import { authHeader } from "../utils/authHeader";
 import "../App.css";
 
 function CallerFollowup() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const data = [
     {
       id: 1,

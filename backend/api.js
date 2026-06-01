@@ -1,11 +1,11 @@
 import express from "express";
 import router from "./routes/router.js";
-import errorHandler from "./middleware/errorHandler.js";
 import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import compression from "compression";
+import errorHandler from "./middleware/errorHandler.js";
 dotenv.config();
 
 const app = express();
