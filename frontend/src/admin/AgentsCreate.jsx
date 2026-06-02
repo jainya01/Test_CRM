@@ -23,6 +23,7 @@ function AgentsCreate() {
   });
 
   const { fullname, phone, email, password, status, notes } = agent;
+
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -220,7 +221,7 @@ function AgentsCreate() {
                     </span>
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-6 mt-2">
                     <label className="form-label">
                       Status <span className="text-danger fw-bolder">*</span>
                     </label>
@@ -243,7 +244,7 @@ function AgentsCreate() {
                     )}
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-6 mt-2">
                     <label className="form-label">Notes (optional)</label>
                     <textarea
                       className="form-control py-2 sector-wise"
