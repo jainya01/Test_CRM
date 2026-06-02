@@ -23,7 +23,6 @@ function AgentsCreate() {
   });
 
   const { fullname, phone, email, password, status, notes } = agent;
-
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {

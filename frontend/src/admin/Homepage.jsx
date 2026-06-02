@@ -126,6 +126,7 @@ function Homepage() {
 
   const [selected, setSelected] = useState([]);
   const headerRef = useRef(null);
+
   const allChecked = users.length > 0 && selected.length === users.length;
   const isIndeterminate = selected.length > 0 && selected.length < users.length;
 
