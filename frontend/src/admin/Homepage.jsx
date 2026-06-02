@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
 import { authHeader } from "../utils/authHeader";
@@ -21,55 +21,55 @@ function Homepage() {
       id: 1,
       name: "Muhammad Tariq",
       phone: "+92 300 10000",
-      Service: "Hajj",
-      Source: "John Doe",
-      Status: "New",
-      Temp: "Hot",
+      service: "Hajj",
+      source: "John Doe",
+      status: "New",
+      temp: "Hot",
     },
     {
       id: 2,
       name: "Ayesha Siddiqui",
       phone: "+92 301 10101",
-      Service: "Umrah",
-      Source: "Sarah Khan",
-      Status: "Contacted",
-      Temp: "Warm",
+      service: "Umrah",
+      source: "Sarah Khan",
+      status: "Contacted",
+      temp: "Warm",
     },
     {
       id: 3,
       name: "Imran Malik",
       phone: "+92 302 10202",
-      Service: "Ticket",
-      Source: "Ali Raza",
-      Status: "Interested",
-      Temp: "Cold",
+      service: "Ticket",
+      source: "Ali Raza",
+      status: "Interested",
+      temp: "Cold",
     },
     {
       id: 4,
       name: "Fatima Noor",
       phone: "+92 303 10303",
-      Service: "Medical",
-      Source: "Michael Smith",
-      Status: "Not Interested",
-      Temp: "Hot",
+      service: "Medical",
+      source: "Michael Smith",
+      status: "Not Interested",
+      temp: "Hot",
     },
     {
       id: 5,
       name: "Zain Abbas",
       phone: "+92 304 10404",
-      Service: "Hajj",
-      Source: "Ayesha Malik",
-      Status: "Converted",
-      Temp: "Warm",
+      service: "Hajj",
+      source: "Ayesha Malik",
+      status: "Converted",
+      temp: "Warm",
     },
     {
       id: 6,
       name: "Hira Sheikh",
       phone: "+92 305 10505",
-      Service: "Umrah",
-      Source: "David Johnson",
-      Status: "New",
-      Temp: "Cold",
+      service: "Umrah",
+      source: "David Johnson",
+      status: "New",
+      temp: "Cold",
     },
   ];
 
@@ -114,6 +114,25 @@ function Homepage() {
       return "Good evening";
     }
   };
+
+  const handleShare = () => {
+    navigator.share({
+      title: "My App",
+      text: "Check this out!",
+      url: window.location.href,
+    });
+  };
+
+  const [selected, setSelected] = useState([]);
+  const headerRef = useRef(null);
+  const allChecked = users.length > 0 && selected.length === users.length;
+  const isIndeterminate = selected.length > 0 && selected.length < users.length;
+
+  useEffect(() => {
+    if (headerRef.current) {
+      headerRef.current.indeterminate = isIndeterminate;
+    }
+  }, [isIndeterminate]);
 
   return (
     <>
@@ -350,6 +369,22 @@ function Homepage() {
                       <table className="table table-hover mb-0">
                         <thead className="table-success header-table text-nowrap">
                           <tr>
+                            <th>
+                              <input
+                                className="form-check-input custom-input"
+                                ref={headerRef}
+                                type="checkbox"
+                                checked={allChecked}
+                                onChange={(e) =>
+                                  setSelected(
+                                    e.target.checked
+                                      ? users.map((item) => item.id)
+                                      : [],
+                                  )
+                                }
+                              />
+                            </th>
+
                             <th>Name</th>
                             <th>Service</th>
                             <th>Source</th>
@@ -362,6 +397,21 @@ function Homepage() {
                           {Array.isArray(users) && users.length > 0 ? (
                             users.map((data) => (
                               <tr key={data.id}>
+                                <td>
+                                  <input
+                                    className="form-check-input custom-input"
+                                    type="checkbox"
+                                    checked={selected.includes(data.id)}
+                                    onChange={(e) =>
+                                      setSelected((prev) =>
+                                        e.target.checked
+                                          ? [...prev, data.id]
+                                          : prev.filter((id) => id !== data.id),
+                                      )
+                                    }
+                                  />
+                                </td>
+
                                 <td className="d-flex flex-column">
                                   <Link className="name-span" to="/admin/leads">
                                     {data.name || "--"}
@@ -374,12 +424,12 @@ function Homepage() {
 
                                 <td>
                                   <span className="service-border">
-                                    {data.Service || "--"}
+                                    {data.service || "--"}
                                   </span>
                                 </td>
 
                                 <td className="text-muted walk-source">
-                                  {data.Source || "--"}
+                                  {data.source || "--"}
                                 </td>
 
                                 <td>
@@ -393,10 +443,10 @@ function Homepage() {
                                         Contacted: "convert-status cus-res",
                                         New: "new-customer cus-res",
                                         Converted: "convert-status cus-res",
-                                      }[data.Status] || ""
+                                      }[data.status] || ""
                                     }
                                   >
-                                    {data.Status || "--"}
+                                    {data.status || "--"}
                                   </span>
                                 </td>
 
@@ -407,11 +457,11 @@ function Homepage() {
                                         Hot: "hot-up hot-res",
                                         Warm: "warm-up hot-res",
                                         Cold: "cold-status hot-res",
-                                      }[data.Temp] || ""
+                                      }[data.temp] || ""
                                     }
                                   >
-                                    {data.Temp === "Hot" && "🔥 "}
-                                    {data.Temp || "--"}
+                                    {data.temp === "Hot" && "🔥 "}
+                                    {data.temp || "--"}
                                   </span>
                                 </td>
 
@@ -431,6 +481,21 @@ function Homepage() {
                           )}
                         </tbody>
                       </table>
+
+                      {users.length > 0 && (
+                        <>
+                          <div className="d-flex justify-content-center">
+                            <button className="table-shared">Download</button>
+
+                            <button
+                              className="table-shared"
+                              onClick={handleShare}
+                            >
+                              Share
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

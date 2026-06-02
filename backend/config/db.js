@@ -18,8 +18,8 @@ const pool = mysql.createPool({
     const connection = await pool.getConnection();
     console.log("MySQL DB Connected Successfully");
     connection.release();
-  } catch (err) {
-    console.error("MySQL Pool Connection Failed:", err);
+  } catch (error) {
+    console.error("MySQL Pool Connection Failed", error);
   }
 })();
 

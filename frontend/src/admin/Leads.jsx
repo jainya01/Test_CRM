@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPhone } from "@fortawesome/free-solid-svg-icons";
@@ -124,6 +124,21 @@ function Leads() {
   const paginatedData = filteredLeads.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
 
+  const [selected, setSelected] = useState([]);
+  const headerRef = useRef(null);
+
+  const allChecked =
+    paginatedData.length > 0 && selected.length === paginatedData.length;
+
+  const isIndeterminate =
+    selected.length > 0 && selected.length < paginatedData.length;
+
+  useEffect(() => {
+    if (headerRef.current) {
+      headerRef.current.indeterminate = isIndeterminate;
+    }
+  }, [isIndeterminate]);
+
   return (
     <div className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
@@ -226,8 +241,17 @@ function Leads() {
                 <tr>
                   <th>
                     <input
-                      type="checkbox"
                       className="form-check-input custom-input"
+                      ref={headerRef}
+                      type="checkbox"
+                      checked={allChecked}
+                      onChange={(e) =>
+                        setSelected(
+                          e.target.checked
+                            ? paginatedData.map((item) => item.id)
+                            : [],
+                        )
+                      }
                     />
                   </th>
 
@@ -246,8 +270,16 @@ function Leads() {
                     <tr key={data.id}>
                       <td>
                         <input
-                          type="checkbox"
                           className="form-check-input custom-input"
+                          type="checkbox"
+                          checked={selected.includes(data.id)}
+                          onChange={(e) =>
+                            setSelected((prev) =>
+                              e.target.checked
+                                ? [...prev, data.id]
+                                : prev.filter((id) => id !== data.id),
+                            )
+                          }
                         />
                       </td>
 
@@ -329,9 +361,13 @@ function Leads() {
               </tbody>
             </table>
 
-            <div className="d-flex justify-content-center mt-2 mb-2">
-              <button className="btn download-btn">Download</button>
-            </div>
+            {paginatedData.length > 0 && (
+              <>
+                <div className="d-flex justify-content-center mt-2 mb-2">
+                  <button className="btn download-btn">Download</button>
+                </div>
+              </>
+            )}
 
             {users.length > itemsPerPage && (
               <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">

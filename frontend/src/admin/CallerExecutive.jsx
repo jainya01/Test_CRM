@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { authHeader } from "../utils/authHeader";
 import { Link } from "react-router-dom";
 import "../App.css";
@@ -75,6 +75,21 @@ function CallerExecutive() {
     });
   };
 
+  const [selected, setSelected] = useState([]);
+  const headerRef = useRef(null);
+
+  const allChecked =
+    paginatedData.length > 0 && selected.length === paginatedData.length;
+
+  const isIndeterminate =
+    selected.length > 0 && selected.length < paginatedData.length;
+
+  useEffect(() => {
+    if (headerRef.current) {
+      headerRef.current.indeterminate = isIndeterminate;
+    }
+  }, [isIndeterminate]);
+
   return (
     <div className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
@@ -138,8 +153,17 @@ function CallerExecutive() {
                 <tr>
                   <th>
                     <input
-                      type="checkbox"
                       className="form-check-input custom-input"
+                      ref={headerRef}
+                      type="checkbox"
+                      checked={allChecked}
+                      onChange={(e) =>
+                        setSelected(
+                          e.target.checked
+                            ? paginatedData.map((item) => item.id)
+                            : [],
+                        )
+                      }
                     />
                   </th>
 
@@ -157,8 +181,16 @@ function CallerExecutive() {
                     <tr key={item.id}>
                       <td>
                         <input
-                          type="checkbox"
                           className="form-check-input custom-input"
+                          type="checkbox"
+                          checked={selected.includes(item.id)}
+                          onChange={(e) =>
+                            setSelected((prev) =>
+                              e.target.checked
+                                ? [...prev, item.id]
+                                : prev.filter((id) => id !== item.id),
+                            )
+                          }
                         />
                       </td>
 
