@@ -9,7 +9,7 @@ function Customers() {
   const data = [
     {
       id: 1,
-      name: "Muhammad Tariq",
+      name: "Mohammad Tariq",
       phone: "+92 300 10000",
       service: "Hajj",
     },
@@ -39,7 +39,7 @@ function Customers() {
     },
     {
       id: 6,
-      name: "Faisal Mehmood",
+      name: "Faisal Mahmood",
       phone: "+92 302 11212",
       service: "Hajj",
     },

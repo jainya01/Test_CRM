@@ -1,5 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
 import fs from "fs";
 import multer from "multer";
 import path from "path";
@@ -12,7 +11,6 @@ import authenticate from "../middleware/auth.js";
 import asyncHandler from "../config/asyncHandler.js";
 import LoginLimiter from "../config/rateLimiter.js";
 
-dotenv.config();
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -72,7 +70,7 @@ router.post(
         email: admin.email,
         role: admin.role,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "9h" },
     );
 
@@ -131,7 +129,7 @@ router.post(
         email: agent.email,
         role: agent.role,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "9h" },
     );
 
@@ -190,7 +188,7 @@ router.post(
         email: staff.email,
         role: staff.role,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "9h" },
     );
 
@@ -327,7 +325,7 @@ router.get("/profile", async (req, res) => {
       return res.status(401).json({ message: "No token" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     const [rows] = await pool.execute(
       "SELECT id, fullname, email, role, profile_image from agents WHERE id = ?",
