@@ -230,7 +230,10 @@ function CallerExecutive() {
 
                       <td className="text-start">
                         <span className="d-flex flex-row flex-nowrap">
-                          <Link title="View">
+                          <Link
+                            title="View"
+                            to={`/admin/callers/view/${item.id}`}
+                          >
                             <FontAwesomeIcon
                               icon={faEye}
                               className="icons-color2 me-1"

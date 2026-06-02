@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faBell, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
@@ -345,9 +346,23 @@ function Leads() {
                       </td>
 
                       <td>
-                        <Link className="opened-box text-decoration-none text-dark fw-bold text-nowrap">
-                          <FontAwesomeIcon icon={faPhone} /> Open
-                        </Link>
+                        <span className="d-flex align-items-center">
+                          <Link className="opened-box text-decoration-none text-dark fw-bold text-nowrap">
+                            <FontAwesomeIcon icon={faPhone} /> Open
+                          </Link>
+
+                          <div
+                            className="whatsapp-icon"
+                            onClick={() => {
+                              const phone = data.phone?.replace(/\D/g, "");
+                              if (phone) {
+                                window.open(`https://wa.me/${phone}`, "_blank");
+                              }
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faWhatsapp} />
+                          </div>
+                        </span>
                       </td>
                     </tr>
                   ))

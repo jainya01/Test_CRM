@@ -28,6 +28,7 @@ const BulkUpload = lazy(() => import("./admin/BulkUpload"));
 const CallerExecutive = lazy(() => import("./admin/CallerExecutive"));
 const CallersCreate = lazy(() => import("./admin/CallerCreate"));
 const CallersEdit = lazy(() => import("./admin/CallerEdit"));
+const CallersView = lazy(() => import("./admin/CallersView"));
 
 const Settings = lazy(() => import("./admin/Settings"));
 
@@ -59,6 +60,7 @@ function App() {
               <Route path="callers" element={<CallerExecutive />} />
               <Route path="callers/create" element={<CallersCreate />} />
               <Route path="callers/edit/:id" element={<CallersEdit />} />
+              <Route path="callers/view/:id" element={<CallersView />} />
 
               <Route path="packages" element={<Packages />} />
               <Route path="packages/create" element={<PackagesCreate />} />

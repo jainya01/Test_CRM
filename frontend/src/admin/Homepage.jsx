@@ -4,6 +4,7 @@ import "../App.css";
 import { authHeader } from "../utils/authHeader";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import {
   faArrowRight,
   faBell,
@@ -466,9 +467,29 @@ function Homepage() {
                                 </td>
 
                                 <td>
-                                  <Link className="opened-box text-decoration-none text-dark fw-bold">
-                                    Open
-                                  </Link>
+                                  <span className="d-flex align-items-center">
+                                    <Link className="opened-box text-decoration-none text-dark fw-bold">
+                                      Open
+                                    </Link>
+
+                                    <div
+                                      className="whatsapp-icon"
+                                      onClick={() => {
+                                        const phone = data.phone?.replace(
+                                          /\D/g,
+                                          "",
+                                        );
+                                        if (phone) {
+                                          window.open(
+                                            `https://wa.me/${phone}`,
+                                            "_blank",
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      <FontAwesomeIcon icon={faWhatsapp} />
+                                    </div>
+                                  </span>
                                 </td>
                               </tr>
                             ))
