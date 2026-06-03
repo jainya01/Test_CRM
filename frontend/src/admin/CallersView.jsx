@@ -69,7 +69,7 @@ function CallersView() {
         <div className="col-lg-7 col-12">
           <div className="card shadow border-0">
             <div className="card-header profile-header custom-font">
-              View Caller: {caller.fullname || "N/A"}
+              View Caller: {caller.fullname || "N/A"}, {caller.email || "N/A"}
             </div>
 
             <div className="card-body">
