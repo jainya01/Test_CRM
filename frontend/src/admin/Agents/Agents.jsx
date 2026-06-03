@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { authHeader } from "../utils/authHeader";
+import { authHeader } from "../../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import "../App.css";
+import "../../App.css";
 
 function Agents() {
   const API_URL = import.meta.env.VITE_API_URL;

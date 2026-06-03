@@ -14,21 +14,21 @@ import Protected from "./components/Protected";
 const Homepage = lazy(() => import("./admin/Homepage"));
 const Leads = lazy(() => import("./admin/Leads"));
 
-const Packages = lazy(() => import("./admin/Packages"));
-const PackagesCreate = lazy(() => import("./admin/PackagesCreate"));
+const Packages = lazy(() => import("./admin/Package/Packages"));
+const PackagesCreate = lazy(() => import("./admin/Package/PackagesCreate"));
 
 const Customers = lazy(() => import("./admin/Customers"));
 
-const Agents = lazy(() => import("./admin/Agents"));
-const AgentsCreate = lazy(() => import("./admin/AgentsCreate"));
+const Agents = lazy(() => import("./admin/Agents/Agents"));
+const AgentsCreate = lazy(() => import("./admin/Agents/AgentsCreate"));
 
 const Passport = lazy(() => import("./admin/Passport"));
 const BulkUpload = lazy(() => import("./admin/BulkUpload"));
 
-const CallerExecutive = lazy(() => import("./admin/CallerExecutive"));
-const CallersCreate = lazy(() => import("./admin/CallerCreate"));
-const CallersEdit = lazy(() => import("./admin/CallerEdit"));
-const CallersView = lazy(() => import("./admin/CallersView"));
+const CallerExecutive = lazy(() => import("./admin/Caller/CallerExecutive"));
+const CallersCreate = lazy(() => import("./admin/Caller/CallerCreate"));
+const CallersEdit = lazy(() => import("./admin/Caller/CallerEdit"));
+const CallersView = lazy(() => import("./admin/Caller/CallersView"));
 
 const Settings = lazy(() => import("./admin/Settings"));
 
@@ -38,9 +38,9 @@ const AgentPackages = lazy(() => import("./agent/AgentPackages"));
 const AgentBookings = lazy(() => import("./agent/AgentBookings"));
 const AgentEdit = lazy(() => import("./agent/AgentEdit"));
 
-const StaffDashboard = lazy(() => import("./caller/StaffDashboard"));
-const StaffPackage = lazy(() => import("./caller/StaffPackage"));
-const StaffFollowup = lazy(() => import("./caller/StaffFollowup"));
+const StaffDashboard = lazy(() => import("./staff/StaffDashboard"));
+const StaffPackage = lazy(() => import("./staff/StaffPackage"));
+const StaffFollowup = lazy(() => import("./staff/StaffFollowup"));
 
 function App() {
   return (

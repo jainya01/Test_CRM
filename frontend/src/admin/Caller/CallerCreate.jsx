@@ -1,56 +1,59 @@
 import { useEffect, useState } from "react";
-import { authHeader } from "../utils/authHeader";
-import "../App.css";
+import { authHeader } from "../../utils/authHeader";
+import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-function PackagesCreate() {
+function CallersCreate() {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [packages, setPackages] = useState({
-    package_name: "",
-    price: "",
-    start_date: "",
-    end_date: "",
-    service: "",
+  const [call, setCall] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+    status: "",
     notes: "",
   });
 
-  const { package_name, price, start_date, end_date, service, notes } =
-    packages;
-
+  const { fullname, email, password, status, notes } = call;
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
     let newErrors = {};
 
-    if (!package_name.trim()) {
-      newErrors.package_name = "Package name is required";
+    if (!fullname.trim()) {
+      newErrors.fullname = "Full name is required";
     }
 
-    if (!price.trim()) {
-      newErrors.price = "Price is required";
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
     }
 
-    if (!start_date.trim()) {
-      newErrors.start_date = "Start Date is required";
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
     }
 
-    if (!end_date.trim()) {
-      newErrors.end_date = "End Date is required";
+    if (!status) {
+      newErrors.status = "Status is required";
     }
 
-    if (!service) {
-      newErrors.service = "Service is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (password && password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -58,26 +61,27 @@ function PackagesCreate() {
     e.preventDefault();
 
     const isValid = validateForm();
+
     if (!isValid) return;
 
     try {
-      await axios.post(`${API_URL}/`, packages, {
+      await axios.post(`${API_URL}/callerspost`, call, {
         headers: authHeader(),
       });
 
-      toast.success("Package created successfully");
+      toast.success("Caller created successfully");
 
       setTimeout(() => {
-        navigate("/admin/packages");
+        navigate("/admin/callers");
       }, 1000);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add package");
+      toast.error("Failed to add caller");
     }
   };
 
   const onInputChange = (e) => {
-    setPackages({
-      ...packages,
+    setCall({
+      ...call,
       [e.target.name]: e.target.value,
     });
   };
@@ -93,8 +97,6 @@ function PackagesCreate() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -122,114 +124,106 @@ function PackagesCreate() {
       <div className="p-2 p-lg-3 mt-2">
         <div className="col-12">
           <div className="card shadow border-0">
-            <div className="card-header profile-header">Create New Package</div>
+            <div className="card-header profile-header">Create New Callers</div>
+
             <div className="card-body">
               <form onSubmit={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Package Name
-                      <span className="text-danger fw-bolder">*</span>
+                      Full Name <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="text"
                       className="form-control sector-wise mb-1"
-                      placeholder="Enter package name"
-                      name="package_name"
-                      value={package_name}
+                      placeholder="Enter full name"
+                      name="fullname"
+                      value={fullname}
                       onChange={onInputChange}
                       required
                     />
-                    {errors.package_name && (
+                    {errors.fullname && (
                       <small className="text-danger mt-1">
-                        {errors.package_name}
+                        {errors.fullname}
                       </small>
                     )}
                   </div>
 
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Price <span className="text-danger fw-bolder">*</span>
+                      Email <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
-                      type="tel"
+                      type="email"
                       className="form-control sector-wise mb-1"
-                      placeholder="Enter price (e.g. INR 1850k)"
-                      name="price"
-                      value={price}
+                      placeholder="Enter email"
+                      name="email"
+                      value={email}
                       onChange={onInputChange}
                       required
                     />
-                    {errors.price && (
-                      <small className="text-danger mt-1">{errors.price}</small>
+                    {errors.email && (
+                      <small className="text-danger mt-1">{errors.email}</small>
                     )}
+                  </div>
+
+                  <div className="position-relative col-md-6">
+                    <label className="form-label">
+                      Password <span className="text-danger fw-bolder">*</span>
+                    </label>
+
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control sector-wise pe-5"
+                      placeholder="Enter Password"
+                      name="password"
+                      value={password}
+                      onChange={onInputChange}
+                      autoComplete="password"
+                      required
+                    />
+
+                    {errors.password && (
+                      <small className="text-danger mt-1">
+                        {errors.password}
+                      </small>
+                    )}
+
+                    <span
+                      className="eye-login1"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="me-1"
+                      />
+                    </span>
                   </div>
 
                   <div className="col-md-6 mb-3">
                     <label className="form-label">
-                      Start Date
-                      <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type="date"
-                      className="form-control sector-wise mb-1"
-                      name="start_date"
-                      value={start_date}
-                      onChange={onInputChange}
-                      required
-                    />
-                    {errors.start_date && (
-                      <small className="text-danger mt-1">
-                        {errors.start_date}
-                      </small>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <label className="form-label">
-                      End Date <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type="date"
-                      className="form-control sector-wise"
-                      name="end_date"
-                      value={end_date}
-                      onChange={onInputChange}
-                      required
-                    />
-                    {errors.end_date && (
-                      <small className="text-danger mt-1">
-                        {errors.end_date}
-                      </small>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <label className="form-label">
-                      Service <span className="text-danger fw-bolder">*</span>
+                      Status <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
                       className="form-select sector-wise mb-1"
-                      name="service"
-                      value={service}
+                      name="status"
+                      value={status}
                       onChange={onInputChange}
                       required
                     >
-                      <option value="">Select service</option>
-                      <option value="Hajj">Hajj</option>
-                      <option value="Umrah">Umrah</option>
-                      <option value="Ticket">Ticket</option>
-                      <option value="Medical">Medical</option>
+                      <option value="">Select status</option>
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
                     </select>
 
-                    {errors.service && (
+                    {errors.status && (
                       <small className="text-danger mt-1">
-                        {errors.service}
+                        {errors.status}
                       </small>
                     )}
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-12 mb-3">
                     <label className="form-label">Notes (optional)</label>
                     <textarea
                       className="form-control py-2 sector-wise"
@@ -249,7 +243,7 @@ function PackagesCreate() {
                     </button>
                   </div>
 
-                  <Link className="text-success" to="/admin/packages">
+                  <Link className="text-success" to="/admin/callers">
                     Back
                   </Link>
                 </div>
@@ -264,4 +258,4 @@ function PackagesCreate() {
   );
 }
 
-export default PackagesCreate;
+export default CallersCreate;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { authHeader } from "../utils/authHeader";
+import { authHeader } from "../../utils/authHeader";
 import { Link } from "react-router-dom";
-import "../App.css";
+import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
