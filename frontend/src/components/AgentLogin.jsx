@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import "../App.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faPlane } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "../App.css";
 
 const AgentLogin = () => {
   const API_URL = import.meta.env.VITE_API_URL;

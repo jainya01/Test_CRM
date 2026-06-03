@@ -1,8 +1,8 @@
 import { useState } from "react";
+import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import "../App.css";
 
 function AgentPackages() {
   const [active, setActive] = useState("All");

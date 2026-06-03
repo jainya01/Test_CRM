@@ -1,5 +1,5 @@
-import { authHeader } from "../utils/authHeader";
 import "../App.css";
+import { authHeader } from "../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,

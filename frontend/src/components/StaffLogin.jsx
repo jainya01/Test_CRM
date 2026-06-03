@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import "../App.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faPlane } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import "../App.css";
 import { ToastContainer, toast } from "react-toastify";
 
 const StaffLogin = () => {

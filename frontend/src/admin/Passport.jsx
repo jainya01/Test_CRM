@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
@@ -6,7 +7,6 @@ import {
   faFileCircleCheck,
   faFileCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import "../App.css";
 
 function Passport() {
   const API_URL = import.meta.env.VITE_API_URL;
