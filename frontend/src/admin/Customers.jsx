@@ -1,7 +1,7 @@
 import { useState } from "react";
+import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
-import "../App.css";
 
 function Customers() {
   const API_URL = import.meta.env.VITE_API_URL;
