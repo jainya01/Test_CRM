@@ -722,81 +722,81 @@ router.put(
   },
 );
 
-router.post(
-  "/agentpost",
-  authenticate,
-  asyncHandler(async (req, res) => {
-    const { fullname, phone, email, password, status, notes = null } = req.body;
+// router.post(
+//   "/agentpost",
+//   authenticate,
+//   asyncHandler(async (req, res) => {
+//     const { fullname, phone, email, password, status, notes = null } = req.body;
 
-    if (!fullname || !phone || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
+//     if (!fullname || !phone || !email || !password) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "All fields are required",
+//       });
+//     }
 
-    if (fullname.length < 3) {
-      return res.status(400).json({
-        success: false,
-        message: "Fullname at least 3 characters",
-      });
-    }
+//     if (fullname.length < 3) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Fullname at least 3 characters",
+//       });
+//     }
 
-    if (password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: "Password at least 6 characters",
-      });
-    }
+//     if (password.length < 6) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Password at least 6 characters",
+//       });
+//     }
 
-    const [existingEmail] = await pool.execute(
-      "SELECT id FROM agents WHERE email = ?",
-      [email],
-    );
+//     const [existingEmail] = await pool.execute(
+//       "SELECT id FROM agents WHERE email = ?",
+//       [email],
+//     );
 
-    if (existingEmail.length > 0) {
-      return res.status(409).json({
-        success: false,
-        message: "Email already exists",
-      });
-    }
+//     if (existingEmail.length > 0) {
+//       return res.status(409).json({
+//         success: false,
+//         message: "Email already exists",
+//       });
+//     }
 
-    const [existingPhone] = await pool.execute(
-      "SELECT id FROM agents WHERE phone = ?",
-      [phone],
-    );
+//     const [existingPhone] = await pool.execute(
+//       "SELECT id FROM agents WHERE phone = ?",
+//       [phone],
+//     );
 
-    if (existingPhone.length > 0) {
-      return res.status(409).json({
-        success: false,
-        message: "Phone number already exists",
-      });
-    }
+//     if (existingPhone.length > 0) {
+//       return res.status(409).json({
+//         success: false,
+//         message: "Phone number already exists",
+//       });
+//     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+//     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const SQL = `
-      INSERT INTO agents
-      (fullname, phone, email, password, status, notes)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
+//     const SQL = `
+//       INSERT INTO agents
+//       (fullname, phone, email, password, status, notes)
+//       VALUES (?, ?, ?, ?, ?, ?)
+//     `;
 
-    const [result] = await pool.execute(SQL, [
-      fullname,
-      phone,
-      email,
-      hashedPassword,
-      status || "Active",
-      notes,
-    ]);
+//     const [result] = await pool.execute(SQL, [
+//       fullname,
+//       phone,
+//       email,
+//       hashedPassword,
+//       status || "Active",
+//       notes,
+//     ]);
 
-    return res.status(201).json({
-      success: true,
-      message: "Agent created successfully",
-      result,
-    });
-  }),
-);
+//     return res.status(201).json({
+//       success: true,
+//       message: "Agent created successfully",
+//       result,
+//     });
+//   }),
+// );
 
 router.get(
   "/allagents",
