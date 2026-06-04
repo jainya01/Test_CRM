@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "../App.css";
-import { authHeader } from "../utils/authHeader";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faPlane } from "@fortawesome/free-solid-svg-icons";
@@ -53,9 +52,7 @@ const AdminLogin = () => {
     setErrorMessage("");
 
     try {
-      const response = await axios.post(`${API_URL}/adminlogin`, admin, {
-        headers: authHeader(),
-      });
+      const response = await axios.post(`${API_URL}/adminlogin`, admin);
 
       const { token, role, id } = response.data;
 
@@ -89,7 +86,7 @@ const AdminLogin = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <main className="container-fluid">
       <div className="row min-vh-100 text-start">
         <div className="col-lg-6 col-sm-12 d-lg-flex flex-column justify-content-center convert-metric text-white px-2 px-lg-4 pt-5 pt-lg-0">
           <div className="position-absolute top-0 start-0 p-2 mt-4 ps-lg-3 d-flex align-items-center">
@@ -185,7 +182,7 @@ const AdminLogin = () => {
       </div>
 
       <ToastContainer position="bottom-right" autoClose={1500} />
-    </div>
+    </main>
   );
 };
 

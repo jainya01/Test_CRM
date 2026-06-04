@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 function Packages() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
 
@@ -95,11 +96,16 @@ function Packages() {
     }
   };
 
-  const filteredData =
-    active === "All" ? data : data.filter((item) => item.service === active);
+  const q = search.toLowerCase();
+
+  const filteredData = data.filter(
+    (item) =>
+      (active === "All" || item.service === active) &&
+      item.package_name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
-    <div className="content-wrapper">
+    <main className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
         <div className="row align-items-center">
           <div className="col-10 col-md-11">
@@ -109,6 +115,8 @@ function Packages() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -220,7 +228,7 @@ function Packages() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

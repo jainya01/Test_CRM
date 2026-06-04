@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import "../App.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faBell, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 function Leads() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -140,8 +140,6 @@ function Leads() {
     }
   }, [isIndeterminate]);
 
-  // 111111111111111111111
-
   const [months, setMonths] = useState("");
   const monthPillRef = useRef(null);
   const popoverRef = useRef(null);
@@ -264,7 +262,7 @@ function Leads() {
   }
 
   return (
-    <div className="content-wrapper">
+    <main className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
         <div className="row align-items-center">
           <div className="col-10 col-md-11">
@@ -330,6 +328,7 @@ function Leads() {
           <div className="d-flex align-items-center gap-2 p-1 rounded-4">
             <select
               className="form-select rounded-3 sector-wise"
+              aria-label="Lead category filter"
               value={service}
               onChange={(e) => setService(e.target.value)}
             >
@@ -346,6 +345,7 @@ function Leads() {
             <div>
               <select
                 className="form-select rounded-3 sector-wise"
+                aria-label="Lead status filter"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
@@ -388,6 +388,7 @@ function Leads() {
                         name="performance"
                         id="halfYearly"
                         checked={selectedFilter === "halfYearly"}
+                        aria-label="Half yearly"
                         onChange={() => applyPresetFilter("halfYearly")}
                       />
                       <label className="form-check-label" htmlFor="halfYearly">
@@ -402,6 +403,7 @@ function Leads() {
                         name="performance"
                         id="yearly"
                         checked={selectedFilter === "yearly"}
+                        aria-label="Yearly"
                         onChange={() => applyPresetFilter("yearly")}
                       />
                       <label className="form-check-label" htmlFor="yearly">
@@ -416,6 +418,7 @@ function Leads() {
                         name="performance"
                         id="custom"
                         checked={selectedFilter === "custom"}
+                        aria-label="Custom range"
                         onChange={() => setSelectedFilter("custom")}
                       />
                       <label className="form-check-label" htmlFor="custom">
@@ -513,6 +516,7 @@ function Leads() {
                       ref={headerRef}
                       type="checkbox"
                       checked={allChecked}
+                      aria-label="Select all rows"
                       onChange={(e) =>
                         setSelected(
                           e.target.checked
@@ -541,6 +545,7 @@ function Leads() {
                           className="form-check-input custom-input"
                           type="checkbox"
                           checked={selected.includes(data.id)}
+                          aria-label={`Select row ${data.name || data.id}`}
                           onChange={(e) =>
                             setSelected((prev) =>
                               e.target.checked
@@ -689,7 +694,7 @@ function Leads() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

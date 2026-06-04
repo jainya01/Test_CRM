@@ -17,6 +17,23 @@ import {
 function Homepage() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const scheduleRef = useRef();
+
+  const [reschedule, setReschedule] = useState({
+    open: false,
+    date: "",
+  });
+
+  useEffect(() => {
+    const handler = (e) =>
+      scheduleRef.current &&
+      !scheduleRef.current.contains(e.target) &&
+      setReschedule((p) => ({ ...p, open: false }));
+
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
   const users = [
     {
       id: 1,
@@ -136,9 +153,16 @@ function Homepage() {
     }
   }, [isIndeterminate]);
 
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = users.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+
   return (
     <>
-      <div className="content-wrapper">
+      <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
           <div className="row align-items-center">
             <div className="col-10 col-md-11">
@@ -315,17 +339,12 @@ function Homepage() {
 
                 {[
                   { label: "New", value: 6 },
-                  { label: "Contacted", value: 6 },
-                  { label: "Interested", value: 6 },
+                  { label: "Contacted", value: 10 },
+                  { label: "Interested", value: 8 },
                   { label: "Converted", value: 5 },
                   { label: "Not Interested", value: 5 },
-                ].map((item, index, array) => {
-                  const total = array.reduce(
-                    (sum, current) => sum + current.value,
-                    0,
-                  );
-
-                  const percent = ((item.value / total) * 100).toFixed(0);
+                ].map((item, index) => {
+                  const percent = Math.min(item.value, 100);
 
                   return (
                     <div key={index} className="pipeline-item mb-2">
@@ -377,6 +396,7 @@ function Homepage() {
                                 ref={headerRef}
                                 type="checkbox"
                                 checked={allChecked}
+                                aria-label="Select all"
                                 onChange={(e) =>
                                   setSelected(
                                     e.target.checked
@@ -391,19 +411,22 @@ function Homepage() {
                             <th>Service</th>
                             <th>Source</th>
                             <th>Status</th>
-                            <th>Temp</th>
+                            <th>Temperature</th>
                             <th></th>
                           </tr>
                         </thead>
+
                         <tbody className="body-table">
-                          {Array.isArray(users) && users.length > 0 ? (
-                            users.map((data) => (
+                          {Array.isArray(paginatedData) &&
+                          paginatedData.length > 0 ? (
+                            paginatedData.map((data) => (
                               <tr key={data.id}>
                                 <td>
                                   <input
                                     className="form-check-input custom-input"
                                     type="checkbox"
                                     checked={selected.includes(data.id)}
+                                    aria-label={`Select row ${data.id}`}
                                     onChange={(e) =>
                                       setSelected((prev) =>
                                         e.target.checked
@@ -474,6 +497,7 @@ function Homepage() {
                                     </Link>
 
                                     <div
+                                      title="Whatsapp"
                                       className="whatsapp-icon"
                                       onClick={() => {
                                         const phone = data.phone?.replace(
@@ -490,6 +514,87 @@ function Homepage() {
                                     >
                                       <FontAwesomeIcon icon={faWhatsapp} />
                                     </div>
+
+                                    <div
+                                      className="ms-1"
+                                      title="Reschedule"
+                                      onClick={() =>
+                                        setReschedule((prev) => ({
+                                          ...prev,
+                                          open: true,
+                                        }))
+                                      }
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faClock}
+                                        className="custom-watch"
+                                      />
+                                    </div>
+
+                                    {reschedule.open && (
+                                      <div className="modal-overlay">
+                                        <div
+                                          className="reschedule-modal"
+                                          ref={scheduleRef}
+                                        >
+                                          <h6>Reschedule Lead</h6>
+
+                                          <div className="border mb-2 mt-2"></div>
+
+                                          <div className="mb-3">
+                                            <label>Date</label>
+                                            <input
+                                              type="date"
+                                              className="form-control sector-wise mt-2"
+                                              value={reschedule.date}
+                                              onChange={(e) =>
+                                                setReschedule((prev) => ({
+                                                  ...prev,
+                                                  date: e.target.value,
+                                                }))
+                                              }
+                                            />
+                                          </div>
+
+                                          <div className="d-flex justify-content-end gap-2">
+                                            <button
+                                              className="btn btn-update"
+                                              onClick={() => {
+                                                console.log(
+                                                  "Date:",
+                                                  reschedule.date,
+                                                );
+                                                console.log(
+                                                  "Time:",
+                                                  reschedule.time,
+                                                );
+
+                                                setReschedule({
+                                                  open: false,
+                                                  date: "",
+                                                  time: "",
+                                                });
+                                              }}
+                                            >
+                                              Save
+                                            </button>
+
+                                            <button
+                                              className="btn btn-outline-transparent text-dark border rounded-3 cancel-schedule"
+                                              onClick={() =>
+                                                setReschedule((prev) => ({
+                                                  ...prev,
+                                                  open: false,
+                                                }))
+                                              }
+                                            >
+                                              Cancel
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )}
                                   </span>
                                 </td>
                               </tr>
@@ -520,12 +625,50 @@ function Homepage() {
                       )}
                     </div>
                   </div>
+
+                  {users.length > itemsPerPage && (
+                    <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
+                      <button
+                        className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                          currentPage <= 1
+                            ? "btn-light border text-muted"
+                            : "btn-success border-0"
+                        }`}
+                        disabled={currentPage <= 1}
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                      >
+                        ← Prev
+                      </button>
+
+                      <div className="fw-semibold px-2">
+                        Page {currentPage} of {totalPages}
+                      </div>
+
+                      <button
+                        className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                          currentPage >= totalPages
+                            ? "btn-light border text-muted"
+                            : "btn-success border-0"
+                        }`}
+                        disabled={currentPage >= totalPages}
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(prev + 1, totalPages),
+                          )
+                        }
+                      >
+                        Next →
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

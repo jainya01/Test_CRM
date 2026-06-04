@@ -91,7 +91,7 @@ function CallerExecutive() {
   }, [isIndeterminate]);
 
   return (
-    <div className="content-wrapper">
+    <main className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
         <div className="row align-items-center">
           <div className="col-10 col-md-11">
@@ -157,6 +157,7 @@ function CallerExecutive() {
                       ref={headerRef}
                       type="checkbox"
                       checked={allChecked}
+                      aria-label="Select all rows"
                       onChange={(e) =>
                         setSelected(
                           e.target.checked
@@ -184,6 +185,7 @@ function CallerExecutive() {
                           className="form-check-input custom-input"
                           type="checkbox"
                           checked={selected.includes(item.id)}
+                          aria-label={`Select row ${item.name || item.id}`}
                           onChange={(e) =>
                             setSelected((prev) =>
                               e.target.checked
@@ -325,7 +327,7 @@ function CallerExecutive() {
       </div>
 
       <ToastContainer position="bottom-right" autoClose={1500} />
-    </div>
+    </main>
   );
 }
 

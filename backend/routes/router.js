@@ -989,4 +989,28 @@ router.post(
   },
 );
 
+router.patch(
+  "/reschedule-leads",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { date } = req.body;
+
+    const SQL = "UPDATE customers SET date = ? WHERE id = ?";
+    const [result] = await pool.execute(SQL);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("data update failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data successfully updated",
+      result,
+    });
+  }),
+);
+
 export default router;

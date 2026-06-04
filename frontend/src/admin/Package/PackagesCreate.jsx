@@ -83,7 +83,7 @@ function PackagesCreate() {
   };
 
   return (
-    <div className="content-wrapper">
+    <main className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
         <div className="row align-items-center">
           <div className="col-10 col-md-11">
@@ -209,6 +209,7 @@ function PackagesCreate() {
                       Service <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
+                      aria-label="Select service"
                       className="form-select sector-wise mb-1"
                       name="service"
                       value={service}
@@ -260,7 +261,7 @@ function PackagesCreate() {
       </div>
 
       <ToastContainer position="bottom-right" autoClose={1500} />
-    </div>
+    </main>
   );
 }
 

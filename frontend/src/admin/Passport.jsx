@@ -93,7 +93,7 @@ function Passport() {
   const totalPages = Math.ceil(filteredPassports.length / itemsPerPage);
 
   return (
-    <div className="content-wrapper">
+    <main className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
         <div className="row align-items-center">
           <div className="col-10 col-md-11">
@@ -247,7 +247,7 @@ function Passport() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }
 

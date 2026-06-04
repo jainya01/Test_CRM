@@ -35,7 +35,7 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <div className="container-fluid">
+    <main className="container-fluid">
       <div className="row min-vh-100 text-start">
         <div className="col-lg-6 col-sm-12 d-lg-flex flex-column justify-content-center convert-metric text-white px-2 px-lg-4 pt-5 pt-lg-0 position-relative">
           <div className="position-absolute top-0 start-0 p-2 mt-4 ps-lg-3 d-flex align-items-center">
@@ -129,7 +129,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

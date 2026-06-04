@@ -36,7 +36,7 @@ function Agents() {
     );
   });
 
-  const itemsPerPage = 24;
+  const itemsPerPage = 20;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -54,7 +54,7 @@ function Agents() {
     : "/uploads";
 
   return (
-    <div className="content-wrapper">
+    <main className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
         <div className="row align-items-center">
           <div className="col-10 col-md-11">
@@ -208,7 +208,7 @@ function Agents() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }
 
