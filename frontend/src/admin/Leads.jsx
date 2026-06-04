@@ -32,7 +32,7 @@ function Leads() {
       Source: "Sarah Khan",
       Status: "Contacted",
       Temp: "Warm",
-      Followup: "in 1d",
+      Followup: "In 1d",
     },
     {
       id: 3,
@@ -42,7 +42,7 @@ function Leads() {
       Source: "Ali Raza",
       Status: "Interested",
       Temp: "Cold",
-      Followup: "in 2d",
+      Followup: "In 2d",
     },
     {
       id: 4,
@@ -52,7 +52,7 @@ function Leads() {
       Source: "Michael Smith",
       Status: "Not Interested",
       Temp: "Hot",
-      Followup: "in 3d",
+      Followup: "In 3d",
     },
     {
       id: 5,
@@ -140,6 +140,129 @@ function Leads() {
     }
   }, [isIndeterminate]);
 
+  // 111111111111111111111
+
+  const [months, setMonths] = useState("");
+  const monthPillRef = useRef(null);
+  const popoverRef = useRef(null);
+  const [month, setMonth] = useState(false);
+  const [popoverStyle, setPopoverStyle] = useState(null);
+  const [customFrom, setCustomFrom] = useState("");
+  const [customTo, setCustomTo] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("halfYearly");
+
+  useEffect(() => {
+    const updateMonth = () => {
+      const now = new Date();
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      setMonths(monthNames[now.getMonth()]);
+    };
+
+    updateMonth();
+    const interval = setInterval(updateMonth, 24 * 60 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (monthPillRef.current?.contains(event.target)) return;
+      if (popoverRef.current?.contains(event.target)) return;
+      setMonth(false);
+    }
+
+    if (month) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [month]);
+
+  function applyCustomRange() {
+    if (!customFrom.trim() || !customTo.trim()) {
+      alert("Please pick both From and To dates.");
+      return;
+    }
+
+    const s = new Date(customFrom);
+    const e = new Date(customTo);
+    if (isNaN(s) || isNaN(e) || s > e) {
+      alert("Invalid date range.");
+      return;
+    }
+    setPeriod("custom");
+    setSelectedFilter("custom");
+    setMonth(false);
+    setPopoverStyle(null);
+  }
+
+  function toggleMonthPopover() {
+    if (!month) {
+      const pill = monthPillRef.current;
+      if (pill) {
+        const rect = pill.getBoundingClientRect();
+        const desiredWidth = 300;
+        const margin = 0;
+
+        let left = rect.left;
+        if (left + desiredWidth > window.innerWidth - margin) {
+          left = window.innerWidth - desiredWidth - margin;
+        }
+        if (left < margin) left = margin;
+
+        const top = rect.bottom + 8;
+        setPopoverStyle({
+          position: "fixed",
+          left: `${left}px`,
+          top: `${top}px`,
+          width: `${desiredWidth}px`,
+          maxHeight: "70vh",
+          overflow: "auto",
+          zIndex: 9999,
+          boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+          borderRadius: 6,
+          background: "#00372c",
+          color: "#fff",
+          padding: "12px",
+        });
+      } else {
+        setPopoverStyle({
+          position: "fixed",
+          right: 0,
+          top: 120,
+          width: "320px",
+          maxHeight: "70vh",
+          overflow: "auto",
+          zIndex: 9999,
+          boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+          borderRadius: 6,
+          background: "#fff",
+          padding: "12px",
+        });
+      }
+      setMonth(true);
+    } else {
+      setPopoverStyle(null);
+      setMonth(false);
+    }
+  }
+
+  function applyPresetFilter(filter) {
+    setSelectedFilter(filter);
+    setPeriod(filter);
+    setMonth(false);
+    setPopoverStyle(null);
+  }
+
   return (
     <div className="content-wrapper">
       <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
@@ -219,19 +342,163 @@ function Leads() {
             </select>
           </div>
 
-          <div>
-            <select
-              className="form-select rounded-3 sector-wise"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option value="">All</option>
-              <option value="New">New</option>
-              <option value="Contacted">Contacted</option>
-              <option value="Interested">Interested</option>
-              <option value="Not Interested">Not Interested</option>
-              <option value="Converted">Converted</option>
-            </select>
+          <div className="d-flex gap-2">
+            <div>
+              <select
+                className="form-select rounded-3 sector-wise"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="">All</option>
+                <option value="New">New</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Interested">Interested</option>
+                <option value="Not Interested">Not Interested</option>
+                <option value="Converted">Converted</option>
+              </select>
+            </div>
+
+            <div className="d-flex justify-content-start gap-2">
+              <div
+                ref={monthPillRef}
+                className="month-pill d-flex align-items-center"
+                onClick={toggleMonthPopover}
+                style={{ cursor: "pointer" }}
+              >
+                {months}
+              </div>
+
+              {month && (
+                <div
+                  ref={popoverRef}
+                  className="spending-card container"
+                  style={popoverStyle}
+                  aria-modal="true"
+                  role="dialog"
+                >
+                  <h5 className="leads-show fw-bold">Show Leads</h5>
+                  <form
+                    className="spending-form"
+                    onSubmit={(e) => e.preventDefault()}
+                  >
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="performance"
+                        id="halfYearly"
+                        checked={selectedFilter === "halfYearly"}
+                        onChange={() => applyPresetFilter("halfYearly")}
+                      />
+                      <label className="form-check-label" htmlFor="halfYearly">
+                        Half-yearly
+                      </label>
+                    </div>
+
+                    <div className="form-check mt-1">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="performance"
+                        id="yearly"
+                        checked={selectedFilter === "yearly"}
+                        onChange={() => applyPresetFilter("yearly")}
+                      />
+                      <label className="form-check-label" htmlFor="yearly">
+                        Yearly
+                      </label>
+                    </div>
+
+                    <div className="form-check mt-1">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="performance"
+                        id="custom"
+                        checked={selectedFilter === "custom"}
+                        onChange={() => setSelectedFilter("custom")}
+                      />
+                      <label className="form-check-label" htmlFor="custom">
+                        Custom range
+                      </label>
+                    </div>
+
+                    {selectedFilter === "custom" && (
+                      <div
+                        className="custom-range-row"
+                        style={{ marginTop: 8 }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 6,
+                            alignItems: "start",
+                          }}
+                        >
+                          <label>From</label>
+
+                          <input
+                            type="date"
+                            className="form-control sector-wise"
+                            value={customFrom}
+                            onChange={(e) => setCustomFrom(e.target.value)}
+                            aria-label="From date"
+                          />
+                          <label>To</label>
+                          <input
+                            type="date"
+                            className="form-control sector-wise"
+                            value={customTo}
+                            onChange={(e) => setCustomTo(e.target.value)}
+                            aria-label="To date"
+                          />
+                        </div>
+
+                        <div className="mt-2">
+                          <button
+                            type="button"
+                            className="btn btn-primary apply-btn"
+                            onClick={applyCustomRange}
+                          >
+                            Apply
+                          </button>
+
+                          <button
+                            type="button"
+                            className="btn btn-secondary mt-0 ms-2"
+                            onClick={() => {
+                              setMonth(false);
+                              setPopoverStyle(null);
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedFilter !== "custom" && (
+                      <div
+                        className="d-flex justify-content-end"
+                        style={{ marginTop: 12 }}
+                      >
+                        <button
+                          type="button"
+                          className="cancel-btn ms-2"
+                          onClick={() => {
+                            setMonth(false);
+                            setPopoverStyle(null);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                  </form>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -336,7 +603,7 @@ function Leads() {
                           className={
                             data.Followup === "Today"
                               ? "follow-today follow-to"
-                              : data.Followup === "Missed 1d"
+                              : data.Followup?.includes("Missed")
                                 ? "follow-missed follow-to"
                                 : ""
                           }

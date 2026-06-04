@@ -141,7 +141,6 @@ const AdminLogin = () => {
 
               <div className="position-relative">
                 <label className="form-label">Password</label>
-
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-control pe-5 sector-wise"

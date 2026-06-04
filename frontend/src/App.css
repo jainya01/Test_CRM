@@ -1293,3 +1293,46 @@ body {
     font-size: 15px;
   }
 }
+
+.month-pill {
+  background-color: #00372c;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 13px;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.spending-card {
+  max-width: 250px;
+}
+
+@media (max-width: 576px) {
+  .spending-card {
+    left: 5%;
+    top: 30%;
+  }
+}
+
+.cancel-btn {
+  background: none;
+  border: none;
+  color: #00372c;
+  font-weight: 550;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.cancel-btn:hover {
+  color: #00372c;
+}
+
+.form-check-label {
+  font-size: 15.5px;
+}
+
+.leads-show {
+  font-size: 17px;
+}
