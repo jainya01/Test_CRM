@@ -157,7 +157,7 @@ function CallerDashboard() {
                     <h4 className="card-value mb-0">1</h4>
                   </div>
 
-                  <div className="icon-wrapper icon-booking1">
+                  <div className="icon-wrapper icon-booking1 border">
                     <FontAwesomeIcon icon={faWarning} className="text-danger" />
                   </div>
                 </div>
@@ -172,7 +172,7 @@ function CallerDashboard() {
                     <h4 className="card-value mb-0">5</h4>
                   </div>
 
-                  <div className="icon-wrapper icon-check">
+                  <div className="icon-wrapper icon-check border">
                     <FontAwesomeIcon icon={faClock} className="text-dark" />
                   </div>
                 </div>
@@ -187,7 +187,7 @@ function CallerDashboard() {
                     <h4 className="card-value">5</h4>
                   </div>
 
-                  <div className="icon-wrapper icon-booking1">
+                  <div className="icon-wrapper icon-booking1 border">
                     <FontAwesomeIcon icon={faFire} />
                   </div>
                 </div>
