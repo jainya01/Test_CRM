@@ -210,7 +210,6 @@ function BulkUpload() {
             <div className="ms-0">
               <div className="fw-semibold mb-1">Required columns</div>
 
-              {/* FIXED: replaced text-muted */}
               <small className="text-secondary-safe fw-medium">
                 name, phone, city, source (Hajj / Umrah / Ticket / Medical),
                 source. Phone numbers are checked for duplicates across your
