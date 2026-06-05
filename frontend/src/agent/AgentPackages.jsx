@@ -5,6 +5,9 @@ import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 function AgentPackages() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const [search, setSearch] = useState("");
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
 
@@ -93,8 +96,13 @@ function AgentPackages() {
     }
   };
 
-  const filteredData =
-    active === "All" ? data : data.filter((item) => item.service === active);
+  const q = search.toLowerCase();
+
+  const filteredData = data.filter(
+    (item) =>
+      (active === "All" || item.service === active) &&
+      item.package_name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <main className="content-wrapper">
@@ -107,6 +115,8 @@ function AgentPackages() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -139,12 +149,6 @@ function AgentPackages() {
               {filteredData.length} active packages
             </p>
           </div>
-
-          <div>
-            <Link className="text-decoration-none btn new-leader text-nowrap">
-              + New Package
-            </Link>
-          </div>
         </div>
 
         <div className="d-flex flex-wrap flex-md-nowrap gap-2 border custom-packages mt-2">
@@ -152,11 +156,11 @@ function AgentPackages() {
             <div
               key={tab}
               onClick={() => setActive(tab)}
-              className={`custom-pad ${
-                active === tab
-                  ? "bg-white shadow-sm fw-bold text-dark custom-styles"
-                  : "text-secondary custom-styles"
+              className={`custom-pad custom-styles ${
+                active === tab ? "tab-active" : "tab-inactive"
               }`}
+              role="button"
+              tabIndex={0}
             >
               {tab}
             </div>
@@ -171,7 +175,7 @@ function AgentPackages() {
                   <div
                     className={`rounded-3 common-code ${getServiceClass(item.service)}`}
                   >
-                    <span className="d-flex flex-nowrap">
+                    <span className="d-flex flex-wrap">
                       <div className="hajj-package ms-2">{item.service}</div>
 
                       {item.status === "Trending" && (

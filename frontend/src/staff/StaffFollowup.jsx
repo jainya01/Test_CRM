@@ -134,9 +134,9 @@ function CallerFollowup() {
                   >
                     <div className="d-flex align-items-center px-2 py-2">
                       <div className="flex-grow-1 ms-2">
-                        <h5 className="fw-semibold mb-1 customer-name">
+                        <div className="fw-semibold mb-1 customer-name">
                           {item?.name || "N/A"}
-                        </h5>
+                        </div>
 
                         <div className="custom-call">
                           <span>{item?.phone || "N/A"}</span>
@@ -191,9 +191,9 @@ function CallerFollowup() {
                   >
                     <div className="d-flex align-items-center px-2 py-2">
                       <div className="flex-grow-1 ms-2">
-                        <h5 className="fw-semibold mb-1 customer-name">
+                        <div className="fw-semibold mb-1 customer-name">
                           {item?.name || "N/A"}
-                        </h5>
+                        </div>
 
                         <div className="custom-call">
                           <span>{item?.phone || "N/A"}</span>

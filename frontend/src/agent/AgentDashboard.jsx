@@ -191,7 +191,7 @@ function AgentDashboard() {
                     className="offer-card offer-trend border d-flex flex-md-row justify-content-between align-items-center gap-3 mb-3"
                   >
                     <div>
-                      <h6 className="umrah-express mb-2">{item.title}</h6>
+                      <div className="umrah-express mb-2">{item.title}</div>
                       <p>{item.seats}</p>
                     </div>
 
@@ -234,7 +234,7 @@ function AgentDashboard() {
                     className="offer-card d-flex express-special flex-md-row justify-content-between align-items-md-center gap-3 mb-3"
                   >
                     <div>
-                      <h6 className="umrah-express">{item.title}</h6>
+                      <div className="umrah-express">{item.title}</div>
                       <p className="mb-0 pb-0">{item.title.split(" ")[0]}</p>
                     </div>
 

@@ -219,32 +219,34 @@ function CallerExecutive() {
                       >
                         <div className="d-flex align-items-center">
                           <div
-                            className={`me-1 ${
+                            className={`status-dot me-1 ${
                               item.status === "Active"
                                 ? "custom-success"
                                 : "custom-active"
                             }`}
-                          ></div>
+                          />
 
                           {item.status || "N/A"}
                         </div>
                       </td>
 
                       <td className="text-start">
-                        <span className="d-flex flex-row flex-nowrap">
+                        <div className="d-flex align-items-center">
                           <Link
                             title="View"
                             to={`/admin/callers/view/${item.id}`}
+                            className="p-1 d-inline-flex align-items-center justify-content-center"
                           >
                             <FontAwesomeIcon
                               icon={faEye}
-                              className="icons-color2 me-1"
+                              className="icons-color2"
                             />
                           </Link>
 
                           <Link
                             title="Edit"
                             to={`/admin/callers/edit/${item.id}`}
+                            className="p-1 d-inline-flex align-items-center justify-content-center"
                           >
                             <FontAwesomeIcon
                               icon={faEdit}
@@ -252,16 +254,18 @@ function CallerExecutive() {
                             />
                           </Link>
 
-                          <span
+                          <button
+                            type="button"
                             title="Delete"
                             onClick={() => deleteData(item.id)}
+                            className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
                           >
                             <FontAwesomeIcon
                               icon={faTrash}
-                              className="icons-color1 ps-1"
+                              className="p-1 icons-color1"
                             />
-                          </span>
-                        </span>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))

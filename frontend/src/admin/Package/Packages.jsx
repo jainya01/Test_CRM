@@ -165,11 +165,11 @@ function Packages() {
             <div
               key={tab}
               onClick={() => setActive(tab)}
-              className={`custom-pad ${
-                active === tab
-                  ? "bg-white shadow-sm fw-bold text-dark custom-styles"
-                  : "text-secondary custom-styles"
+              className={`custom-pad custom-styles ${
+                active === tab ? "tab-active" : "tab-inactive"
               }`}
+              role="button"
+              tabIndex={0}
             >
               {tab}
             </div>

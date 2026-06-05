@@ -1,13 +1,13 @@
 import { useState } from "react";
 import "../App.css";
-import { authHeader } from "../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-function CallerPackage() {
+function StaffPackage() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
 
@@ -85,23 +85,24 @@ function CallerPackage() {
     switch (service) {
       case "Hajj":
         return "hajj-premium";
-
       case "Umrah":
         return "umrah-premium";
-
       case "Ticket":
         return "ticket-premium";
-
       case "Medical":
         return "medical-premium";
-
       default:
         return "";
     }
   };
 
-  const filteredData =
-    active === "All" ? data : data.filter((item) => item.service === active);
+  const q = search.toLowerCase();
+
+  const filteredData = data.filter(
+    (item) =>
+      (active === "All" || item.service === active) &&
+      item.package_name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <main className="content-wrapper">
@@ -114,6 +115,8 @@ function CallerPackage() {
                   type="search"
                   className="form-control sector-wise"
                   placeholder="Search passport, name, phone, PNR..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </div>
@@ -153,11 +156,11 @@ function CallerPackage() {
             <div
               key={tab}
               onClick={() => setActive(tab)}
-              className={`custom-pad ${
-                active === tab
-                  ? "bg-white shadow-sm fw-bold text-dark custom-styles"
-                  : "text-secondary custom-styles"
+              className={`custom-pad custom-styles ${
+                active === tab ? "tab-active" : "tab-inactive"
               }`}
+              role="button"
+              tabIndex={0}
             >
               {tab}
             </div>
@@ -172,7 +175,7 @@ function CallerPackage() {
                   <div
                     className={`rounded-3 common-code ${getServiceClass(item.service)}`}
                   >
-                    <span className="d-flex flex-nowrap">
+                    <span className="d-flex flex-wrap">
                       <div className="hajj-package ms-2">{item.service}</div>
 
                       {item.status === "Trending" && (
@@ -220,4 +223,4 @@ function CallerPackage() {
   );
 }
 
-export default CallerPackage;
+export default StaffPackage;

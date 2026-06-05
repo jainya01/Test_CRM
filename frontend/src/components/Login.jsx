@@ -50,11 +50,10 @@ const Login = () => {
 
           <h1 className="fw-bold track-calls">Move faster. Convert more.</h1>
 
-          <p className="mb-4 telecalls-admin">
+          <h1 className="telecalls-admin mb-4">
             Action-driven CRM purpose-built for Hajj, Umrah, ticketing and
             medical travel teams.
-          </p>
-
+          </h1>
           <div className="copyright-travel">
             © {new Date().getFullYear()} Jainya Travel Group
           </div>
@@ -62,7 +61,7 @@ const Login = () => {
 
         <div className="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light mt-lg-4 mt-0">
           <div className="w-100 px-0" style={{ maxWidth: "450px" }}>
-            <h3 className="fw-bold mb-2">Sign in</h3>
+            <h1 className="fw-bold mb-2 sign-in-text">Sign in</h1>
             <p className="text-muted mb-4">Choose a demo role to explore</p>
 
             <div className="role-wrapper">
@@ -77,7 +76,7 @@ const Login = () => {
                     </div>
 
                     <div>
-                      <h6 className="fw-bold mb-0">Admin</h6>
+                      <h2 className="fw-bold mb-0 custom-admin-head">Admin</h2>
                       <span className="text-muted full-control">
                         Full control & analytics
                       </span>
@@ -97,7 +96,9 @@ const Login = () => {
                     </div>
 
                     <div>
-                      <h6 className="fw-bold mb-0">Calling Staff</h6>
+                      <h2 className="fw-bold mb-0 custom-admin-head">
+                        Calling Staff
+                      </h2>
                       <span className="text-muted full-control">
                         Convert assigned leads
                       </span>
@@ -117,7 +118,9 @@ const Login = () => {
                     </div>
 
                     <div>
-                      <h6 className="fw-bold mb-0">B2B Agent</h6>
+                      <h2 className="fw-bold mb-0 custom-admin-head">
+                        B2B Agent
+                      </h2>
                       <span className="text-muted full-control">
                         Manage own customers
                       </span>

@@ -200,12 +200,12 @@ function Homepage() {
           <div className="row g-2">
             <div className="d-flex flex-row justify-content-between flex-wrap">
               <div className="d-flex flex-column">
-                <h3 className="mb-1 main-size">
+                <h1 className="mb-1 main-size">
                   {getGreeting()}{" "}
                   {adminName
                     ? adminName[0].toUpperCase() + adminName.slice(1)
                     : ""}
-                </h3>
+                </h1>
 
                 <p className="text-muted happened-team">
                   Here's what's happening across your team today.
@@ -227,7 +227,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Total Leads</p>
-                    <h4 className="card-value mb-0">11</h4>
+                    <div className="card-value mb-0">11</div>
                     <span className="text-muted week-muted">+12 this week</span>
                   </div>
 
@@ -243,7 +243,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Converted</p>
-                    <h4 className="card-value mb-0">12</h4>
+                    <div className="card-value mb-0">12</div>
                     <span className="text-muted week-muted">18% rate</span>
                   </div>
 
@@ -259,7 +259,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Follow-ups Due</p>
-                    <h4 className="card-value mb-0">13</h4>
+                    <div className="card-value mb-0">13</div>
                     <span className="text-muted week-muted">Action needed</span>
                   </div>
 
@@ -275,7 +275,7 @@ function Homepage() {
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Active Bookings</p>
-                    <h4 className="card-value">14</h4>
+                    <div className="card-value">14</div>
                   </div>
 
                   <div className="icon-wrapper icon-booking">
@@ -290,10 +290,10 @@ function Homepage() {
             <div className="col-12 col-lg-8">
               <div className="urgency-card">
                 <div className="d-flex justify-content-between align-items-center mt-2 mb-3">
-                  <h4 className="urgency-title mb-0">
+                  <h1 className="urgency-title mb-0">
                     <span className="warning-icon me-2">⚠</span>
                     Urgency Engine
-                  </h4>
+                  </h1>
 
                   <span className="top-badge">3 expiring</span>
                 </div>
@@ -317,10 +317,10 @@ function Homepage() {
                 ].map((item, index) => (
                   <div
                     key={index}
-                    className="offer-card d-flex express-special flex-md-row justify-content-between align-items-md-center gap-3 mb-3"
+                    className="offer-card d-flex flex-md-row justify-content-between align-items-md-center gap-3 mb-3"
                   >
                     <div>
-                      <h6 className="umrah-express">{item.title}</h6>
+                      <div className="umrah-express">{item.title}</div>
                       <p className="mb-0 pb-0">{item.seats}</p>
                     </div>
 
@@ -335,7 +335,7 @@ function Homepage() {
 
             <div className="col-12 col-lg-4">
               <div className="pipeline-card">
-                <h4 className="pipeline-title mb-3 mt-2">Lead pipeline</h4>
+                <div className="pipeline-title mb-3 mt-2">Lead Pipeline</div>
 
                 {[
                   { label: "New", value: 6 },
@@ -372,9 +372,9 @@ function Homepage() {
                 <div className="card-body p-0">
                   <div className="mb-2 mt-3 ms-2 d-flex flex-wrap gap-2 justify-content-between flex-row align-items-center">
                     <div>
-                      <h5 className="fw-bold mb-0 daily-performance mb-2 mt-1">
+                      <div className="fw-bold mb-0 daily-performance mb-2 mt-1">
                         Recent leads
-                      </h5>
+                      </div>
                     </div>
 
                     <Link

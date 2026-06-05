@@ -96,11 +96,10 @@ const StaffLogin = () => {
 
           <h1 className="fw-bold track-calls">Move faster. Convert more.</h1>
 
-          <p className="mb-4 telecalls-admin">
+          <h1 className="telecalls-admin mb-4">
             Action-driven CRM purpose-built for Hajj, Umrah, ticketing and
             medical travel teams.
-          </p>
-
+          </h1>
           <div className="copyright-travel">
             © {new Date().getFullYear()} Jainya Travel Group
           </div>
@@ -108,7 +107,9 @@ const StaffLogin = () => {
 
         <div className="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light mt-lg-4 mt-0">
           <div className="w-100 px-0" style={{ maxWidth: "450px" }}>
-            <h3 className="fw-bold mb-2">Staff Sign in to your account</h3>
+            <h2 className="fw-bold mb-2 admin-account">
+              Staff Sign in to your account
+            </h2>
             <p className="text-muted mb-4">
               Enter your credentials to continue.
             </p>
@@ -170,7 +171,7 @@ const StaffLogin = () => {
                 Log In
               </button>
 
-              <Link to="/" className="text-success">
+              <Link to="/" className="accessible-success">
                 Back
               </Link>
             </form>

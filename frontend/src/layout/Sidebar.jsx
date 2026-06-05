@@ -139,39 +139,48 @@ function Sidebar() {
   const [loggedUser, setLoggedUser] = useState(null);
 
   useEffect(() => {
-    const allData = async () => {
+    const loadAdmin = async () => {
       try {
-        const [adminRes, staffRes, agentRes] = await Promise.allSettled([
-          axios.get(`${API_URL}/alladmindata`, {
-            headers: authHeader(),
-          }),
+        const res = await axios.get(`${API_URL}/alladmindata`, {
+          headers: authHeader(),
+        });
 
-          axios.get(`${API_URL}/allstaffs`, {
-            headers: authHeader(),
-          }),
-
-          axios.get(`${API_URL}/allagents`, {
-            headers: authHeader(),
-          }),
-        ]);
-
-        if (adminRes.status === "fulfilled") {
-          setAdmin(adminRes.value.data.result || []);
-        }
-
-        if (staffRes.status === "fulfilled") {
-          setStaff(staffRes.value.data.result || []);
-        }
-
-        if (agentRes.status === "fulfilled") {
-          setAgent(agentRes.value.data.data || []);
-        }
+        setAdmin(res.data.result || []);
       } catch (error) {
-        console.error("error", error);
+        console.error(error);
       }
     };
 
-    allData();
+    loadAdmin();
+  }, []);
+
+  useEffect(() => {
+    const loadExtra = () => {
+      setTimeout(async () => {
+        try {
+          const [staffRes, agentRes] = await Promise.allSettled([
+            axios.get(`${API_URL}/allstaffs`, {
+              headers: authHeader(),
+            }),
+            axios.get(`${API_URL}/allagents`, {
+              headers: authHeader(),
+            }),
+          ]);
+
+          if (staffRes.status === "fulfilled") {
+            setStaff(staffRes.value.data.result || []);
+          }
+
+          if (agentRes.status === "fulfilled") {
+            setAgent(agentRes.value.data.data || []);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }, 800);
+    };
+
+    loadExtra();
   }, []);
 
   const handleLoggedUser = () => {

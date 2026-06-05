@@ -194,16 +194,21 @@ function AgentEdit() {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Profile Image</label>
+                    <label htmlFor="profileImage" className="form-label">
+                      Profile Image
+                    </label>
                     <input
+                      id="profileImage"
+                      name="profileImage"
                       type="file"
                       ref={fileInputRef}
                       className="form-control sector-wise mb-0"
+                      accept="image/*"
                       onChange={(e) =>
-                        setAgent({
-                          ...agent,
-                          file: e.target.files[0],
-                        })
+                        setAgent((prev) => ({
+                          ...prev,
+                          file: e.target.files?.[0] || null,
+                        }))
                       }
                     />
                   </div>
