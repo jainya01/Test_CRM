@@ -96,7 +96,7 @@ function AgentDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">My Customers</p>
@@ -111,7 +111,7 @@ function AgentDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card1">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Bookings</p>
@@ -126,7 +126,7 @@ function AgentDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card2">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Pending</p>
@@ -141,14 +141,14 @@ function AgentDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card3">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Hot Deals</p>
                     <h4 className="card-value">111</h4>
                   </div>
 
-                  <div className="icon-wrapper icon-booking1">
+                  <div className="icon-wrapper icon-booking1 border">
                     <FontAwesomeIcon icon={faFire} />
                   </div>
                 </div>

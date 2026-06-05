@@ -194,14 +194,15 @@ body {
 .card-title-text {
   font-size: 14px;
   font-weight: 550;
-  color: #6c757d;
+  color: #fff;
 }
 
 .card-value {
-  font-weight: 550;
+  font-weight: 500;
   margin-top: 15px;
   margin-bottom: 10px;
   font-size: 20px;
+  color: #fff;
 }
 
 @media (max-width: 576px) {
@@ -496,6 +497,7 @@ body {
 
 .week-muted {
   font-size: 12px;
+  color: #fff;
 }
 
 .notification-corner {
@@ -1331,7 +1333,19 @@ body {
 }
 
 .custom-card {
-  background-color: #005c4b;
+  background-color: #0f3d3e;
+}
+
+.custom-card1 {
+  background-color: #14484a;
+}
+
+.custom-card2 {
+  background-color: #195356;
+}
+
+.custom-card3 {
+  background-color: #1e5e62;
 }
 
 .whatsapp-icon {
@@ -1411,10 +1425,11 @@ body {
 
 .reschedule-modal {
   width: 400px;
-  background: #fff;
+  background: #0f3d3e;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #fff;
 }
 
 .cancel-schedule {

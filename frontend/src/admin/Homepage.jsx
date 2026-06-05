@@ -223,12 +223,12 @@ function Homepage() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Total Leads</p>
                     <div className="card-value mb-0">11</div>
-                    <span className="text-muted week-muted">+12 this week</span>
+                    <span className="week-muted">+12 this week</span>
                   </div>
 
                   <div className="icon-wrapper icon-wrapper1">
@@ -239,12 +239,12 @@ function Homepage() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card1">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Converted</p>
                     <div className="card-value mb-0">12</div>
-                    <span className="text-muted week-muted">18% rate</span>
+                    <span className="week-muted">18% rate</span>
                   </div>
 
                   <div className="icon-wrapper icon-check">
@@ -255,12 +255,12 @@ function Homepage() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card2">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Follow-ups Due</p>
                     <div className="card-value mb-0">13</div>
-                    <span className="text-muted week-muted">Action needed</span>
+                    <span className="week-muted">Action needed</span>
                   </div>
 
                   <div className="icon-wrapper icon-clock">
@@ -271,7 +271,7 @@ function Homepage() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-4">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card3">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Active Bookings</p>
@@ -540,9 +540,9 @@ function Homepage() {
                                         >
                                           <h6>Reschedule Lead</h6>
 
-                                          <div className="border mb-2 mt-2"></div>
+                                          <div className="border mb-2 mt-3"></div>
 
-                                          <div className="mb-3">
+                                          <div className="mb-3 mt-3">
                                             <label>Date</label>
                                             <input
                                               type="date"
@@ -581,7 +581,7 @@ function Homepage() {
                                             </button>
 
                                             <button
-                                              className="btn btn-outline-transparent text-dark border rounded-3 cancel-schedule"
+                                              className="btn btn-outline-transparent text-light border rounded-3 cancel-schedule"
                                               onClick={() =>
                                                 setReschedule((prev) => ({
                                                   ...prev,

@@ -135,7 +135,7 @@ function CallerDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-3">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Today</p>
@@ -150,7 +150,7 @@ function CallerDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-3">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card1">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Missed</p>
@@ -165,7 +165,7 @@ function CallerDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-3">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card2">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Upcoming</p>
@@ -180,7 +180,7 @@ function CallerDashboard() {
             </div>
 
             <div className="col-6 col-sm-6 col-md-6 col-lg">
-              <div className="card shadow-sm border-0 h-100 rounded-3">
+              <div className="card shadow-sm border-0 h-100 rounded-4 custom-card3">
                 <div className="card-body d-flex justify-content-between">
                   <div>
                     <p className="card-title-text">Hot Leads</p>
