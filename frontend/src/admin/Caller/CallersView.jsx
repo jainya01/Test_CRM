@@ -110,7 +110,7 @@ function CallersView() {
                 <hr />
 
                 <div className="d-flex flex-row justify-content-between custom-font">
-                  <div>Pending Calls</div>
+                  <div>Calls Awaiting Follow-up</div>
                   <div>0</div>
                 </div>
 
