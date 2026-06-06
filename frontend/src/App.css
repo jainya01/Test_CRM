@@ -1457,3 +1457,8 @@ body {
   color: #0b3d26;
   text-decoration: underline;
 }
+
+.current-replace {
+  color: #00372c;
+  font-weight: 500;
+}

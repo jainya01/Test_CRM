@@ -79,7 +79,7 @@ function AgentEdit() {
           fullname: data.fullname || "",
           email: data.email || "",
           password: "",
-          file: null,
+          profile_image: data.profile_image || "",
         });
       } catch (error) {
         console.error("error", error);
@@ -193,10 +193,13 @@ function AgentEdit() {
                     />
                   </div>
 
-                  <div className="col-md-6 mb-3">
+                  <div className="col-md-6 mb-2">
                     <label htmlFor="profileImage" className="form-label">
-                      Profile Image
+                      {agent.profile_image
+                        ? "Choose Another Image"
+                        : "Profile Image"}
                     </label>
+
                     <input
                       id="profileImage"
                       name="profileImage"
@@ -211,6 +214,13 @@ function AgentEdit() {
                         }))
                       }
                     />
+
+                    {agent.profile_image && (
+                      <small className="text-start current-replace d-block mt-1">
+                        Current image exists. Choose another image to replace
+                        it.
+                      </small>
+                    )}
                   </div>
 
                   <div className="col-12 mt-2">
