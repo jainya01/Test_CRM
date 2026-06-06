@@ -17,7 +17,7 @@ function CallerDashboard() {
       id: 1,
       name: "Muhammad Tariq",
       phone: "+92 300 10000",
-      city: "Peshawar",
+      city: "Dubai",
       service: "Hajj",
       status: "Hot",
       lead: "New",
@@ -26,7 +26,7 @@ function CallerDashboard() {
       id: 2,
       name: "Zain Abbas",
       phone: "+92 304 10404",
-      city: "Rawalpindi",
+      city: "Abu Dhabi",
       service: "Hajj",
       status: "Warm",
       lead: "Interested",
@@ -35,7 +35,7 @@ function CallerDashboard() {
       id: 3,
       name: "Bilal Hussain",
       phone: "+92 308 10808",
-      city: "Multan",
+      city: "Sharjah",
       service: "Hajj",
       status: "Cold",
       lead: "Converted",
@@ -44,7 +44,7 @@ function CallerDashboard() {
       id: 4,
       name: "Faisal Mehmood",
       phone: "+92 302 11212",
-      city: "Islamabad",
+      city: "Ajman",
       service: "Hajj",
       status: "Hot",
       lead: "Contacted",
@@ -53,7 +53,7 @@ function CallerDashboard() {
       id: 5,
       name: "Kamran Akmal",
       phone: "+92 304 11414",
-      city: "Islamabad",
+      city: "Ras Al Khaimah",
       service: "Ticket",
       status: "Cold",
       lead: "Not Interested",
@@ -62,7 +62,7 @@ function CallerDashboard() {
       id: 6,
       name: "Muhammad Tariq",
       phone: "+92 306 11616",
-      city: "Peshawar",
+      city: "Fujairah",
       service: "Hajj",
       status: "Warm",
       lead: "New",
@@ -71,7 +71,7 @@ function CallerDashboard() {
       id: 7,
       name: "Zain Abbas",
       phone: "+92 300 12020",
-      city: "Rawalpindi",
+      city: "Umm Al Quwain",
       service: "Hajj",
       status: "Cold",
       lead: "Interested",
@@ -80,7 +80,7 @@ function CallerDashboard() {
       id: 8,
       name: "Bilal Hussain",
       phone: "+92 304 12424",
-      city: "Islamabad",
+      city: "Al Ain",
       service: "Hajj",
       status: "Hot",
       lead: "Converted",
@@ -142,7 +142,7 @@ function CallerDashboard() {
                     <h4 className="card-value mb-0">8</h4>
                   </div>
 
-                  <div className="icon-wrapper icon-phone border">
+                  <div className="icon-wrapper icon-phone border text-light">
                     <FontAwesomeIcon icon={faPhone} />
                   </div>
                 </div>
@@ -158,7 +158,7 @@ function CallerDashboard() {
                   </div>
 
                   <div className="icon-wrapper icon-booking1 border">
-                    <FontAwesomeIcon icon={faWarning} className="text-danger" />
+                    <FontAwesomeIcon icon={faWarning} className="text-light" />
                   </div>
                 </div>
               </div>

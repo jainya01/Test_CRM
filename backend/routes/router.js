@@ -989,6 +989,8 @@ router.post(
   },
 );
 
+// Reschedule leads
+
 router.patch(
   "/reschedule-leads",
   authenticate,
@@ -1008,6 +1010,117 @@ router.patch(
     return res.status(200).json({
       success: true,
       message: "data successfully updated",
+      result,
+    });
+  }),
+);
+
+router.post(
+  "/servicepost",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { service_name, status, notes } = req.body;
+
+    const SQL =
+      "INSERT INTO services(service_name, status, notes) VALUES(?, ?, ?)";
+
+    const [result] = await pool.execute(SQL, [service_name, status, notes]);
+
+    res.status(200).json({
+      success: true,
+      message: "data post successfully",
+    });
+  }),
+);
+
+router.get(
+  "/allservices",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const SQL =
+      "SELECT id, service_name, status, notes  from services ORDER BY id DESC";
+    const [result] = await pool.execute(SQL);
+
+    if (result.length === 0) {
+      const error = new Error("services not available");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      count: result.length,
+      message: "data fetched successfully",
+      result: result,
+    });
+  }),
+);
+
+router.delete(
+  "/servicedelete/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const SQL = "DELETE FROM services WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("data deleted failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data deleted failed",
+      result,
+    });
+  }),
+);
+
+router.get(
+  "/someservices/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const SQL = "SELECT id, service_name, status, notes FROM services WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.length === 0) {
+      const error = new Error("data not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data fetched successfully",
+      result,
+    });
+  }),
+);
+
+router.put(
+  "/servicesedit/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { service_name, status, notes } = req.body;
+
+    const SQL =
+      "UPDATE services SET service_name = ?, status = ?, notes = ? WHERE id=?";
+    const [result] = await pool.execute(SQL, [service_name, status, notes, id]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("data update failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data update successfully",
       result,
     });
   }),

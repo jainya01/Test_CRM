@@ -11,6 +11,7 @@ function PackagesCreate() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [search, setSearch] = useState("");
+  const [services, setServices] = useState([]);
   const navigate = useNavigate();
 
   const [packages, setPackages] = useState({
@@ -81,6 +82,23 @@ function PackagesCreate() {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const [serviceRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/allservices`, { headers: authHeader }),
+        ]);
+
+        if (serviceRes.status === "fulfilled") {
+          setServices(serviceRes.value.data.result);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+    allData();
+  }, []);
 
   return (
     <main className="content-wrapper">
@@ -209,18 +227,21 @@ function PackagesCreate() {
                       Service <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
-                      aria-label="Select service"
                       className="form-select sector-wise mb-1"
-                      name="service"
-                      value={service}
-                      onChange={onInputChange}
-                      required
+                      aria-label="Select service"
                     >
-                      <option value="">Select service</option>
-                      <option value="Hajj">Hajj</option>
-                      <option value="Umrah">Umrah</option>
-                      <option value="Ticket">Ticket</option>
-                      <option value="Medical">Medical</option>
+                      <option value="">All services</option>
+                      {Array.isArray(services) && services.length > 0 ? (
+                        services
+                          .filter((item) => item.status === "Active")
+                          .map((item) => (
+                            <option key={item.id} value={item.service_name}>
+                              {item.service_name}
+                            </option>
+                          ))
+                      ) : (
+                        <option value="">No services available</option>
+                      )}
                     </select>
 
                     {errors.service && (

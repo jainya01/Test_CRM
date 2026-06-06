@@ -266,7 +266,7 @@ function BulkUpload() {
                     Submit
                   </button>
 
-                  <div className="mt-3 text-success-safe">
+                  <div className="mt-3 text-success-safe fw-bold">
                     Total Agent Records: {agents}
                   </div>
                 </div>

@@ -2,7 +2,6 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-
 const Login = lazy(() => import("./components/Login"));
 const AdminLogin = lazy(() => import("./components/AdminLogin"));
 const StaffLogin = lazy(() => import("./components/StaffLogin"));
@@ -29,6 +28,10 @@ const CallerExecutive = lazy(() => import("./admin/Caller/CallerExecutive"));
 const CallersCreate = lazy(() => import("./admin/Caller/CallerCreate"));
 const CallersEdit = lazy(() => import("./admin/Caller/CallerEdit"));
 const CallersView = lazy(() => import("./admin/Caller/CallersView"));
+
+const Service = lazy(() => import("./admin/services/Service"));
+const ServiceCreate = lazy(() => import("./admin/services/ServiceCreate"));
+const ServicesEdit = lazy(() => import("./admin/services/ServiceEdit"));
 
 const Settings = lazy(() => import("./admin/Settings"));
 
@@ -71,6 +74,11 @@ function App() {
               <Route path="customers" element={<Customers />} />
               <Route path="passports" element={<Passport />} />
               <Route path="bulk-upload" element={<BulkUpload />} />
+
+              <Route path="services" element={<Service />} />
+              <Route path="services/create" element={<ServiceCreate />} />
+              <Route path="services/edit/:id" element={<ServicesEdit />} />
+
               <Route path="settings" element={<Settings />} />
             </Route>
           </Route>

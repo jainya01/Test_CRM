@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import axios from "axios";
+import { authHeader } from "../utils/authHeader";
 
 function Leads() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -11,6 +13,7 @@ function Leads() {
   const [search, setSearch] = useState("");
   const [search1, setSearch1] = useState("");
   const [service, setService] = useState("");
+  const [selectedService, setSelectedService] = useState("");
   const [status, setStatus] = useState("");
 
   const users = [
@@ -106,15 +109,32 @@ function Leads() {
     },
   ];
 
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const [serviceRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/allservices`, { headers: authHeader }),
+        ]);
+
+        if (serviceRes.status === "fulfilled") {
+          setService(serviceRes.value.data.result);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+    allData();
+  }, []);
+
   const keyword = (search || search1 || "").toLowerCase().trim();
 
   const filteredLeads = users.filter((item) => {
     return (
-      (service === "" || item.Service === service) &&
+      (selectedService === "" || item.Service === selectedService) &&
       (status === "" || item.Status === status) &&
       (item.name?.toLowerCase().includes(keyword) ||
         item.phone?.toString().toLowerCase().includes(keyword) ||
-        item.Service?.toLowerCase().includes(keyword))
+        item.service_name?.toLowerCase().includes(keyword))
     );
   });
 
@@ -329,15 +349,21 @@ function Leads() {
             <select
               className="form-select rounded-3 sector-wise"
               aria-label="Lead category filter"
-              value={service}
-              onChange={(e) => setService(e.target.value)}
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
             >
-              <option value="">All</option>
-              <option value="Hajj">Hajj</option>
-              <option value="Umrah">Umrah</option>
-              <option value="Ticket">Ticket</option>
-              <option value="Medical">Medical</option>
-              <option value="Converted">Converted</option>
+              <option value="">All services</option>
+              {Array.isArray(service) && service.length > 0 ? (
+                service
+                  .filter((item) => item.status === "Active")
+                  .map((item) => (
+                    <option key={item.id} value={item.service_name}>
+                      {item.service_name}
+                    </option>
+                  ))
+              ) : (
+                <option value="">No services available</option>
+              )}
             </select>
           </div>
 

@@ -21,6 +21,7 @@ import {
   faCube,
   faCalendar,
   faUser,
+  faTools,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
@@ -36,8 +37,9 @@ const ADMIN_LINKS = [
   { path: "/admin/customers", label: "Customers", icon: faUserCircle },
   { path: "/admin/agents", label: "Agents", icon: faBriefcase },
   { path: "/admin/passports", label: "Passports", icon: faPassport },
-  { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
   { path: "/admin/callers", label: "Caller Executive", icon: faHeadset },
+  { path: "/admin/services", label: "Services", icon: faTools },
+  { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
   { path: "/admin/settings", label: "Settings", icon: faCog },
 ];
 
