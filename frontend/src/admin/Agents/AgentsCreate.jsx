@@ -132,11 +132,12 @@ function AgentsCreate() {
               <form onSubmit={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label htmlFor="fullname" className="form-label">
                       Full Name <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="text"
+                      id="fullname"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter full name"
                       name="fullname"
@@ -152,11 +153,12 @@ function AgentsCreate() {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label htmlFor="phone" className="form-label">
                       Phone <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="tel"
+                      id="phone"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter phone number (e.g. 9876543210)"
                       name="phone"
@@ -170,11 +172,12 @@ function AgentsCreate() {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label htmlFor="email" className="form-label">
                       Email <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="email"
+                      id="email"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter email (e.g. user@gmail.com)"
                       name="email"
@@ -188,18 +191,19 @@ function AgentsCreate() {
                   </div>
 
                   <div className="position-relative col-md-6">
-                    <label className="form-label">
+                    <label htmlFor="password" className="form-label">
                       Password <span className="text-danger fw-bolder">*</span>
                     </label>
 
                     <input
                       type={showPassword ? "text" : "password"}
+                      id="password"
                       className="form-control sector-wise pe-5"
                       placeholder="Enter Password"
                       name="password"
                       value={password}
                       onChange={onInputChange}
-                      autoComplete="password"
+                      autoComplete="new-password"
                       required
                     />
 
@@ -221,11 +225,12 @@ function AgentsCreate() {
                   </div>
 
                   <div className="col-md-6 mt-2">
-                    <label className="form-label">
+                    <label htmlFor="status" className="form-label">
                       Status <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
                       aria-label="Select status"
+                      id="status"
                       className="form-select sector-wise mb-1"
                       name="status"
                       value={status}
@@ -245,8 +250,11 @@ function AgentsCreate() {
                   </div>
 
                   <div className="col-md-6 mt-2">
-                    <label className="form-label">Notes (optional)</label>
+                    <label htmlFor="notes" className="form-label">
+                      Notes (optional)
+                    </label>
                     <textarea
+                      id="notes"
                       className="form-control py-2 sector-wise"
                       placeholder="Description..."
                       name="notes"

@@ -145,12 +145,13 @@ function PackagesCreate() {
               <form onSubmit={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label className="form-label" htmlFor="package_name">
                       Package Name
                       <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="text"
+                      id="package_name"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter package name"
                       name="package_name"
@@ -166,11 +167,12 @@ function PackagesCreate() {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label className="form-label" htmlFor="price">
                       Price <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="tel"
+                      id="price"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter price (e.g. INR 1850k)"
                       name="price"
@@ -184,12 +186,13 @@ function PackagesCreate() {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label className="form-label" htmlFor="start_date">
                       Start Date
                       <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="date"
+                      id="start_date"
                       className="form-control sector-wise mb-1"
                       name="start_date"
                       value={start_date}
@@ -204,11 +207,12 @@ function PackagesCreate() {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label">
+                    <label className="form-label" htmlFor="end_date">
                       End Date <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="date"
+                      id="end_date"
                       className="form-control sector-wise"
                       name="end_date"
                       value={end_date}
@@ -223,7 +227,7 @@ function PackagesCreate() {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label">
+                    <label className="form-label" htmlFor="service">
                       Service <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
@@ -252,8 +256,11 @@ function PackagesCreate() {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label">Notes (optional)</label>
+                    <label className="form-label" htmlFor="package_name">
+                      Notes (optional)
+                    </label>
                     <textarea
+                      id="notes"
                       className="form-control py-2 sector-wise"
                       placeholder="Description..."
                       name="notes"

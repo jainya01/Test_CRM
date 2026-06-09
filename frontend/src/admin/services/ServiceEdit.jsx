@@ -136,12 +136,13 @@ function ServiceEdit() {
               <form onSubmit={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label htmlFor="service_name" className="form-label">
                       Service Name
                       <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="text"
+                      id="service_name"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter service name"
                       name="service_name"
@@ -157,11 +158,12 @@ function ServiceEdit() {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label">
+                    <label htmlFor="status" className="form-label">
                       Status <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
                       aria-label="Select status"
+                      id="status"
                       className="form-select sector-wise mb-1"
                       name="status"
                       value={status}
@@ -181,8 +183,11 @@ function ServiceEdit() {
                   </div>
 
                   <div className="col-12 mb-3">
-                    <label className="form-label">Notes (optional)</label>
+                    <label htmlFor="notes" className="form-label">
+                      Notes (optional)
+                    </label>
                     <textarea
+                      id="notes"
                       className="form-control py-2 sector-wise"
                       placeholder="Description..."
                       name="notes"

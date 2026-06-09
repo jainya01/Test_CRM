@@ -243,14 +243,14 @@ function Settings() {
                   >
                     Admin Name
                   </label>
-
                   <input
                     type="text"
+                    id="name-input"
                     className="form-control sector-wise"
                     placeholder="Full Name"
                     name="fullname"
                     value={formData.fullname}
-                    autoComplete="fullname"
+                    autoComplete="name"
                     onChange={onInputChange}
                     required
                   />
@@ -268,8 +268,8 @@ function Settings() {
                   >
                     Admin email
                   </label>
-
                   <input
+                    id="email-input"
                     className="form-control sector-wise"
                     type="email"
                     placeholder="admin@company.com"
@@ -287,16 +287,20 @@ function Settings() {
                 </div>
 
                 <div className="mb-2">
-                  <label className="form-label small fw-medium mt-2 mb-1">
+                  <label
+                    htmlFor="password_input"
+                    className="form-label small fw-medium mt-2 mb-1"
+                  >
                     Password
                   </label>
                   <input
                     type="password"
+                    id="password_input"
                     className="form-control sector-wise"
                     placeholder="Create Password"
                     name="password"
                     value={formData.password}
-                    autoComplete="password"
+                    autoComplete="new-password"
                     onChange={onInputChange}
                     required
                   />
@@ -355,21 +359,25 @@ function Settings() {
 
                 <div className="mb-2">
                   <input
+                    id="email"
                     type="email"
+                    aria-label="New Email"
                     className="form-control sector-wise"
                     placeholder="New Email"
                     name="email"
                     value={updateForm.email}
                     onChange={handleUpdateChange}
-                    autoComplete="new-email"
+                    autoComplete="email"
                     required
                   />
                 </div>
 
                 <div className="mb-2" style={{ position: "relative" }}>
                   <input
-                    className="form-control sector-wise"
+                    id="password"
                     type={showPassword ? "text" : "password"}
+                    aria-label="New Password"
+                    className="form-control sector-wise"
                     placeholder="New Password"
                     name="password"
                     value={updateForm.password}

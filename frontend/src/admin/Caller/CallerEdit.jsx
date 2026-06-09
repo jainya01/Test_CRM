@@ -150,11 +150,12 @@ function CallersEdit() {
               <form onSubmit={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label htmlFor="fullname" className="form-label">
                       Full Name <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="text"
+                      id="fullname"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter full name"
                       name="fullname"
@@ -165,11 +166,12 @@ function CallersEdit() {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">
+                    <label htmlFor="email" className="form-label">
                       Email <span className="text-danger fw-bolder">*</span>
                     </label>
                     <input
                       type="email"
+                      id="email"
                       className="form-control sector-wise mb-1"
                       placeholder="Enter email"
                       name="email"
@@ -180,7 +182,7 @@ function CallersEdit() {
                   </div>
 
                   <div className="position-relative col-md-6">
-                    <label className="form-label">
+                    <label htmlFor="password" className="form-label">
                       New Password{" "}
                       <span className="text-danger fw-bolder">*</span>
                     </label>
@@ -189,10 +191,11 @@ function CallersEdit() {
                       className={`form-control sector-wise pe-5 ${
                         passwordError ? "border border-danger" : ""
                       }`}
+                      id="password"
                       placeholder="New Password"
                       name="password"
                       value={password || ""}
-                      autoComplete="password"
+                      autoComplete="new-password"
                       onChange={handlePasswordChange}
                     />
 
@@ -208,7 +211,7 @@ function CallersEdit() {
                   </div>
 
                   <div className="position-relative col-md-6">
-                    <label className="form-label">
+                    <label htmlFor="confirm_password" className="form-label">
                       Confirm Password{" "}
                       <span className="text-danger fw-bolder">*</span>
                     </label>
@@ -217,10 +220,11 @@ function CallersEdit() {
                       className={`form-control sector-wise pe-5 ${
                         passwordError ? "border border-danger" : ""
                       }`}
+                      id="confirm_password"
                       placeholder="Confirm Password"
                       name="confirmPassword"
                       value={confirmPassword || ""}
-                      autoComplete="confirm password"
+                      autoComplete="new-password"
                       onChange={handlePasswordChange}
                     />
                     <span
@@ -240,11 +244,12 @@ function CallersEdit() {
                   </div>
 
                   <div className="col-md-6 mt-2">
-                    <label className="form-label">
+                    <label htmlFor="status" className="form-label">
                       Status <span className="text-danger fw-bolder">*</span>
                     </label>
                     <select
                       aria-label="Select status"
+                      id="status"
                       className="form-select sector-wise mb-1"
                       name="status"
                       value={status}
@@ -258,8 +263,11 @@ function CallersEdit() {
                   </div>
 
                   <div className="col-md-6 mt-2">
-                    <label className="form-label">Notes (optional)</label>
+                    <label htmlFor="notes" className="form-label">
+                      Notes (optional)
+                    </label>
                     <textarea
+                      id="notes"
                       className="form-control py-2 sector-wise"
                       placeholder="Description..."
                       name="notes"
