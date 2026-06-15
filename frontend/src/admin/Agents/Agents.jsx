@@ -110,7 +110,7 @@ function Agents() {
         {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
           paginatedData.map((user) => (
             <div
-              className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3"
+              className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 col-xxl-3"
               key={user.id}
             >
               <div className="customer-card p-3 bg-white rounded-3 h-100">
