@@ -1,5 +1,5 @@
 import express from "express";
-import fs from "fs";
+import fs, { rmSync } from "fs";
 import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";
@@ -10,6 +10,7 @@ import pool from "../config/db.js";
 import authenticate from "../middleware/auth.js";
 import asyncHandler from "../config/asyncHandler.js";
 import LoginLimiter from "../config/rateLimiter.js";
+import redisClient from "../config/redisClient.js";
 
 const router = express.Router();
 
@@ -234,6 +235,8 @@ router.post(
       [fullname, email, hashedPassword],
     );
 
+    await redisClient.del("alladmindata:all");
+
     return res.status(201).json({
       success: true,
       message: "Admin added successfully",
@@ -246,23 +249,31 @@ router.get(
   "/alladmindata",
   authenticate,
   asyncHandler(async (req, res) => {
+    const cache = await redisClient.get("alladmindata:all");
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
       "SELECT id, fullname, email, role FROM admin ORDER BY id DESC LIMIT 50";
 
     const [result] = await pool.execute(SQL);
 
-    if (!result || result.length === 0) {
+    if (result.length === 0) {
       const error = new Error("No admin data found");
       error.statusCode = 404;
       throw error;
     }
 
-    return res.status(200).json({
+    const response = {
       success: true,
       message: "Data fetched successfully",
       count: result.length,
       result,
-    });
+    };
+
+    await redisClient.set("alladmindata:all", JSON.stringify(response));
+    return res.status(200).json(response);
   }),
 );
 
@@ -279,6 +290,8 @@ router.delete(
       error.statusCode = 404;
       throw error;
     }
+
+    await redisClient.del("alladmindata:all");
 
     return res.status(200).json({
       success: true,
@@ -302,7 +315,6 @@ router.put(
       : "UPDATE admin SET email = ? WHERE id = ?";
 
     const params = password ? [email, hashedPassword, id] : [email, id];
-
     const [result] = await pool.execute(SQL, params);
 
     if (result.affectedRows <= 0) {
@@ -310,6 +322,8 @@ router.put(
       error.statusCode = 404;
       throw error;
     }
+
+    await redisClient.del("alladmindata:all");
 
     return res.status(200).json({
       success: true,
@@ -346,30 +360,6 @@ router.get("/profile", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
-// staffs
-
-router.get(
-  "/allstaffs",
-  authenticate,
-  asyncHandler(async (req, res) => {
-    const SQL = "SELECT id, fullname, email, role FROM staff";
-    const [result] = await pool.execute(SQL);
-
-    if (result.length === 0) {
-      const error = new Error("data not found");
-      error.statusCode = 404;
-      throw error;
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "data fetched successfully",
-      count: result.length,
-      result,
-    });
-  }),
-);
 
 // customers bulk uploaded
 
@@ -501,8 +491,34 @@ router.get(
   "/allcustomersdata",
   authenticate,
   asyncHandler(async (req, res) => {
+    const cache = await redisClient.get("allcustomersdata:all");
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
       "SELECT name, phone, city, service, status, caller FROM customers ORDER BY id DESC";
+    const [result] = await pool.execute(SQL);
+
+    const response = {
+      success: true,
+      message: "data fetch successfully",
+      count: result.length,
+      result,
+    };
+
+    await redisClient.set("allcustomersdata:all", JSON.stringify(response));
+    return res.status(200).json(response);
+  }),
+);
+
+// callers or staff
+
+router.get(
+  "/allstaffs",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const SQL = "SELECT id, fullname, email, role FROM staff";
     const [result] = await pool.execute(SQL);
 
     if (result.length === 0) {
@@ -550,6 +566,8 @@ router.post(
       [fullname, email, hashedPassword, status, notes],
     );
 
+    await redisClient.del(`allcallers:all`);
+
     return res.status(201).json({
       success: true,
       message: "Caller created successfully",
@@ -592,6 +610,8 @@ router.put(
       throw error;
     }
 
+    await redisClient.del("allcallers:all");
+
     return res.status(200).json({
       success: true,
       message: "Staff updated successfully",
@@ -614,6 +634,8 @@ router.delete(
       throw error;
     }
 
+    await redisClient.del(`allcallers:all`);
+
     return res.status(200).json({
       success: true,
       message: "Staff deleted successfully",
@@ -625,6 +647,11 @@ router.delete(
 router.get(
   "/allcallers",
   asyncHandler(async (req, res) => {
+    const cache = await redisClient.get("allcallers:all");
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
       "SELECT id, fullname, email, role, status, role, notes, created_at FROM staff ORDER BY id DESC LIMIT 20";
 
@@ -636,12 +663,15 @@ router.get(
       throw error;
     }
 
-    return res.status(200).json({
+    const response = {
       success: true,
       message: "Data fetched successfully",
       count: result.length,
       data: result,
-    });
+    };
+
+    await redisClient.set("allcallers:all", JSON.stringify(response));
+    return res.status(200).json(response);
   }),
 );
 
@@ -711,13 +741,13 @@ router.put(
         [fullname, email, updatedPassword, updatedImage, id],
       );
 
+      await redisClient.del("allagents:all");
+
       res.status(200).json({
         success: true,
         message: "Profile updated successfully",
       });
     } catch (error) {
-      console.log(error);
-
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -794,6 +824,8 @@ router.post(
       notes,
     ]);
 
+    await redisClient.del("allagents:all");
+
     return res.status(201).json({
       success: true,
       message: "Agent created successfully",
@@ -806,6 +838,11 @@ router.get(
   "/allagents",
   authenticate,
   asyncHandler(async (req, res) => {
+    const cache = await redisClient.get("allagents:all");
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
       "SELECT id, fullname, phone, email, status, profile_image from agents ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
@@ -816,12 +853,15 @@ router.get(
       throw error;
     }
 
-    return res.status(200).json({
+    const response = {
       success: true,
-      message: "data fetched successfully",
+      message: "data fetch successfully",
       count: result.length,
-      data: result,
-    });
+      result,
+    };
+
+    await redisClient.set("allagents:all", JSON.stringify(response));
+    return res.status(200).json(response);
   }),
 );
 
@@ -973,6 +1013,8 @@ router.post(
       const insertedCount = result.affectedRows;
       const skippedCount = uniqueRows.length - insertedCount;
 
+      await redisClient.del("allagents:all");
+
       return res.status(200).json({
         success: true,
         message: "Agents bulk upload completed",
@@ -1019,6 +1061,8 @@ router.patch(
   }),
 );
 
+// services
+
 router.post(
   "/servicepost",
   authenticate,
@@ -1030,9 +1074,18 @@ router.post(
 
     const [result] = await pool.execute(SQL, [service_name, status, notes]);
 
+    if (result.affectedRows <= 0) {
+      const error = new Error("data post failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await redisClient.del("services:all");
+
     res.status(200).json({
       success: true,
       message: "data post successfully",
+      result,
     });
   }),
 );
@@ -1041,8 +1094,13 @@ router.get(
   "/allservices",
   authenticate,
   asyncHandler(async (req, res) => {
+    const cache = await redisClient.get("services:all");
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
-      "SELECT id, service_name, status, notes  from services ORDER BY id DESC";
+      "SELECT id, service_name, status, notes from services ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
     if (result.length === 0) {
@@ -1051,12 +1109,15 @@ router.get(
       throw error;
     }
 
-    return res.status(200).json({
+    const response = {
       success: true,
       message: "data fetched successfully",
       count: result.length,
       result: result,
-    });
+    };
+
+    await redisClient.set("services:all", JSON.stringify(response));
+    return res.status(200).json(response);
   }),
 );
 
@@ -1074,6 +1135,8 @@ router.delete(
       error.statusCode = 404;
       throw error;
     }
+
+    await redisClient.del("services:all");
 
     return res.status(200).json({
       success: true,
@@ -1123,6 +1186,8 @@ router.put(
       error.statusCode = 404;
       throw error;
     }
+
+    await redisClient.del("services:all");
 
     return res.status(200).json({
       success: true,

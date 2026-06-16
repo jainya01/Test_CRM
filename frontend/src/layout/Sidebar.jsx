@@ -174,7 +174,7 @@ function Sidebar() {
           }
 
           if (agentRes.status === "fulfilled") {
-            setAgent(agentRes.value.data.data || []);
+            setAgent(agentRes.value.data.result || []);
           }
         } catch (err) {
           console.error(err);

@@ -18,7 +18,7 @@ function Agents() {
         const response = await axios.get(`${API_URL}/allagents`, {
           headers: authHeader(),
         });
-        setAgents(response.data.data || []);
+        setAgents(response.data.result || []);
       } catch (error) {
         console.error("error", error);
       }
