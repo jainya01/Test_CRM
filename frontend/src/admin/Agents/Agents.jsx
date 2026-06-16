@@ -121,12 +121,20 @@ function Agents() {
                         src={`${uploadsBase}/${user.profile_image}`}
                         alt={user.fullname}
                         className="img-fluid rounded-circle"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                          e.currentTarget.nextSibling.style.display = "flex";
+                        }}
                       />
-                    ) : (
-                      <div>
-                        {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
-                      </div>
-                    )}
+                    ) : null}
+
+                    <div
+                      style={{
+                        display: user?.profile_image ? "none" : "flex",
+                      }}
+                    >
+                      {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
+                    </div>
                   </div>
 
                   <div className="flex-grow-1">
