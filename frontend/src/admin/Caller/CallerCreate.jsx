@@ -198,7 +198,7 @@ function CallersCreate() {
                     >
                       <FontAwesomeIcon
                         icon={showPassword ? faEyeSlash : faEye}
-                        className="me-1"
+                        className="me-2"
                       />
                     </span>
                   </div>

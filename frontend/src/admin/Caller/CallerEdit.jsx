@@ -205,7 +205,7 @@ function CallersEdit() {
                     >
                       <FontAwesomeIcon
                         icon={showPassword ? faEyeSlash : faEye}
-                        className="me-1"
+                        className="me-2"
                       />
                     </span>
                   </div>
@@ -233,7 +233,7 @@ function CallersEdit() {
                     >
                       <FontAwesomeIcon
                         icon={showPassword ? faEyeSlash : faEye}
-                        className="me-1"
+                        className="me-2"
                       />
                     </span>
                     {passwordError && (

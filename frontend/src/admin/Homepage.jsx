@@ -19,21 +19,6 @@ function Homepage() {
 
   const scheduleRef = useRef();
 
-  const [reschedule, setReschedule] = useState({
-    open: false,
-    date: "",
-  });
-
-  useEffect(() => {
-    const handler = (e) =>
-      scheduleRef.current &&
-      !scheduleRef.current.contains(e.target) &&
-      setReschedule((p) => ({ ...p, open: false }));
-
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
   const users = [
     {
       id: 1,
@@ -90,6 +75,21 @@ function Homepage() {
       temp: "Cold",
     },
   ];
+
+  const [reschedule, setReschedule] = useState({
+    open: false,
+    date: "",
+  });
+
+  useEffect(() => {
+    const handler = (e) =>
+      scheduleRef.current &&
+      !scheduleRef.current.contains(e.target) &&
+      setReschedule((p) => ({ ...p, open: false }));
+
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const [adminName, setAdminName] = useState("");
 

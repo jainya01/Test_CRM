@@ -3,7 +3,7 @@ import "../App.css";
 import { authHeader } from "../utils/authHeader";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -12,6 +12,7 @@ function AgentEdit() {
 
   const { id } = useParams();
   const fileInputRef = useRef(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [agent, setAgent] = useState({
     fullname: "",
@@ -176,11 +177,10 @@ function AgentEdit() {
                     />
                   </div>
 
-                  <div className="col-md-6 mb-3">
+                  <div className="position-relative col-md-6 mb-3">
                     <label className="form-label">New Password</label>
-
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       className="form-control sector-wise mb-0"
                       placeholder="Enter new password"
                       value={password}
@@ -191,6 +191,16 @@ function AgentEdit() {
                         })
                       }
                     />
+
+                    <span
+                      className="eye-login1"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="me-2"
+                      />
+                    </span>
                   </div>
 
                   <div className="col-md-6 mb-2">

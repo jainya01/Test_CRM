@@ -1270,10 +1270,10 @@ body {
 .eye-login1 {
   position: absolute;
   right: 12px;
-  top: 38px;
+  top: 40px;
   cursor: pointer;
   color: #111;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .callers-forms {
