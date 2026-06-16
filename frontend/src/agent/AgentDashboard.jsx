@@ -173,17 +173,17 @@ function AgentDashboard() {
                   {
                     title: "Premium Hajj 2026 — 40 Days",
                     seats: "40 days · 12 seats",
-                    price: "PKR 1850k",
+                    price: "INR 1850k",
                   },
                   {
                     title: "Umrah Express — 10 Days",
                     seats: "10 days · 8 seats",
-                    price: "PKR 285k",
+                    price: "INR 285k",
                   },
                   {
                     title: "Ramadan Umrah Special",
                     seats: "15 days · 6 seats",
-                    price: "PKR 540k",
+                    price: "INR 540k",
                   },
                 ].map((item, index) => (
                   <div
@@ -215,17 +215,17 @@ function AgentDashboard() {
                 {[
                   {
                     title: "Umrah Express — 10 Days",
-                    seats: "8 seats · PKR 285,000",
+                    seats: "8 seats · INR 285,000",
                     days: "5d",
                   },
                   {
                     title: "Ramadan Umrah Special",
-                    seats: "6 seats · PKR 540,000",
+                    seats: "6 seats · INR 540,000",
                     days: "3d",
                   },
                   {
                     title: "Medical Visa — Turkey",
-                    seats: "4 seats · PKR 410,000",
+                    seats: "4 seats · INR 410,000",
                     days: "2d",
                   },
                 ].map((item, index) => (

@@ -260,6 +260,7 @@ router.get(
     return res.status(200).json({
       success: true,
       message: "Data fetched successfully",
+      count: result.length,
       result,
     });
   }),
@@ -304,7 +305,7 @@ router.put(
 
     const [result] = await pool.execute(SQL, params);
 
-    if (result.affectedRows === 0) {
+    if (result.affectedRows <= 0) {
       const error = new Error("Admin not found or not updated");
       error.statusCode = 404;
       throw error;
@@ -355,7 +356,7 @@ router.get(
     const SQL = "SELECT id, fullname, email, role FROM staff";
     const [result] = await pool.execute(SQL);
 
-    if (result.affectedRows <= 0) {
+    if (result.length === 0) {
       const error = new Error("data not found");
       error.statusCode = 404;
       throw error;
@@ -504,7 +505,7 @@ router.get(
       "SELECT name, phone, city, service, status, caller FROM customers ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
-    if (result.length <= 0) {
+    if (result.length === 0) {
       const error = new Error("data not found");
       error.statusCode = 404;
       throw error;
@@ -513,6 +514,7 @@ router.get(
     return res.status(200).json({
       success: true,
       message: "data fetched successfully",
+      count: result.length,
       result,
     });
   }),
@@ -584,7 +586,7 @@ router.put(
 
     const [result] = await pool.execute(query, values);
 
-    if (result.affectedRows === 0) {
+    if (result.affectedRows <= 0) {
       const error = new Error("Staff not found or not updated");
       error.statusCode = 404;
       throw error;
@@ -606,7 +608,7 @@ router.delete(
 
     const [result] = await pool.execute("DELETE FROM staff WHERE id = ?", [id]);
 
-    if (result.affectedRows === 0) {
+    if (result.affectedRows <= 0) {
       const error = new Error("Staff not found");
       error.statusCode = 404;
       throw error;
@@ -615,6 +617,7 @@ router.delete(
     return res.status(200).json({
       success: true,
       message: "Staff deleted successfully",
+      result,
     });
   }),
 );
@@ -636,6 +639,7 @@ router.get(
     return res.status(200).json({
       success: true,
       message: "Data fetched successfully",
+      count: result.length,
       data: result,
     });
   }),
@@ -806,7 +810,7 @@ router.get(
       "SELECT id, fullname, phone, email, status, profile_image from agents ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
-    if (result.length <= 0) {
+    if (result.length === 0) {
       const error = new Error("data fetched failed");
       error.statusCode = 404;
       throw error;
@@ -1049,8 +1053,8 @@ router.get(
 
     return res.status(200).json({
       success: true,
-      count: result.length,
       message: "data fetched successfully",
+      count: result.length,
       result: result,
     });
   }),
@@ -1084,7 +1088,8 @@ router.get(
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const SQL = "SELECT id, service_name, status, notes FROM services WHERE id = ?";
+    const SQL =
+      "SELECT id, service_name, status, notes FROM services WHERE id = ?";
     const [result] = await pool.execute(SQL, [id]);
 
     if (result.length === 0) {
@@ -1096,6 +1101,7 @@ router.get(
     return res.status(200).json({
       success: true,
       message: "data fetched successfully",
+      count: result.length,
       result,
     });
   }),

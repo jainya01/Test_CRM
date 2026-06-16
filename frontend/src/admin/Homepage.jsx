@@ -301,17 +301,17 @@ function Homepage() {
                 {[
                   {
                     title: "Umrah Express — 10 Days",
-                    seats: "8 seats · PKR 285,000",
+                    seats: "8 seats · INR 285,000",
                     days: "5d left",
                   },
                   {
                     title: "Ramadan Umrah Special",
-                    seats: "6 seats · PKR 540,000",
+                    seats: "6 seats · INR 540,000",
                     days: "3d left",
                   },
                   {
                     title: "Medical Visa — Turkey",
-                    seats: "4 seats · PKR 410,000",
+                    seats: "4 seats · INR 410,000",
                     days: "2d left",
                   },
                 ].map((item, index) => (
