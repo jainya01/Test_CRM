@@ -327,11 +327,11 @@ function Leads() {
             </p>
           </div>
 
-          <div>
+          {/* <div>
             <Link className="text-decoration-none btn new-leader text-nowrap">
               + New Lead
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <div className="d-flex align-items-center flex-wrap justify-content-between gap-3 p-3 rounded-3 border">
