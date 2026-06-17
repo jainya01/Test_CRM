@@ -256,7 +256,7 @@ function AgentsEdit() {
                     )}
                   </div>
 
-                  <div className="position-relative col-md-6">
+                  <div className="position-relative col-md-6 mt-2">
                     <label htmlFor="password" className="form-label">
                       Password
                     </label>
@@ -289,7 +289,7 @@ function AgentsEdit() {
                     </span>
                   </div>
 
-                  <div className="position-relative col-md-6">
+                  <div className="position-relative col-md-6 mt-2">
                     <label htmlFor="confirmPassword" className="form-label">
                       Confirm Password
                     </label>
