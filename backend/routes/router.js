@@ -1,5 +1,5 @@
 import express from "express";
-import fs, { rmSync } from "fs";
+import fs from "fs";
 import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";

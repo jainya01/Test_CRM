@@ -13,7 +13,7 @@ function Agents() {
   const [agents, setAgents] = useState([]);
 
   useEffect(() => {
-    const alldata = async () => {
+    const agentsData = async () => {
       try {
         const response = await axios.get(`${API_URL}/allagents`, {
           headers: authHeader(),
@@ -24,7 +24,7 @@ function Agents() {
       }
     };
 
-    alldata();
+    agentsData();
   }, []);
 
   const filteredAgents = agents.filter((item) => {
