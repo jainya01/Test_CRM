@@ -834,6 +834,101 @@ router.post(
   }),
 );
 
+router.put(
+  "/agentsedit/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { fullname, phone, email, password, status, notes } = req.body;
+
+    const [emailRows] = await pool.execute(
+      "SELECT id FROM agents WHERE email = ? AND id != ?",
+      [email, id],
+    );
+
+    if (emailRows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
+
+    let result;
+
+    if (password && password.trim() !== "") {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const SQL = `
+        UPDATE agents
+        SET fullname=?, phone=?, email=?, password=?, status=?, notes=?
+        WHERE id=?
+      `;
+
+      [result] = await pool.execute(SQL, [
+        fullname,
+        phone,
+        email,
+        hashedPassword,
+        status,
+        notes,
+        id,
+      ]);
+    } else {
+      const SQL = `
+        UPDATE agents
+        SET fullname=?, phone=?, email=?, status=?, notes=?
+        WHERE id=?
+      `;
+
+      [result] = await pool.execute(SQL, [
+        fullname,
+        phone,
+        email,
+        status,
+        notes,
+        id,
+      ]);
+    }
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("Agent update failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await redisClient.del("allagents:all");
+
+    return res.status(200).json({
+      success: true,
+      message: "Agent updated successfully",
+      result,
+    });
+  }),
+);
+
+router.get(
+  "/someagents/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const SQL =
+      "SELECT id, fullname, phone, email, status, notes FROM agents WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.length === 0) {
+      const error = new Error("data load failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "data fetch successfully",
+      result,
+    });
+  }),
+);
+
 router.get(
   "/allagents",
   authenticate,

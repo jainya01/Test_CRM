@@ -1462,3 +1462,7 @@ body {
   color: #00372c;
   font-weight: 500;
 }
+
+.confirm-password {
+  font-size: 14px;
+}

@@ -115,32 +115,42 @@ function Agents() {
             >
               <div className="customer-card p-3 bg-white rounded-3 h-100">
                 <div className="d-flex align-items-start gap-3">
-                  <div className="avatar-circle avatar-agents">
-                    {user?.profile_image ? (
-                      <img
-                        src={`${uploadsBase}/${user.profile_image}`}
-                        alt={user.fullname}
-                        className="img-fluid rounded-circle"
-                        onError={(e) => {
-                          e.currentTarget.style.display = "none";
-                          e.currentTarget.nextSibling.style.display = "flex";
-                        }}
-                      />
-                    ) : null}
+                  <Link
+                    className="text-dark text-decoration-none"
+                    to={`/admin/agents/edit/${user.id}`}
+                  >
+                    <div className="avatar-circle avatar-agents">
+                      {user?.profile_image ? (
+                        <img
+                          src={`${uploadsBase}/${user.profile_image}`}
+                          alt={user.fullname}
+                          className="img-fluid rounded-circle"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                            e.currentTarget.nextSibling.style.display = "flex";
+                          }}
+                        />
+                      ) : null}
 
-                    <div
-                      style={{
-                        display: user?.profile_image ? "none" : "flex",
-                      }}
-                    >
-                      {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
+                      <div
+                        style={{
+                          display: user?.profile_image ? "none" : "flex",
+                        }}
+                      >
+                        {user?.fullname?.charAt(0)?.toUpperCase() || "N"}
+                      </div>
                     </div>
-                  </div>
+                  </Link>
 
                   <div className="flex-grow-1">
-                    <h5 className="fw-semibold mb-1 customer-name">
-                      {user?.fullname || "N/A"}
-                    </h5>
+                    <Link
+                      className="text-dark text-decoration-none"
+                      to={`/admin/agents/edit/${user.id}`}
+                    >
+                      <h5 className="fw-semibold mb-1 customer-name">
+                        {user?.fullname || "N/A"}
+                      </h5>
+                    </Link>
 
                     <p className="text-secondary customer-phone">
                       {user?.email || "N/A"}

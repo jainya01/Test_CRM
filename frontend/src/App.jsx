@@ -20,6 +20,7 @@ const Customers = lazy(() => import("./admin/Customers"));
 
 const Agents = lazy(() => import("./admin/Agents/Agents"));
 const AgentsCreate = lazy(() => import("./admin/Agents/AgentsCreate"));
+const AgentsEdit = lazy(() => import("./admin/Agents/AgentsEdit"));
 
 const Passport = lazy(() => import("./admin/Passport"));
 const BulkUpload = lazy(() => import("./admin/BulkUpload"));
@@ -39,7 +40,7 @@ const AgentDashboard = lazy(() => import("./agent/AgentDashboard"));
 const AgentCustomers = lazy(() => import("./agent/AgentCustomers"));
 const AgentPackages = lazy(() => import("./agent/AgentPackages"));
 const AgentBookings = lazy(() => import("./agent/AgentBookings"));
-const AgentEdit = lazy(() => import("./agent/AgentEdit"));
+const AgentProfile = lazy(() => import("./agent/AgentProfile"));
 
 const StaffDashboard = lazy(() => import("./staff/StaffDashboard"));
 const StaffPackage = lazy(() => import("./staff/StaffPackage"));
@@ -70,6 +71,7 @@ function App() {
 
               <Route path="agents" element={<Agents />} />
               <Route path="agents/create" element={<AgentsCreate />} />
+              <Route path="agents/edit/:id" element={<AgentsEdit />} />
 
               <Route path="customers" element={<Customers />} />
               <Route path="passports" element={<Passport />} />
@@ -78,7 +80,6 @@ function App() {
               <Route path="services" element={<Service />} />
               <Route path="services/create" element={<ServiceCreate />} />
               <Route path="services/edit/:id" element={<ServicesEdit />} />
-
               <Route path="settings" element={<Settings />} />
             </Route>
           </Route>
@@ -89,8 +90,7 @@ function App() {
               <Route path="customers" element={<AgentCustomers />} />
               <Route path="packages" element={<AgentPackages />} />
               <Route path="bookings" element={<AgentBookings />} />
-
-              <Route path="profile" element={<AgentEdit />} />
+              <Route path="profile" element={<AgentProfile />} />
             </Route>
           </Route>
 

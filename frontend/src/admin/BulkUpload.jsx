@@ -33,7 +33,7 @@ function BulkUpload() {
       }
 
       if (agentRes.status === "fulfilled") {
-        setAgents(agentRes.value.data.data.length);
+        setAgents(agentRes.value.data.result.length);
       }
     } catch (error) {
       console.error("error", error);

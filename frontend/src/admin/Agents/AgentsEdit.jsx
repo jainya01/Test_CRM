@@ -3,13 +3,14 @@ import "../../App.css";
 import { authHeader } from "../../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-function AgentsCreate() {
+function AgentsEdit() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const { id } = useParams();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -18,11 +19,14 @@ function AgentsCreate() {
     phone: "",
     email: "",
     password: "",
+    confirmPassword: "",
     status: "",
     notes: "",
   });
 
-  const { fullname, phone, email, password, status, notes } = agent;
+  const { fullname, phone, email, password, confirmPassword, status, notes } =
+    agent;
+
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -40,10 +44,6 @@ function AgentsCreate() {
       newErrors.email = "Email is required";
     }
 
-    if (!password.trim()) {
-      newErrors.password = "Password is required";
-    }
-
     if (!status) {
       newErrors.status = "Status is required";
     }
@@ -57,6 +57,10 @@ function AgentsCreate() {
       newErrors.password = "Password must be at least 6 characters";
     }
 
+    if (password && confirmPassword && password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -68,17 +72,24 @@ function AgentsCreate() {
     if (!isValid) return;
 
     try {
-      await axios.post(`${API_URL}/agentpost`, agent, {
+      const payload = { ...agent };
+
+      if (!payload.password) {
+        delete payload.password;
+        delete payload.confirmPassword;
+      }
+
+      await axios.put(`${API_URL}/agentsedit/${id}`, payload, {
         headers: authHeader(),
       });
 
-      toast.success("Agent created successfully");
+      toast.success("Agent updated successfully");
 
       setTimeout(() => {
         navigate("/admin/agents");
       }, 1000);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add agent");
+      toast.error(error.response?.result?.message || "Failed to update agent");
     }
   };
 
@@ -88,6 +99,33 @@ function AgentsCreate() {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/someagents/${id}`, {
+          headers: authHeader(),
+        });
+        const data = res.data?.result?.[0];
+
+        SetAgent({
+          fullname: data?.fullname || "",
+          phone: data?.phone || "",
+          email: data?.email || "",
+          password: "",
+          confirmPassword: "",
+          status: data?.status || "",
+          notes: data?.notes || "",
+        });
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+
+    if (id) {
+      fetchAgents();
+    }
+  }, [id]);
 
   return (
     <main className="content-wrapper">
@@ -127,7 +165,9 @@ function AgentsCreate() {
       <div className="p-2 p-lg-3 mt-2">
         <div className="col-12">
           <div className="card shadow border-0">
-            <div className="card-header profile-header">Create New Agents</div>
+            <div className="card-header profile-header">
+              Edit Agent: {agent.fullname}
+            </div>
             <div className="card-body">
               <form onSubmit={handleFormSubmit}>
                 <div className="row">
@@ -190,41 +230,7 @@ function AgentsCreate() {
                     )}
                   </div>
 
-                  <div className="position-relative col-md-6">
-                    <label htmlFor="password" className="form-label">
-                      Password <span className="text-danger fw-bolder">*</span>
-                    </label>
-
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      className="form-control sector-wise pe-5"
-                      placeholder="Enter Password"
-                      name="password"
-                      value={password}
-                      onChange={onInputChange}
-                      autoComplete="new-password"
-                      required
-                    />
-
-                    {errors.password && (
-                      <small className="text-danger mt-1">
-                        {errors.password}
-                      </small>
-                    )}
-
-                    <span
-                      className="eye-login1"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        className="me-2"
-                      />
-                    </span>
-                  </div>
-
-                  <div className="col-md-6 mt-2">
+                  <div className="col-md-6">
                     <label htmlFor="status" className="form-label">
                       Status <span className="text-danger fw-bolder">*</span>
                     </label>
@@ -249,7 +255,73 @@ function AgentsCreate() {
                     )}
                   </div>
 
-                  <div className="col-md-6 mt-2">
+                  <div className="position-relative col-md-6">
+                    <label htmlFor="password" className="form-label">
+                      Password
+                    </label>
+
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      className="form-control sector-wise pe-5"
+                      placeholder="Enter Password"
+                      name="password"
+                      value={password}
+                      onChange={onInputChange}
+                      autoComplete="new-password"
+                    />
+
+                    {errors.password && (
+                      <small className="text-danger mt-1">
+                        {errors.password}
+                      </small>
+                    )}
+
+                    <span
+                      className="eye-login1"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="me-2"
+                      />
+                    </span>
+                  </div>
+
+                  <div className="position-relative col-md-6">
+                    <label htmlFor="confirmPassword" className="form-label">
+                      Confirm Password
+                    </label>
+
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="confirmPassword"
+                      className="form-control sector-wise pe-5"
+                      placeholder="Enter Confirm Password"
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      onChange={onInputChange}
+                      autoComplete="new-password"
+                    />
+
+                    {errors.confirmPassword && (
+                      <div className="text-danger confirm-password mt-0">
+                        {errors.confirmPassword}
+                      </div>
+                    )}
+
+                    <span
+                      className="eye-login1"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="me-2"
+                      />
+                    </span>
+                  </div>
+
+                  <div className="col-12 mt-2">
                     <label htmlFor="notes" className="form-label">
                       Notes (optional)
                     </label>
@@ -265,10 +337,10 @@ function AgentsCreate() {
                   </div>
                 </div>
 
-                <div className="col-md-6 d-flex flex-column">
+                <div className="col-md-6 mt-3 d-flex flex-column">
                   <div>
                     <button type="submit" className="btn btn-update mb-2">
-                      Submit
+                      Update
                     </button>
                   </div>
 
@@ -287,4 +359,4 @@ function AgentsCreate() {
   );
 }
 
-export default AgentsCreate;
+export default AgentsEdit;
