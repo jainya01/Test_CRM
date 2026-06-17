@@ -168,6 +168,7 @@ function AgentsEdit() {
             <div className="card-header profile-header">
               Edit Agent: {agent.fullname}
             </div>
+
             <div className="card-body">
               <form onSubmit={handleFormSubmit}>
                 <div className="row">
