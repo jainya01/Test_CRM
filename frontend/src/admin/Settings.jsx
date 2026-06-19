@@ -84,6 +84,7 @@ function Settings() {
 
   const [adminEmail, setAdminEmail] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword1, setShowPassword1] = useState(false);
 
   useEffect(() => {
     const allData = async () => {
@@ -296,7 +297,7 @@ function Settings() {
                   )}
                 </div>
 
-                <div className="mb-2">
+                <div className="mb-2" style={{ position: "relative" }}>
                   <label
                     htmlFor="password_input"
                     className="form-label small fw-medium mt-2 mb-1"
@@ -304,7 +305,7 @@ function Settings() {
                     Password
                   </label>
                   <input
-                    type="password"
+                    type={showPassword1 ? "text" : "password"}
                     id="password_input"
                     className="form-control sector-wise"
                     placeholder="Create Password"
@@ -319,6 +320,12 @@ function Settings() {
                       {errors.password}
                     </span>
                   )}
+
+                  <FontAwesomeIcon
+                    icon={showPassword1 ? faEyeSlash : faEye}
+                    className="eye-hover mt-3 pt-1"
+                    onClick={() => setShowPassword1(!showPassword1)}
+                  />
                 </div>
 
                 <div className="d-flex gap-2 justify-content-end">
