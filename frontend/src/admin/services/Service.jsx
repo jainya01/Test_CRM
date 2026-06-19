@@ -155,8 +155,7 @@ function CallerExecutive() {
                                 : "custom-active"
                             }`}
                           />
-
-                          {item.status || "N/A"}
+                          <span className="status-span">{item.status || "N/A"}</span>
                         </div>
                       </td>
 

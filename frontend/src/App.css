@@ -1466,3 +1466,7 @@ body {
 .confirm-password {
   font-size: 14px;
 }
+
+.status-span {
+  font-size: 13px;
+}

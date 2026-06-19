@@ -226,7 +226,9 @@ function CallerExecutive() {
                             }`}
                           />
 
-                          {item.status || "N/A"}
+                          <span className="status-span">
+                            {item.status || "N/A"}
+                          </span>
                         </div>
                       </td>
 

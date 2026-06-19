@@ -255,8 +255,7 @@ router.get(
       return res.status(200).json(JSON.parse(cache));
     }
 
-    const SQL =
-      "SELECT id, fullname, email, role FROM admin LIMIT 50";
+    const SQL = "SELECT id, fullname, email, role FROM admin LIMIT 50";
 
     const [result] = await pool.execute(SQL);
 
@@ -570,7 +569,7 @@ router.post(
       [fullname, email, hashedPassword, status, notes],
     );
 
-    await redisClient.del("crm2:allcallers:all");
+    await redisClient.del("crm2:allstaffs:all");
 
     return res.status(201).json({
       success: true,
@@ -614,7 +613,7 @@ router.put(
       throw error;
     }
 
-    await redisClient.del("crm2:allcallers:all");
+    await redisClient.del("crm2:allstaffs:all");
 
     return res.status(200).json({
       success: true,
@@ -638,7 +637,7 @@ router.delete(
       throw error;
     }
 
-    await redisClient.del("crm2:allcallers:all");
+    await redisClient.del("crm2:allstaffs:all");
 
     return res.status(200).json({
       success: true,
@@ -651,7 +650,7 @@ router.delete(
 router.get(
   "/allcallers",
   asyncHandler(async (req, res) => {
-    const cacheKey = `crm2:allcallers:all`;
+    const cacheKey = `crm2:allstaffs:all`;
     const cache = await redisClient.get(cacheKey);
     if (cache) {
       return res.status(200).json(JSON.parse(cache));
