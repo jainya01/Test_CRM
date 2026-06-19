@@ -113,7 +113,7 @@ function Agents() {
               className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 col-xxl-3"
               key={user.id}
             >
-              <div className="customer-card p-3 bg-white rounded-3 h-100">
+              <div className="customer-card p-3 bg-white border rounded-3 h-100">
                 <div className="d-flex align-items-start gap-3">
                   <Link
                     className="text-dark text-decoration-none"

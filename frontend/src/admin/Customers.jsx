@@ -198,7 +198,7 @@ function Customers() {
               className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3"
               key={user.id}
             >
-              <div className="customer-card p-3 bg-white rounded-3 h-100">
+              <div className="customer-card p-3 border bg-white rounded-3 h-100">
                 <div className="d-flex align-items-start gap-2">
                   <div className="avatar-circle">
                     {user?.name?.charAt(0) || "N"}

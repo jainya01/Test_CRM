@@ -149,7 +149,7 @@ function BulkUpload() {
 
         <div className="col-12 col-lg-6 d-flex flex-column h-100">
           <form onSubmit={handleBulkSubmit}>
-            <div className="card rounded-3 h-100 px-3 py-3 border-0">
+            <div className="card rounded-3 h-100 px-3 py-3 border">
               <span className="mb-2 uploaded-customer">Customers Upload</span>
 
               <div className="dotted-class text-center">
@@ -221,7 +221,7 @@ function BulkUpload() {
 
         <div className="col-12 col-lg-6 d-flex flex-column">
           <form onSubmit={handleBulkAgent}>
-            <div className="card rounded-3 h-100 px-3 py-3 border-0">
+            <div className="card rounded-3 h-100 px-3 py-3 border">
               <span className="mb-2 uploaded-customer">Agents Upload</span>
 
               <div className="dotted-class text-center">

@@ -288,7 +288,7 @@ function Homepage() {
 
           <div className="row g-3 mt-1">
             <div className="col-12 col-lg-8">
-              <div className="urgency-card">
+              <div className="urgency-card border">
                 <div className="d-flex justify-content-between align-items-center mt-2 mb-3">
                   <h1 className="urgency-title mb-0">
                     <span className="warning-icon me-2">⚠</span>
@@ -334,7 +334,7 @@ function Homepage() {
             </div>
 
             <div className="col-12 col-lg-4">
-              <div className="pipeline-card">
+              <div className="pipeline-card border">
                 <div className="pipeline-title mb-3 mt-2">Lead Pipeline</div>
 
                 {[
@@ -368,7 +368,7 @@ function Homepage() {
 
           <div className="row g-2 mt-3">
             <div className="col-12">
-              <div className="card shadow-sm border-0 rounded-3 h-100">
+              <div className="card shadow-sm border rounded-3 h-100">
                 <div className="card-body p-0">
                   <div className="mb-2 mt-3 ms-2 d-flex flex-wrap gap-2 justify-content-between flex-row align-items-center">
                     <div>
