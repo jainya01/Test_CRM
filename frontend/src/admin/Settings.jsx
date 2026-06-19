@@ -158,6 +158,17 @@ function Settings() {
         headers: authHeader(),
       });
 
+      setAdminEmail((prev) =>
+        prev.map((admin) =>
+          admin.id == selectedAdmin
+            ? {
+                ...admin,
+                email: updateForm.email,
+              }
+            : admin,
+        ),
+      );
+
       toast.success("Admin credentials updated successfully");
       setUpdateForm({
         email: "",
