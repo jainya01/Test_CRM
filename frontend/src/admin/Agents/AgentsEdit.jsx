@@ -125,7 +125,7 @@ function AgentsEdit() {
     if (id) {
       fetchAgents();
     }
-  }, [id, API_URL]);
+  }, [API_URL, id]);
 
   return (
     <main className="content-wrapper">

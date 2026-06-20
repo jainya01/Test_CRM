@@ -149,7 +149,7 @@ function Sidebar() {
 
         setAdmin(res.data.result || []);
       } catch (error) {
-        console.error(error);
+        console.error("error", error);
       }
     };
 

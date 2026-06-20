@@ -90,7 +90,7 @@ function ServiceEdit() {
     if (id) {
       fetchServices();
     }
-  }, [id, API_URL]);
+  }, [API_URL, id]);
 
   return (
     <main className="content-wrapper">

@@ -35,7 +35,7 @@ function BulkUpload() {
         setAgents(agentRes.value.data.result.length);
       }
     } catch (error) {
-      console.error(error);
+      console.error("error", error);
     }
   }, [API_URL]);
 
