@@ -120,7 +120,7 @@ function Homepage() {
     };
 
     allData();
-  }, []);
+  }, [API_URL]);
 
   const getGreeting = () => {
     const hour = new Date().getHours();

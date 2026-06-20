@@ -77,7 +77,7 @@ const AgentLogin = () => {
     if (token) {
       navigate("/agent/overview", { replace: true });
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <main className="container-fluid">

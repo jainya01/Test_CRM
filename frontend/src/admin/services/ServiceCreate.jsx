@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -38,6 +38,10 @@ function ServiceCreate() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    const isValid = validateForm();
+    if (!isValid) return;
+
     try {
       await axios.post(`${API_URL}/servicepost`, services, {
         headers: authHeader(),

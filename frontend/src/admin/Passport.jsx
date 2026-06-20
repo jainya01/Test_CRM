@@ -8,73 +8,71 @@ import {
   faFileCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
+const data = [
+  {
+    id: 1,
+    name: "Muhammad Tariq",
+    passport: "AB1000000",
+    status: "verified",
+  },
+  {
+    id: 2,
+    name: "Fatima Noor",
+    passport: "AB1000003",
+    status: "rejected",
+  },
+  {
+    id: 3,
+    name: "Usman Raza",
+    passport: "AB1000006",
+    status: "pending",
+  },
+  {
+    id: 4,
+    name: "Mariam Yusuf",
+    passport: "AB1000009",
+    status: "verified",
+  },
+  {
+    id: 5,
+    name: "Faisal Mehmood",
+    passport: "AB1000012",
+    status: "rejected",
+  },
+  {
+    id: 6,
+    name: "Saima Jamil",
+    passport: "AB1000015",
+    status: "pending",
+  },
+  {
+    id: 7,
+    name: "Imran Malik",
+    passport: "AB1000018",
+    status: "verified",
+  },
+  {
+    id: 8,
+    name: "Hira Sheikh",
+    passport: "AB1000021",
+    status: "rejected",
+  },
+  {
+    id: 9,
+    name: "Bilal Hussain",
+    passport: "AB1000024",
+    status: "pending",
+  },
+  {
+    id: 10,
+    name: "Sana Javed",
+    passport: "AB1000027",
+    status: "verified",
+  },
+];
+
 function Passport() {
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const [search, setSearch] = useState("");
-
-  const data = [
-    {
-      id: 1,
-      name: "Muhammad Tariq",
-      passport: "AB1000000",
-      status: "verified",
-    },
-    {
-      id: 2,
-      name: "Fatima Noor",
-      passport: "AB1000003",
-      status: "rejected",
-    },
-    {
-      id: 3,
-      name: "Usman Raza",
-      passport: "AB1000006",
-      status: "pending",
-    },
-    {
-      id: 4,
-      name: "Mariam Yusuf",
-      passport: "AB1000009",
-      status: "verified",
-    },
-    {
-      id: 5,
-      name: "Faisal Mehmood",
-      passport: "AB1000012",
-      status: "rejected",
-    },
-    {
-      id: 6,
-      name: "Saima Jamil",
-      passport: "AB1000015",
-      status: "pending",
-    },
-    {
-      id: 7,
-      name: "Imran Malik",
-      passport: "AB1000018",
-      status: "verified",
-    },
-    {
-      id: 8,
-      name: "Hira Sheikh",
-      passport: "AB1000021",
-      status: "rejected",
-    },
-    {
-      id: 9,
-      name: "Bilal Hussain",
-      passport: "AB1000024",
-      status: "pending",
-    },
-    {
-      id: 10,
-      name: "Sana Javed",
-      passport: "AB1000027",
-      status: "verified",
-    },
-  ];
 
   const filteredPassports = useMemo(() => {
     const keyword = search.toLowerCase();
@@ -86,7 +84,7 @@ function Passport() {
         item.status?.toLowerCase().includes(keyword)
       );
     });
-  }, [data, search]);
+  }, [search]);
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);

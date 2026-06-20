@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -39,6 +39,10 @@ function ServiceEdit() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    const isValid = validateForm();
+    if (!isValid) return;
+
     try {
       await axios.put(`${API_URL}/servicesedit/${id}`, services, {
         headers: authHeader(),

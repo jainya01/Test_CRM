@@ -3,28 +3,33 @@ import { Navigate, Outlet } from "react-router-dom";
 const Protected = ({ allow = [] }) => {
   const role = localStorage.getItem("role");
 
-  let token = null;
-  let redirectPath = "/";
+  const config = {
+    admin: {
+      token: localStorage.getItem("adminToken"),
+      redirect: "/admin/dashboard",
+    },
+    agent: {
+      token: localStorage.getItem("agentToken"),
+      redirect: "/agent/overview",
+    },
+    staff: {
+      token: localStorage.getItem("staffToken"),
+      redirect: "/staff/leads",
+    },
+  };
 
-  if (role === "admin") {
-    token = localStorage.getItem("adminToken");
-    redirectPath = "/admin/dashboard";
-  } else if (role === "agent") {
-    token = localStorage.getItem("agentToken");
-    redirectPath = "/agent/overview";
-  } else if (role === "staff") {
-    token = localStorage.getItem("staffToken");
-    redirectPath = "/staff/leads";
-  } else {
+  const current = config[role];
+
+  if (!current) {
     return <Navigate to="/" replace />;
   }
 
-  if (!token) {
+  if (!current.token) {
     return <Navigate to="/" replace />;
   }
 
   if (allow.length > 0 && !allow.includes(role)) {
-    return <Navigate to={redirectPath} replace />;
+    return <Navigate to={current.redirect} replace />;
   }
 
   return <Outlet />;

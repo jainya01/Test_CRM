@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import "../App.css";
 import { authHeader } from "../utils/authHeader";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowRight,
   faBell,
-  faCheck,
   faClock,
   faCube,
   faFire,
@@ -46,7 +43,7 @@ function AgentDashboard() {
     };
 
     allData();
-  }, []);
+  }, [API_URL]);
 
   return (
     <>

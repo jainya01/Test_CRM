@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,11 +8,8 @@ import {
   faPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const Login = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const navigate = useNavigate();
 
   useEffect(() => {

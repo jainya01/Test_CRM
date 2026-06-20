@@ -7,6 +7,99 @@ import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import axios from "axios";
 import { authHeader } from "../utils/authHeader";
 
+const users = [
+  {
+    id: 1,
+    name: "Muhammad Tariq",
+    phone: "+92 300 10000",
+    Service: "Hajj",
+    Source: "John Doe",
+    Status: "New",
+    Temp: "Hot",
+    Followup: "Today",
+  },
+  {
+    id: 2,
+    name: "Ayesha Siddiqui",
+    phone: "+92 301 10101",
+    Service: "Umrah",
+    Source: "Sarah Khan",
+    Status: "Contacted",
+    Temp: "Warm",
+    Followup: "In 1d",
+  },
+  {
+    id: 3,
+    name: "Imran Malik",
+    phone: "+92 302 10202",
+    Service: "Ticket",
+    Source: "Ali Raza",
+    Status: "Interested",
+    Temp: "Cold",
+    Followup: "In 2d",
+  },
+  {
+    id: 4,
+    name: "Fatima Noor",
+    phone: "+92 303 10303",
+    Service: "Medical",
+    Source: "Michael Smith",
+    Status: "Not Interested",
+    Temp: "Hot",
+    Followup: "In 3d",
+  },
+  {
+    id: 5,
+    name: "Zain Abbas",
+    phone: "+92 304 10404",
+    Service: "Hajj",
+    Source: "Ayesha Malik",
+    Status: "Converted",
+    Temp: "Warm",
+    Followup: "Today",
+  },
+  {
+    id: 6,
+    name: "Hira Sheikh",
+    phone: "+92 305 10505",
+    Service: "Umrah",
+    Source: "David Johnson",
+    Status: "New",
+    Temp: "Cold",
+    Followup: "Missed 1d",
+  },
+  {
+    id: 7,
+    name: "Ayesha Khan",
+    phone: "+92 311 4455667",
+    Service: "Hajj",
+    Source: "Fatima Noor",
+    Status: "Contacted",
+    Temp: "Warm",
+    Followup: "Today",
+  },
+  {
+    id: 8,
+    name: "Bilal Ahmed",
+    phone: "+92 300 7788991",
+    Service: "Umrah",
+    Source: "Usman Tariq",
+    Status: "New",
+    Temp: "Cold",
+    Followup: "Missed 2d",
+  },
+  {
+    id: 9,
+    name: "Sara Malik",
+    phone: "+92 322 5566778",
+    Service: "Visa",
+    Source: "Emily Brown",
+    Status: "Qualified",
+    Temp: "Hot",
+    Followup: "Tomorrow",
+  },
+];
+
 function Leads() {
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -15,99 +108,6 @@ function Leads() {
   const [service, setService] = useState("");
   const [selectedService, setSelectedService] = useState("");
   const [status, setStatus] = useState("");
-
-  const users = [
-    {
-      id: 1,
-      name: "Muhammad Tariq",
-      phone: "+92 300 10000",
-      Service: "Hajj",
-      Source: "John Doe",
-      Status: "New",
-      Temp: "Hot",
-      Followup: "Today",
-    },
-    {
-      id: 2,
-      name: "Ayesha Siddiqui",
-      phone: "+92 301 10101",
-      Service: "Umrah",
-      Source: "Sarah Khan",
-      Status: "Contacted",
-      Temp: "Warm",
-      Followup: "In 1d",
-    },
-    {
-      id: 3,
-      name: "Imran Malik",
-      phone: "+92 302 10202",
-      Service: "Ticket",
-      Source: "Ali Raza",
-      Status: "Interested",
-      Temp: "Cold",
-      Followup: "In 2d",
-    },
-    {
-      id: 4,
-      name: "Fatima Noor",
-      phone: "+92 303 10303",
-      Service: "Medical",
-      Source: "Michael Smith",
-      Status: "Not Interested",
-      Temp: "Hot",
-      Followup: "In 3d",
-    },
-    {
-      id: 5,
-      name: "Zain Abbas",
-      phone: "+92 304 10404",
-      Service: "Hajj",
-      Source: "Ayesha Malik",
-      Status: "Converted",
-      Temp: "Warm",
-      Followup: "Today",
-    },
-    {
-      id: 6,
-      name: "Hira Sheikh",
-      phone: "+92 305 10505",
-      Service: "Umrah",
-      Source: "David Johnson",
-      Status: "New",
-      Temp: "Cold",
-      Followup: "Missed 1d",
-    },
-    {
-      id: 7,
-      name: "Ayesha Khan",
-      phone: "+92 311 4455667",
-      Service: "Hajj",
-      Source: "Fatima Noor",
-      Status: "Contacted",
-      Temp: "Warm",
-      Followup: "Today",
-    },
-    {
-      id: 8,
-      name: "Bilal Ahmed",
-      phone: "+92 300 7788991",
-      Service: "Umrah",
-      Source: "Usman Tariq",
-      Status: "New",
-      Temp: "Cold",
-      Followup: "Missed 2d",
-    },
-    {
-      id: 9,
-      name: "Sara Malik",
-      phone: "+92 322 5566778",
-      Service: "Visa",
-      Source: "Emily Brown",
-      Status: "Qualified",
-      Temp: "Hot",
-      Followup: "Tomorrow",
-    },
-  ];
 
   useEffect(() => {
     const allData = async () => {
@@ -124,7 +124,7 @@ function Leads() {
       }
     };
     allData();
-  }, []);
+  }, [API_URL]);
 
   const keyword = (search || search1 || "").toLowerCase().trim();
 
@@ -138,7 +138,7 @@ function Leads() {
           item.service_name?.toLowerCase().includes(keyword))
       );
     });
-  }, [users, selectedService, status, keyword]);
+  }, [selectedService, status, keyword]);
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -225,7 +225,6 @@ function Leads() {
       alert("Invalid date range.");
       return;
     }
-    setPeriod("custom");
     setSelectedFilter("custom");
     setMonth(false);
     setPopoverStyle(null);
@@ -284,7 +283,6 @@ function Leads() {
 
   function applyPresetFilter(filter) {
     setSelectedFilter(filter);
-    setPeriod(filter);
     setMonth(false);
     setPopoverStyle(null);
   }

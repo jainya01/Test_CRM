@@ -1,18 +1,8 @@
 import "../App.css";
-import { authHeader } from "../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBell,
-  faCalendar,
-  faClock,
-  faFire,
-  faPhone,
-  faWarning,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBell, faCalendar, faPhone } from "@fortawesome/free-solid-svg-icons";
 
 function CallerFollowup() {
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const data = [
     {
       id: 1,

@@ -33,7 +33,7 @@ function CallerExecutive() {
       }
     };
     allData();
-  }, []);
+  }, [API_URL]);
 
   const filteredCallers = useMemo(() => {
     const keyword = search.toLowerCase().trim();
@@ -72,6 +72,7 @@ function CallerExecutive() {
 
       toast.success("Caller deleted successfully");
     } catch (error) {
+      console.error("error", error);
       toast.error("Failed to delete caller");
     }
   };

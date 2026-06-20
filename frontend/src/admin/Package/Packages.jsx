@@ -4,82 +4,80 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-function Packages() {
-  const API_URL = import.meta.env.VITE_API_URL;
+const data = [
+  {
+    service: "Hajj",
+    status: "Trending",
+    package_name: "Premium Hajj 2026 — 40 Days",
+    remaining_days: "40 days",
+    price: "INR 1850k",
+    seats: "12 seats left",
+  },
+  {
+    service: "Hajj",
+    status: "",
+    package_name: "Economy Hajj — Shifting",
+    remaining_days: "35 days",
+    price: "INR 1250k",
+    seats: "30 seats left",
+  },
+  {
+    service: "Umrah",
+    status: "Trending",
+    package_name: "Umrah Express — 10 Days",
+    remaining_days: "10 days",
+    price: "INR 285k",
+    seats: "8 seats left",
+    alert_days: "5d",
+  },
+  {
+    service: "Umrah",
+    status: "",
+    package_name: "Umrah Family Package — 14 Days",
+    remaining_days: "14 days",
+    price: "INR 425k",
+    seats: "24 seats left",
+  },
+  {
+    service: "Umrah",
+    status: "Trending",
+    package_name: "Ramadan Umrah Special",
+    remaining_days: "15 days",
+    price: "INR 540k",
+    seats: "6 seats left",
+    alert_days: "3d",
+  },
+  {
+    service: "Ticket",
+    status: "",
+    package_name: "Dubai-Jeddah Return Ticket",
+    remaining_days: "Open",
+    price: "INR 95k",
+    seats: "50 seats left",
+  },
+  {
+    service: "Medical",
+    status: "",
+    package_name: "Medical Visa — Thailand",
+    remaining_days: "21 days",
+    price: "INR 320k",
+    seats: "10 seats left",
+  },
+  {
+    service: "Medical",
+    status: "",
+    package_name: "Medical Visa — Turkey",
+    remaining_days: "30 days",
+    price: "INR 410k",
+    seats: "4 seats left",
+    alert_days: "2d",
+  },
+];
 
+function Packages() {
   const [search, setSearch] = useState("");
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
-
-  const data = [
-    {
-      service: "Hajj",
-      status: "Trending",
-      package_name: "Premium Hajj 2026 — 40 Days",
-      remaining_days: "40 days",
-      price: "INR 1850k",
-      seats: "12 seats left",
-    },
-    {
-      service: "Hajj",
-      status: "",
-      package_name: "Economy Hajj — Shifting",
-      remaining_days: "35 days",
-      price: "INR 1250k",
-      seats: "30 seats left",
-    },
-    {
-      service: "Umrah",
-      status: "Trending",
-      package_name: "Umrah Express — 10 Days",
-      remaining_days: "10 days",
-      price: "INR 285k",
-      seats: "8 seats left",
-      alert_days: "5d",
-    },
-    {
-      service: "Umrah",
-      status: "",
-      package_name: "Umrah Family Package — 14 Days",
-      remaining_days: "14 days",
-      price: "INR 425k",
-      seats: "24 seats left",
-    },
-    {
-      service: "Umrah",
-      status: "Trending",
-      package_name: "Ramadan Umrah Special",
-      remaining_days: "15 days",
-      price: "INR 540k",
-      seats: "6 seats left",
-      alert_days: "3d",
-    },
-    {
-      service: "Ticket",
-      status: "",
-      package_name: "Dubai-Jeddah Return Ticket",
-      remaining_days: "Open",
-      price: "INR 95k",
-      seats: "50 seats left",
-    },
-    {
-      service: "Medical",
-      status: "",
-      package_name: "Medical Visa — Thailand",
-      remaining_days: "21 days",
-      price: "INR 320k",
-      seats: "10 seats left",
-    },
-    {
-      service: "Medical",
-      status: "",
-      package_name: "Medical Visa — Turkey",
-      remaining_days: "30 days",
-      price: "INR 410k",
-      seats: "4 seats left",
-      alert_days: "2d",
-    },
-  ];
 
   const getServiceClass = (service) => {
     switch (service) {
@@ -96,15 +94,13 @@ function Packages() {
     }
   };
 
-  const q = search.toLowerCase();
-
   const filteredData = useMemo(() => {
     return data.filter(
       (item) =>
         (active === "All" || item.service === active) &&
         item.package_name.toLowerCase().includes(search.toLowerCase()),
     );
-  }, [data, active, search]);
+  }, [active, search]);
 
   return (
     <main className="content-wrapper">

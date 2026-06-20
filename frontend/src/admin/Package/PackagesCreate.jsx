@@ -98,7 +98,7 @@ function PackagesCreate() {
       }
     };
     allData();
-  }, []);
+  }, [API_URL]);
 
   return (
     <main className="content-wrapper">

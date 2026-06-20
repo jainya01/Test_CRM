@@ -28,7 +28,7 @@ function CallersView() {
     };
 
     callerData();
-  }, []);
+  }, [id, API_URL]);
 
   return (
     <main className="content-wrapper">

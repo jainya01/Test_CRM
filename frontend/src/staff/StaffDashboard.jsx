@@ -1,5 +1,4 @@
 import "../App.css";
-import { authHeader } from "../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
@@ -9,9 +8,7 @@ import {
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 
-function CallerDashboard() {
-  const API_URL = import.meta.env.VITE_API_URL;
-
+function StaffDashboard() {
   const data = [
     {
       id: 1,
@@ -343,4 +340,4 @@ function CallerDashboard() {
   );
 }
 
-export default CallerDashboard;
+export default StaffDashboard;

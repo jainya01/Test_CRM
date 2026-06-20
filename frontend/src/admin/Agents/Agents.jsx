@@ -11,6 +11,7 @@ function Agents() {
 
   const [search, setSearch] = useState("");
   const [agents, setAgents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const agentsData = async () => {
@@ -25,7 +26,7 @@ function Agents() {
     };
 
     agentsData();
-  }, []);
+  }, [API_URL]);
 
   const filteredAgents = useMemo(() => {
     const keyword = search.toLowerCase();
@@ -40,17 +41,11 @@ function Agents() {
   }, [agents, search]);
 
   const itemsPerPage = 20;
-  const [currentPage, setCurrentPage] = useState(1);
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  const totalPages = Math.ceil(filteredAgents.length / itemsPerPage);
+  const page = Math.min(currentPage, Math.max(totalPages, 1));
+  const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = filteredAgents.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filteredAgents.length / itemsPerPage);
-
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(1);
-    }
-  }, [currentPage, totalPages]);
 
   const uploadsBase = API_URL
     ? API_URL.replace(/\/api\/?$/, "") + "/uploads"

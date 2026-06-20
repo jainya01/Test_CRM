@@ -2,11 +2,8 @@ import { useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 function StaffPackage() {
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const [search, setSearch] = useState("");
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
@@ -95,8 +92,6 @@ function StaffPackage() {
         return "";
     }
   };
-
-  const q = search.toLowerCase();
 
   const filteredData = data.filter(
     (item) =>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../../App.css";
 import { authHeader } from "../../utils/authHeader";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ function CallerExecutive() {
       }
     };
     allData();
-  }, []);
+  }, [API_URL]);
 
   const filteredServices = useMemo(() => {
     const keyword = search.toLowerCase().trim();
@@ -65,6 +65,7 @@ function CallerExecutive() {
       setServices((prev) => prev.filter((item) => item.id !== id));
       toast.success("Service deleted successfully");
     } catch (error) {
+      console.error("error", error);
       toast.error("Failed to delete service");
     }
   };

@@ -154,7 +154,7 @@ function Sidebar() {
     };
 
     loadAdmin();
-  }, []);
+  }, [API_URL]);
 
   useEffect(() => {
     const loadExtra = () => {
@@ -183,49 +183,51 @@ function Sidebar() {
     };
 
     loadExtra();
-  }, []);
+  }, [API_URL]);
 
-  const handleLoggedUser = () => {
+  useEffect(() => {
     const role = localStorage.getItem("role");
     const id = Number(localStorage.getItem("id"));
 
-    if (role === "admin") {
-      const findAdmin = admin.find((item) => Number(item.id) === id);
+    let user = null;
 
-      if (findAdmin) {
-        setLoggedUser({
-          fullname: findAdmin.fullname,
-          email: findAdmin.email,
-        });
+    if (role === "admin") {
+      const found = admin.find((item) => Number(item.id) === id);
+      if (found) {
+        user = {
+          fullname: found.fullname,
+          email: found.email,
+        };
       }
     }
 
     if (role === "staff") {
-      const findStaff = staff.find((item) => Number(item.id) === id);
-
-      if (findStaff) {
-        setLoggedUser({
-          fullname: findStaff.fullname,
-          email: findStaff.email,
-        });
+      const found = staff.find((item) => Number(item.id) === id);
+      if (found) {
+        user = {
+          fullname: found.fullname,
+          email: found.email,
+        };
       }
     }
 
     if (role === "agent") {
-      const findAgent = agent.find((item) => Number(item.id) === id);
-
-      if (findAgent) {
-        setLoggedUser({
-          fullname: findAgent.fullname,
-          email: findAgent.email,
-        });
+      const found = agent.find((item) => Number(item.id) === id);
+      if (found) {
+        user = {
+          fullname: found.fullname,
+          email: found.email,
+        };
       }
     }
-  };
 
-  useEffect(() => {
-    if (admin.length > 0 || staff.length > 0 || agent.length > 0) {
-      handleLoggedUser();
+    if (user) {
+      setLoggedUser((prev) => {
+        if (prev?.fullname === user.fullname && prev?.email === user.email) {
+          return prev;
+        }
+        return user;
+      });
     }
   }, [admin, staff, agent]);
 

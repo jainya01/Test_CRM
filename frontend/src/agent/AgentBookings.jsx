@@ -3,58 +3,58 @@ import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-function AgentBookings() {
-  const data = [
-    {
-      id: 1,
-      airline: "Umrah Express Airlines — 10 Days",
-      name: "Muhammad Tariq",
-      passport: "AB1000000",
-      status: "confirmed",
-      price: "INR 285,000",
-    },
-    {
-      id: 2,
-      airline: "Hajj Connect Airlines — 15 Days",
-      name: "Fatima Noor",
-      passport: "AB1000003",
-      status: "pending",
-      price: "INR 310,000",
-    },
-    {
-      id: 3,
-      airline: "Saudi Travel Air — 12 Days",
-      name: "Usman Raza",
-      passport: "AB1000006",
-      status: "pending",
-      price: "INR 265,000",
-    },
-    {
-      id: 4,
-      airline: "Medina Sky Flights — 20 Days",
-      name: "Mariam Yusuf",
-      passport: "AB1000009",
-      status: "confirmed",
-      price: "INR 340,000",
-    },
-    {
-      id: 5,
-      airline: "Al Safa Air Services — 8 Days",
-      name: "Faisal Mehmood",
-      passport: "AB1000012",
-      status: "pending",
-      price: "INR 240,000",
-    },
-    {
-      id: 6,
-      airline: "Noor Air International — 14 Days",
-      name: "Saima Jamil",
-      passport: "AB1000015",
-      status: "confirmed",
-      price: "INR 295,000",
-    },
-  ];
+const data = [
+  {
+    id: 1,
+    airline: "Umrah Express Airlines — 10 Days",
+    name: "Muhammad Tariq",
+    passport: "AB1000000",
+    status: "confirmed",
+    price: "INR 285,000",
+  },
+  {
+    id: 2,
+    airline: "Hajj Connect Airlines — 15 Days",
+    name: "Fatima Noor",
+    passport: "AB1000003",
+    status: "pending",
+    price: "INR 310,000",
+  },
+  {
+    id: 3,
+    airline: "Saudi Travel Air — 12 Days",
+    name: "Usman Raza",
+    passport: "AB1000006",
+    status: "pending",
+    price: "INR 265,000",
+  },
+  {
+    id: 4,
+    airline: "Medina Sky Flights — 20 Days",
+    name: "Mariam Yusuf",
+    passport: "AB1000009",
+    status: "confirmed",
+    price: "INR 340,000",
+  },
+  {
+    id: 5,
+    airline: "Al Safa Air Services — 8 Days",
+    name: "Faisal Mehmood",
+    passport: "AB1000012",
+    status: "pending",
+    price: "INR 240,000",
+  },
+  {
+    id: 6,
+    airline: "Noor Air International — 14 Days",
+    name: "Saima Jamil",
+    passport: "AB1000015",
+    status: "confirmed",
+    price: "INR 295,000",
+  },
+];
 
+function AgentBookings() {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;

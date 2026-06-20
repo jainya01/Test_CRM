@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "../App.css";
 import { authHeader } from "../utils/authHeader";
-import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -10,7 +9,6 @@ import { ToastContainer, toast } from "react-toastify";
 function AgentEdit() {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const { id } = useParams();
   const fileInputRef = useRef(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -27,11 +25,8 @@ function AgentEdit() {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-
       const formData = new FormData();
-
       formData.append("fullname", fullname);
       formData.append("email", email);
 
@@ -68,11 +63,8 @@ function AgentEdit() {
   useEffect(() => {
     const getProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get(`${API_URL}/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: authHeader(),
         });
 
         const data = response.data.result;
@@ -88,7 +80,7 @@ function AgentEdit() {
     };
 
     getProfile();
-  }, []);
+  }, [API_URL]);
 
   return (
     <main className="content-wrapper">

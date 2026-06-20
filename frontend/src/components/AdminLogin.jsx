@@ -83,7 +83,7 @@ const AdminLogin = () => {
     if (token) {
       navigate("/admin/dashboard", { replace: true });
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <main className="container-fluid">
