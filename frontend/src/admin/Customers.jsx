@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
@@ -149,6 +149,12 @@ function Customers() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = filteredCustomers.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredCustomers]);
 
   return (
     <main className="content-wrapper">

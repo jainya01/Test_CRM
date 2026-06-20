@@ -147,6 +147,12 @@ function Leads() {
   const paginatedData = filteredLeads.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
 
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredLeads]);
+
   const [selected, setSelected] = useState([]);
   const headerRef = useRef(null);
 

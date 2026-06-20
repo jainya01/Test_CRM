@@ -50,6 +50,12 @@ function CallerExecutive() {
   const paginatedData = filteredCallers.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredCallers.length / itemsPerPage);
 
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredCallers]);
+
   const deleteData = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this caller?",

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -94,6 +94,12 @@ function Passport() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = filteredPassports.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredPassports.length / itemsPerPage);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredPassports]);
 
   return (
     <main className="content-wrapper">
@@ -216,7 +222,7 @@ function Passport() {
           </div>
         )}
 
-        {data.length > itemsPerPage && (
+        {filteredPassports.length > itemsPerPage && (
           <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
             <button
               className={`btn rounded-pill px-3 py-1 shadow-sm ${

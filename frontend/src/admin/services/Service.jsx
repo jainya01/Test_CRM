@@ -44,6 +44,12 @@ function CallerExecutive() {
   const paginatedData = filteredServices.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
 
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [filteredServices]);
+
   const deleteData = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this service?",
