@@ -45,8 +45,7 @@ const AgentLogin = () => {
     return true;
   };
 
-  const handleAgentLogin = async (e) => {
-    e.preventDefault();
+  const handleAgentLogin = async () => {
     if (!validateForm()) return;
 
     setErrorMessage("");
@@ -113,7 +112,7 @@ const AgentLogin = () => {
               Enter your credentials to continue.
             </p>
 
-            <form onSubmit={handleAgentLogin}>
+            <form action={handleAgentLogin}>
               <div className="mb-3">
                 <label className="form-label">Email</label>
                 <div className="input-group">

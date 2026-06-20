@@ -26,9 +26,7 @@ function CallersEdit() {
 
   const { fullname, email, password, confirmPassword, status, notes } = call;
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleFormSubmit = async () => {
     if (call.password || call.confirmPassword) {
       if (call.password !== call.confirmPassword) {
         toast.error("Passwords do not match");
@@ -147,7 +145,7 @@ function CallersEdit() {
             </div>
 
             <div className="card-body">
-              <form onSubmit={handleFormSubmit}>
+              <form action={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="fullname" className="form-label">

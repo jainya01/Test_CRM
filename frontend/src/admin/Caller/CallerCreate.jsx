@@ -57,11 +57,8 @@ function CallersCreate() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleFormSubmit = async () => {
     const isValid = validateForm();
-
     if (!isValid) return;
 
     try {
@@ -128,7 +125,7 @@ function CallersCreate() {
             <div className="card-header profile-header">Create New Callers</div>
 
             <div className="card-body">
-              <form onSubmit={handleFormSubmit}>
+              <form action={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="fullname" className="form-label">

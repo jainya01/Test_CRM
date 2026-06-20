@@ -45,8 +45,7 @@ const StaffLogin = () => {
     return true;
   };
 
-  const handleStaffLogin = async (e) => {
-    e.preventDefault();
+  const handleStaffLogin = async () => {
     if (!validateForm()) return;
 
     setErrorMessage("");
@@ -114,7 +113,7 @@ const StaffLogin = () => {
               Enter your credentials to continue.
             </p>
 
-            <form onSubmit={handleStaffLogin}>
+            <form action={handleStaffLogin}>
               <div className="mb-3">
                 <label className="form-label">Email</label>
 

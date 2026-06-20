@@ -45,8 +45,7 @@ const AdminLogin = () => {
     return true;
   };
 
-  const handleAdminLogin = async (e) => {
-    e.preventDefault();
+  const handleAdminLogin = async () => {
     if (!validateForm()) return;
 
     setErrorMessage("");
@@ -120,7 +119,7 @@ const AdminLogin = () => {
               Enter your credentials to continue.
             </p>
 
-            <form onSubmit={handleAdminLogin}>
+            <form action={handleAdminLogin}>
               <div className="mb-3">
                 <label className="form-label">Email</label>
                 <div className="input-group">

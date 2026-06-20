@@ -21,9 +21,7 @@ function AgentEdit() {
 
   const { fullname, email, password, file } = agent;
 
-  const handleUpdateProfile = async (e) => {
-    e.preventDefault();
-
+  const handleUpdateProfile = async () => {
     try {
       const id = localStorage.getItem("id");
       const formData = new FormData();
@@ -126,7 +124,7 @@ function AgentEdit() {
           <div className="card shadow border-0">
             <div className="card-header profile-header">Update Profile</div>
             <div className="card-body">
-              <form onSubmit={handleUpdateProfile}>
+              <form action={handleUpdateProfile}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label className="form-label">

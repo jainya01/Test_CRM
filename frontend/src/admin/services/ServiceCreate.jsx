@@ -36,9 +36,7 @@ function ServiceCreate() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleFormSubmit = async () => {
     const isValid = validateForm();
     if (!isValid) return;
 
@@ -112,7 +110,7 @@ function ServiceCreate() {
             </div>
 
             <div className="card-body">
-              <form onSubmit={handleFormSubmit}>
+              <form action={handleFormSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="service_name" className="form-label">
