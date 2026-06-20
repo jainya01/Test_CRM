@@ -54,7 +54,7 @@ function CallerExecutive() {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredCallers]);
+  }, [currentPage, totalPages]);
 
   const deleteData = async (id) => {
     const confirmDelete = window.confirm(

@@ -151,7 +151,7 @@ function Leads() {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredLeads]);
+  }, [currentPage, totalPages]);
 
   const [selected, setSelected] = useState([]);
   const headerRef = useRef(null);

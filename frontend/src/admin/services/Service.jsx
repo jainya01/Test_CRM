@@ -48,7 +48,7 @@ function CallerExecutive() {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredServices]);
+  }, [currentPage, totalPages]);
 
   const deleteData = async (id) => {
     const confirmDelete = window.confirm(
@@ -68,14 +68,6 @@ function CallerExecutive() {
       toast.error("Failed to delete service");
     }
   };
-
-  // const renderCount = useRef(0);
-  // renderCount.current++;
-  // console.log("CallerExecutive Render:", renderCount.current);
-
-  // useEffect(() => {
-  //   console.log("Search changed:", search);
-  // }, [search]);
 
   return (
     <main className="content-wrapper">

@@ -99,7 +99,7 @@ function Passport() {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredPassports]);
+  }, [currentPage, totalPages]);
 
   return (
     <main className="content-wrapper">

@@ -154,7 +154,7 @@ function Customers() {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredCustomers]);
+  }, [currentPage, totalPages]);
 
   return (
     <main className="content-wrapper">

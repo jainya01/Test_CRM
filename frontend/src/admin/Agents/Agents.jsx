@@ -50,7 +50,7 @@ function Agents() {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredAgents]);
+  }, [currentPage, totalPages]);
 
   const uploadsBase = API_URL
     ? API_URL.replace(/\/api\/?$/, "") + "/uploads"
