@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -76,14 +76,17 @@ function Passport() {
     },
   ];
 
-  const filteredPassports = data.filter((item) => {
+  const filteredPassports = useMemo(() => {
     const keyword = search.toLowerCase();
-    return (
-      item.name?.toLowerCase().includes(keyword) ||
-      item.passport?.toLowerCase().includes(keyword) ||
-      item.status?.toLowerCase().includes(keyword)
-    );
-  });
+
+    return data.filter((item) => {
+      return (
+        item.name?.toLowerCase().includes(keyword) ||
+        item.passport?.toLowerCase().includes(keyword) ||
+        item.status?.toLowerCase().includes(keyword)
+      );
+    });
+  }, [data, search]);
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);

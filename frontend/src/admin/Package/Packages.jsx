@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
@@ -98,11 +98,13 @@ function Packages() {
 
   const q = search.toLowerCase();
 
-  const filteredData = data.filter(
-    (item) =>
-      (active === "All" || item.service === active) &&
-      item.package_name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredData = useMemo(() => {
+    return data.filter(
+      (item) =>
+        (active === "All" || item.service === active) &&
+        item.package_name.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [data, active, search]);
 
   return (
     <main className="content-wrapper">

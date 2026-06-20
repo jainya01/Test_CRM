@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "../App.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -128,15 +128,17 @@ function Leads() {
 
   const keyword = (search || search1 || "").toLowerCase().trim();
 
-  const filteredLeads = users.filter((item) => {
-    return (
-      (selectedService === "" || item.Service === selectedService) &&
-      (status === "" || item.Status === status) &&
-      (item.name?.toLowerCase().includes(keyword) ||
-        item.phone?.toString().toLowerCase().includes(keyword) ||
-        item.service_name?.toLowerCase().includes(keyword))
-    );
-  });
+  const filteredLeads = useMemo(() => {
+    return users.filter((item) => {
+      return (
+        (selectedService === "" || item.Service === selectedService) &&
+        (status === "" || item.Status === status) &&
+        (item.name?.toLowerCase().includes(keyword) ||
+          item.phone?.toString().toLowerCase().includes(keyword) ||
+          item.service_name?.toLowerCase().includes(keyword))
+      );
+    });
+  }, [users, selectedService, status, keyword]);
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);

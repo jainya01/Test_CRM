@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "../../App.css";
 import { authHeader } from "../../utils/authHeader";
 import { Link } from "react-router-dom";
@@ -30,10 +30,12 @@ function CallerExecutive() {
     allData();
   }, []);
 
-  const filteredServices = services.filter((item) => {
+  const filteredServices = useMemo(() => {
     const keyword = search.toLowerCase().trim();
-    return item.service_name?.toLowerCase().includes(keyword);
-  });
+    return services.filter((item) =>
+      item.service_name?.toLowerCase().includes(keyword),
+    );
+  }, [services, search]);
 
   const itemsPerPage = 14;
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,6 +62,14 @@ function CallerExecutive() {
       toast.error("Failed to delete service");
     }
   };
+
+  // const renderCount = useRef(0);
+  // renderCount.current++;
+  // console.log("CallerExecutive Render:", renderCount.current);
+
+  // useEffect(() => {
+  //   console.log("Search changed:", search);
+  // }, [search]);
 
   return (
     <main className="content-wrapper">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
@@ -131,14 +131,17 @@ function Customers() {
 
   const [search, setSearch] = useState("");
 
-  const filteredCustomers = data.filter((item) => {
+  const filteredCustomers = useMemo(() => {
     const keyword = search.toLowerCase();
-    return (
-      item.name?.toLowerCase().includes(keyword) ||
-      item.service?.toLowerCase().includes(keyword) ||
-      item.phone?.toLowerCase().includes(keyword)
-    );
-  });
+
+    return data.filter((item) => {
+      return (
+        item.name?.toLowerCase().includes(keyword) ||
+        item.service?.toLowerCase().includes(keyword) ||
+        item.phone?.toLowerCase().includes(keyword)
+      );
+    });
+  }, [data, search]);
 
   const itemsPerPage = 24;
   const [currentPage, setCurrentPage] = useState(1);
