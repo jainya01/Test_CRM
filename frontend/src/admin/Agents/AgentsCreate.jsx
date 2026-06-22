@@ -89,6 +89,12 @@ function AgentsCreate() {
 
   return (
     <>
+      <title>Create Agent | CRM Agent Portal</title>
+      <meta
+        name="description"
+        content="Add and manage B2B agents in the CRM portal. Create profiles, assign accounts, manage status, and streamline customer and booking operations."
+      />
+
       <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
           <div className="row align-items-center">

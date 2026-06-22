@@ -2,7 +2,7 @@ import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCalendar, faPhone } from "@fortawesome/free-solid-svg-icons";
 
-function CallerFollowup() {
+function StaffFollowup() {
   const data = [
     {
       id: 1,
@@ -230,4 +230,4 @@ function CallerFollowup() {
   );
 }
 
-export default CallerFollowup;
+export default StaffFollowup;

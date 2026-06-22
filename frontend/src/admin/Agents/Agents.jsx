@@ -53,8 +53,11 @@ function Agents() {
 
   return (
     <>
-      <title></title>
-      <meta name="description" content="" />
+      <title>Agents Management | CRM Agent Portal</title>
+      <meta
+        name="description"
+        content="Manage B2B agents, track performance, monitor bookings, view account status, and maintain agent profiles in the CRM Agent Management Portal."
+      />
 
       <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">

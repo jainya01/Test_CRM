@@ -156,7 +156,7 @@ function Customers() {
 
   return (
     <>
-      <title>Associated Customers | CRM Agent Portal</title>
+      <title>Associated Customers | CRM Portal</title>
       <meta
         name="description"
         content="Manage agent-linked customers, track bookings, lead status, follow-ups, services, and interactions through the CRM Agent Management Portal."
