@@ -613,6 +613,7 @@ router.put(
       throw error;
     }
 
+    await redisClient.del(`crm2:somecallers:${id}`);
     await redisClient.del("crm2:allstaffs:all");
 
     return res.status(200).json({
@@ -637,6 +638,7 @@ router.delete(
       throw error;
     }
 
+    await redisClient.del(`crm2:somecallers:${id}`);
     await redisClient.del("crm2:allstaffs:all");
 
     return res.status(200).json({
@@ -685,6 +687,12 @@ router.get(
   asyncHandler(async (req, res) => {
     const { id } = req.params;
 
+    const cacheKey = `crm2:somecallers:${id}`;
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
       "SELECT id, fullname, email, role, status, notes FROM staff WHERE id = ?";
 
@@ -696,11 +704,14 @@ router.get(
       throw error;
     }
 
-    return res.status(200).json({
+    const response = {
       success: true,
       message: "Data fetched successfully",
       data: result[0],
-    });
+    };
+
+    await redisClient.set(cacheKey, JSON.stringify(response));
+    return res.status(200).json(response);
   }),
 );
 
@@ -902,6 +913,7 @@ router.put(
       throw error;
     }
 
+    await redisClient.del(`crm2:someagents:${id}`);
     await redisClient.del("crm2:allagents:all");
 
     return res.status(200).json({
@@ -917,6 +929,12 @@ router.get(
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const cacheKey = `crm2:someagents:${id}`;
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
       "SELECT id, fullname, phone, email, status, notes FROM agents WHERE id = ?";
     const [result] = await pool.execute(SQL, [id]);
@@ -927,11 +945,14 @@ router.get(
       throw error;
     }
 
-    return res.status(200).json({
+    const response = {
       success: true,
       message: "data fetch successfully",
       result,
-    });
+    };
+
+    await redisClient.set(cacheKey, JSON.stringify(response));
+    return res.status(200).json(response);
   }),
 );
 
@@ -964,6 +985,31 @@ router.get(
 
     await redisClient.set(cacheKey, JSON.stringify(response));
     return res.status(200).json(response);
+  }),
+);
+
+router.delete(
+  "/agentsdelete/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const SQL = "DELETE FROM agents WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("data deleted failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await redisClient.del(`crm2:someagents:${id}`);
+    await redisClient.del("crm2:allagents:all");
+
+    return res.status(200).json({
+      success: true,
+      message: "agent deleted successfully",
+      result,
+    });
   }),
 );
 
@@ -1239,6 +1285,7 @@ router.delete(
       throw error;
     }
 
+    await redisClient.del(`crm2:someservices:${id}`);
     await redisClient.del("crm2:services:all");
 
     return res.status(200).json({
@@ -1254,6 +1301,12 @@ router.get(
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const cacheKey = `crm2:someservices:${id}`;
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
     const SQL =
       "SELECT id, service_name, status, notes FROM services WHERE id = ?";
     const [result] = await pool.execute(SQL, [id]);
@@ -1264,12 +1317,15 @@ router.get(
       throw error;
     }
 
-    return res.status(200).json({
+    const response = {
       success: true,
       message: "data fetched successfully",
       count: result.length,
       result,
-    });
+    };
+
+    await redisClient.set(cacheKey, JSON.stringify(response));
+    return res.status(200).json(response);
   }),
 );
 
@@ -1290,6 +1346,7 @@ router.put(
       throw error;
     }
 
+    await redisClient.del(`crm2:someservices:${id}`);
     await redisClient.del("crm2:services:all");
 
     return res.status(200).json({
