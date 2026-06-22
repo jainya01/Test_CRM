@@ -63,125 +63,135 @@ function AgentBookings() {
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   return (
-    <main className="content-wrapper">
-      <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
-        <div className="row align-items-center">
-          <div className="col-10 col-md-11">
-            <div className="row align-items-center">
-              <div className="col-9 col-md-8 col-lg-6">
-                <input
-                  type="search"
-                  className="form-control sector-wise"
-                  placeholder="Search passport, name, phone, PNR..."
-                />
-              </div>
-            </div>
-          </div>
+    <>
+      <title>My Bookings | CRM Agent Portal</title>
+      <meta
+        name="description"
+        content="Manage booking requests, track customer reservations, view package details, monitor booking status, and handle travel bookings efficiently."
+      />
 
-          <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
-            <button className="btn border-0 position-relative">
-              <FontAwesomeIcon icon={faBell} />
-              <span className="notification-corner bg-danger">0</span>
-            </button>
-
-            <span className="text-nowrap ms-2 date-days">
-              {new Date()
-                .toLocaleDateString("en-GB", {
-                  weekday: "short",
-                  day: "2-digit",
-                  month: "short",
-                })
-                .replace(",", "")}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
-        <div>
-          <h5 className="fw-bold overview-dashboard">Bookings</h5>
-          <p className="text-muted overview-lead fw-bold">
-            {paginatedData.length} booking requests
-          </p>
-        </div>
-
-        {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
-          paginatedData.map((user) => (
-            <div className="col-12 col-lg-8" key={user.id}>
-              <div className="customer-card p-3 bg-white rounded-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="d-flex align-items-center gap-3">
-                    <div>
-                      <h5 className="fw-semibold mb-1 customer-name-passport">
-                        {user?.airline || "N/A"}
-                      </h5>
-
-                      <p className="text-secondary mb-0 customer-phone-passport">
-                        Customer: {user?.name || "N/A"} {user?.price || "N/A"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    {user.status === "confirmed" && (
-                      <button className="btn btn-success fw-semibold btn-verified">
-                        Confirmed
-                      </button>
-                    )}
-
-                    {user.status === "pending" && (
-                      <div className="d-flex gap-2">
-                        <button className="btn btn-light fw-semibold btn-pending">
-                          Pending
-                        </button>
-                      </div>
-                    )}
-                  </div>
+      <main className="content-wrapper">
+        <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
+          <div className="row align-items-center">
+            <div className="col-10 col-md-11">
+              <div className="row align-items-center">
+                <div className="col-9 col-md-8 col-lg-6">
+                  <input
+                    type="search"
+                    className="form-control sector-wise"
+                    placeholder="Search passport, name, phone, PNR..."
+                  />
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="text-center py-5 rounded-3">No bookings Found</div>
+
+            <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
+              <button className="btn border-0 position-relative">
+                <FontAwesomeIcon icon={faBell} />
+                <span className="notification-corner bg-danger">0</span>
+              </button>
+
+              <span className="text-nowrap ms-2 date-days">
+                {new Date()
+                  .toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short",
+                  })
+                  .replace(",", "")}
+              </span>
+            </div>
           </div>
-        )}
+        </div>
 
-        {data.length > itemsPerPage && (
-          <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
-            <button
-              className={`btn rounded-pill px-3 py-1 shadow-sm ${
-                currentPage <= 1
-                  ? "btn-light border text-muted"
-                  : "btn-success border-0"
-              }`}
-              disabled={currentPage <= 1}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            >
-              ← Prev
-            </button>
-
-            <span className="fw-semibold px-2">
-              Page {currentPage} of {totalPages}
-            </span>
-
-            <button
-              className={`btn rounded-pill px-3 py-1 shadow-sm ${
-                currentPage >= totalPages
-                  ? "btn-light border text-muted"
-                  : "btn-success border-0"
-              }`}
-              disabled={currentPage >= totalPages}
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-            >
-              Next →
-            </button>
+        <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
+          <div>
+            <h5 className="fw-bold overview-dashboard">Bookings</h5>
+            <p className="text-muted overview-lead fw-bold">
+              {paginatedData.length} booking requests
+            </p>
           </div>
-        )}
-      </div>
-    </main>
+
+          {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
+            paginatedData.map((user) => (
+              <div className="col-12 col-lg-8" key={user.id}>
+                <div className="customer-card p-3 bg-white rounded-3">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center gap-3">
+                      <div>
+                        <h5 className="fw-semibold mb-1 customer-name-passport">
+                          {user?.airline || "N/A"}
+                        </h5>
+
+                        <p className="text-secondary mb-0 customer-phone-passport">
+                          Customer: {user?.name || "N/A"} {user?.price || "N/A"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      {user.status === "confirmed" && (
+                        <button className="btn btn-success fw-semibold btn-verified">
+                          Confirmed
+                        </button>
+                      )}
+
+                      {user.status === "pending" && (
+                        <div className="d-flex gap-2">
+                          <button className="btn btn-light fw-semibold btn-pending">
+                            Pending
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <div className="text-center py-5 rounded-3">
+                No bookings Found
+              </div>
+            </div>
+          )}
+
+          {data.length > itemsPerPage && (
+            <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
+              <button
+                className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                  currentPage <= 1
+                    ? "btn-light border text-muted"
+                    : "btn-success border-0"
+                }`}
+                disabled={currentPage <= 1}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              >
+                ← Prev
+              </button>
+
+              <span className="fw-semibold px-2">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <button
+                className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                  currentPage >= totalPages
+                    ? "btn-light border text-muted"
+                    : "btn-success border-0"
+                }`}
+                disabled={currentPage >= totalPages}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+              >
+                Next →
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
 

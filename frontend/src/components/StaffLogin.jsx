@@ -80,106 +80,116 @@ const StaffLogin = () => {
   }, [navigate]);
 
   return (
-    <main className="container-fluid">
-      <div className="row min-vh-100 text-start">
-        <div className="col-lg-6 col-sm-12 d-lg-flex flex-column justify-content-center convert-metric text-white px-2 px-lg-4 pt-5 pt-lg-0">
-          <div className="position-absolute top-0 start-0 p-2 mt-4 ps-lg-3 d-flex align-items-center">
-            <div className="custom-box mt-0">
-              <FontAwesomeIcon icon={faPlane} />
+    <>
+      <title>Calling Staff Login | CRM Calling Portal</title>
+      <meta
+        name="description"
+        content="Secure login for calling staff to access customer records, manage calls, update lead status, track follow-ups, and handle daily CRM operations efficiently."
+      />
+
+      <main className="container-fluid">
+        <div className="row min-vh-100 text-start">
+          <div className="col-lg-6 col-sm-12 d-lg-flex flex-column justify-content-center convert-metric text-white px-2 px-lg-4 pt-5 pt-lg-0">
+            <div className="position-absolute top-0 start-0 p-2 mt-4 ps-lg-3 d-flex align-items-center">
+              <div className="custom-box mt-0">
+                <FontAwesomeIcon icon={faPlane} />
+              </div>
+
+              <div className="d-flex flex-column ms-2">
+                <span className="fw-bold text-white signal-crm">
+                  Jainya CRM
+                </span>
+              </div>
             </div>
 
-            <div className="d-flex flex-column ms-2">
-              <span className="fw-bold text-white signal-crm">Jainya CRM</span>
+            <h1 className="fw-bold track-calls">Move faster. Convert more.</h1>
+
+            <h1 className="telecalls-admin mb-4">
+              Action-driven CRM purpose-built for Hajj, Umrah, ticketing and
+              medical travel teams.
+            </h1>
+            <div className="copyright-travel">
+              © {new Date().getFullYear()} Jainya Travel Group
             </div>
           </div>
 
-          <h1 className="fw-bold track-calls">Move faster. Convert more.</h1>
+          <div className="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light mt-lg-4 mt-0">
+            <div className="w-100 px-0" style={{ maxWidth: "450px" }}>
+              <h2 className="fw-bold mb-2 admin-account">
+                Staff Sign in to your account
+              </h2>
+              <p className="text-muted mb-4">
+                Enter your credentials to continue.
+              </p>
 
-          <h1 className="telecalls-admin mb-4">
-            Action-driven CRM purpose-built for Hajj, Umrah, ticketing and
-            medical travel teams.
-          </h1>
-          <div className="copyright-travel">
-            © {new Date().getFullYear()} Jainya Travel Group
-          </div>
-        </div>
+              <form action={handleStaffLogin}>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
 
-        <div className="col-lg-6 col-sm-12 d-flex align-items-center justify-content-center bg-light mt-lg-4 mt-0">
-          <div className="w-100 px-0" style={{ maxWidth: "450px" }}>
-            <h2 className="fw-bold mb-2 admin-account">
-              Staff Sign in to your account
-            </h2>
-            <p className="text-muted mb-4">
-              Enter your credentials to continue.
-            </p>
+                  <div className="input-group">
+                    <input
+                      type="email"
+                      className="form-control sector-wise mb-0"
+                      placeholder="you@company.com"
+                      name="email"
+                      value={email}
+                      onChange={handleChange}
+                      autoComplete="email"
+                      style={{ height: "42px" }}
+                      required
+                    />
+                  </div>
+                </div>
 
-            <form action={handleStaffLogin}>
-              <div className="mb-3">
-                <label className="form-label">Email</label>
+                <div className="position-relative">
+                  <label className="form-label">Password</label>
 
-                <div className="input-group">
                   <input
-                    type="email"
-                    className="form-control sector-wise mb-0"
-                    placeholder="you@company.com"
-                    name="email"
-                    value={email}
+                    type={showPassword ? "text" : "password"}
+                    className="form-control pe-5 sector-wise"
+                    placeholder="********"
+                    name="password"
+                    value={password}
                     onChange={handleChange}
-                    autoComplete="email"
+                    autoComplete="current-password"
                     style={{ height: "42px" }}
                     required
                   />
+
+                  <span
+                    className="eye-login"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                  </span>
                 </div>
-              </div>
 
-              <div className="position-relative">
-                <label className="form-label">Password</label>
+                {errorMessage && (
+                  <>
+                    <div className="text-danger mt-0 mb-3 invalid-message">
+                      {errorMessage}
+                    </div>
+                  </>
+                )}
 
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="form-control pe-5 sector-wise"
-                  placeholder="********"
-                  name="password"
-                  value={password}
-                  onChange={handleChange}
-                  autoComplete="current-password"
-                  style={{ height: "42px" }}
-                  required
-                />
-
-                <span
-                  className="eye-login"
-                  onClick={() => setShowPassword(!showPassword)}
+                <button
+                  type="submit"
+                  className="btn sign-in-btn w-100 py-2 mb-2 mt-auto"
                 >
-                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                </span>
-              </div>
+                  Log In
+                </button>
 
-              {errorMessage && (
-                <>
-                  <div className="text-danger mt-0 mb-3 invalid-message">
-                    {errorMessage}
-                  </div>
-                </>
-              )}
-
-              <button
-                type="submit"
-                className="btn sign-in-btn w-100 py-2 mb-2 mt-auto"
-              >
-                Log In
-              </button>
-
-              <Link to="/" className="accessible-success">
-                Back
-              </Link>
-            </form>
+                <Link to="/" className="accessible-success">
+                  Back
+                </Link>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
 
-      <ToastContainer position="bottom-right" autoClose={1500} />
-    </main>
+        <ToastContainer position="bottom-right" autoClose={1500} />
+      </main>
+    </>
   );
 };
 

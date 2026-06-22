@@ -91,134 +91,142 @@ function ServiceEdit() {
   }, [API_URL, id]);
 
   return (
-    <main className="content-wrapper">
-      <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
-        <div className="row align-items-center">
-          <div className="col-10 col-md-11">
-            <div className="row align-items-center">
-              <div className="col-9 col-md-8 col-lg-6">
-                <input
-                  type="search"
-                  className="form-control sector-wise"
-                  placeholder="Search passport, name, phone, PNR..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
+    <>
+      <title>Edit Service | CRM Portal</title>
+      <meta
+        name="description"
+        content="Update service details, manage service status, and maintain Hajj, Umrah, Ticket, and Medical services in the CRM Services Management Portal."
+      />
+
+      <main className="content-wrapper">
+        <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
+          <div className="row align-items-center">
+            <div className="col-10 col-md-11">
+              <div className="row align-items-center">
+                <div className="col-9 col-md-8 col-lg-6">
+                  <input
+                    type="search"
+                    className="form-control sector-wise"
+                    placeholder="Search passport, name, phone, PNR..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
+              <button className="btn border-0 position-relative">
+                <FontAwesomeIcon icon={faBell} />
+                <span className="notification-corner bg-danger">0</span>
+              </button>
+
+              <span className="text-nowrap ms-2 date-days">
+                {new Date()
+                  .toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short",
+                  })
+                  .replace(",", "")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-2 p-lg-3 mt-2">
+          <div className="col-12">
+            <div className="card shadow border-0">
+              <div className="card-header profile-header">
+                Edit Service: {services.service_name}
+              </div>
+
+              <div className="card-body">
+                <form action={handleFormSubmit}>
+                  <div className="row">
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="service_name" className="form-label">
+                        Service Name
+                        <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="service_name"
+                        className="form-control sector-wise mb-1"
+                        placeholder="Enter service name"
+                        name="service_name"
+                        value={service_name}
+                        onChange={handleChange}
+                        required
+                      />
+                      {errors.service_name && (
+                        <small className="text-danger mt-1">
+                          {errors.service_name}
+                        </small>
+                      )}
+                    </div>
+
+                    <div className="col-md-6">
+                      <label htmlFor="status" className="form-label">
+                        Status <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <select
+                        aria-label="Select status"
+                        id="status"
+                        className="form-select sector-wise mb-1"
+                        name="status"
+                        value={status}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+
+                      {errors.status && (
+                        <small className="text-danger mt-1">
+                          {errors.status}
+                        </small>
+                      )}
+                    </div>
+
+                    <div className="col-12 mb-3">
+                      <label htmlFor="notes" className="form-label">
+                        Notes (optional)
+                      </label>
+                      <textarea
+                        id="notes"
+                        className="form-control py-2 sector-wise"
+                        placeholder="Add a short note..."
+                        name="notes"
+                        value={notes}
+                        onChange={handleChange}
+                        style={{ height: "60px" }}
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="col-md-6 d-flex flex-column">
+                    <div>
+                      <button type="submit" className="btn btn-update mb-2">
+                        Submit
+                      </button>
+                    </div>
+
+                    <Link className="text-success" to="/admin/services">
+                      Back
+                    </Link>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-
-          <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
-            <button className="btn border-0 position-relative">
-              <FontAwesomeIcon icon={faBell} />
-              <span className="notification-corner bg-danger">0</span>
-            </button>
-
-            <span className="text-nowrap ms-2 date-days">
-              {new Date()
-                .toLocaleDateString("en-GB", {
-                  weekday: "short",
-                  day: "2-digit",
-                  month: "short",
-                })
-                .replace(",", "")}
-            </span>
-          </div>
         </div>
-      </div>
 
-      <div className="p-2 p-lg-3 mt-2">
-        <div className="col-12">
-          <div className="card shadow border-0">
-            <div className="card-header profile-header">
-              Edit Service: {services.service_name}
-            </div>
-
-            <div className="card-body">
-              <form action={handleFormSubmit}>
-                <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="service_name" className="form-label">
-                      Service Name
-                      <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="service_name"
-                      className="form-control sector-wise mb-1"
-                      placeholder="Enter service name"
-                      name="service_name"
-                      value={service_name}
-                      onChange={handleChange}
-                      required
-                    />
-                    {errors.service_name && (
-                      <small className="text-danger mt-1">
-                        {errors.service_name}
-                      </small>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <label htmlFor="status" className="form-label">
-                      Status <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <select
-                      aria-label="Select status"
-                      id="status"
-                      className="form-select sector-wise mb-1"
-                      name="status"
-                      value={status}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="">Select status</option>
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
-                    </select>
-
-                    {errors.status && (
-                      <small className="text-danger mt-1">
-                        {errors.status}
-                      </small>
-                    )}
-                  </div>
-
-                  <div className="col-12 mb-3">
-                    <label htmlFor="notes" className="form-label">
-                      Notes (optional)
-                    </label>
-                    <textarea
-                      id="notes"
-                      className="form-control py-2 sector-wise"
-                      placeholder="Add a short note..."
-                      name="notes"
-                      value={notes}
-                      onChange={handleChange}
-                      style={{ height: "60px" }}
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex flex-column">
-                  <div>
-                    <button type="submit" className="btn btn-update mb-2">
-                      Submit
-                    </button>
-                  </div>
-
-                  <Link className="text-success" to="/admin/services">
-                    Back
-                  </Link>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ToastContainer position="bottom-right" autoClose={1500} />
-    </main>
+        <ToastContainer position="bottom-right" autoClose={1500} />
+      </main>
+    </>
   );
 }
 

@@ -103,130 +103,138 @@ function Packages() {
   }, [active, search]);
 
   return (
-    <main className="content-wrapper">
-      <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
-        <div className="row align-items-center">
-          <div className="col-10 col-md-11">
-            <div className="row align-items-center">
-              <div className="col-9 col-md-8 col-lg-6">
-                <input
-                  type="search"
-                  className="form-control sector-wise"
-                  placeholder="Search passport, name, phone, PNR..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
+    <>
+      <title>Packages Management | Travel CRM Portal</title>
+      <meta
+        name="description"
+        content="Manage Hajj, Umrah, Ticket, and Medical Visa packages. Update pricing, track availability, monitor bookings, and organize travel services in the CRM Packages Portal."
+      />
+
+      <main className="content-wrapper">
+        <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
+          <div className="row align-items-center">
+            <div className="col-10 col-md-11">
+              <div className="row align-items-center">
+                <div className="col-9 col-md-8 col-lg-6">
+                  <input
+                    type="search"
+                    className="form-control sector-wise"
+                    placeholder="Search passport, name, phone, PNR..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
-            <button className="btn border-0 position-relative">
-              <FontAwesomeIcon icon={faBell} />
-              <span className="notification-corner bg-danger">0</span>
-            </button>
+            <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
+              <button className="btn border-0 position-relative">
+                <FontAwesomeIcon icon={faBell} />
+                <span className="notification-corner bg-danger">0</span>
+              </button>
 
-            <span className="text-nowrap ms-2 date-days">
-              {new Date()
-                .toLocaleDateString("en-GB", {
-                  weekday: "short",
-                  day: "2-digit",
-                  month: "short",
-                })
-                .replace(",", "")}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-2 p-lg-3">
-        <div className="d-flex justify-content-between flex-wrap">
-          <div>
-            <h5 className="fw-bold overview-dashboard">Packages</h5>
-            <p className="text-muted overview-lead fw-bold">
-              {filteredData.length} active packages
-            </p>
-          </div>
-
-          <div>
-            <Link
-              className="text-decoration-none btn new-leader text-nowrap"
-              to="/admin/packages/create"
-            >
-              + New Package
-            </Link>
-          </div>
-        </div>
-
-        <div className="d-flex flex-wrap flex-md-nowrap gap-2 border custom-packages mt-2">
-          {tabs.map((tab) => (
-            <div
-              key={tab}
-              onClick={() => setActive(tab)}
-              className={`custom-pad custom-styles ${
-                active === tab ? "tab-active" : "tab-inactive"
-              }`}
-              role="button"
-              tabIndex={0}
-            >
-              {tab}
+              <span className="text-nowrap ms-2 date-days">
+                {new Date()
+                  .toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short",
+                  })
+                  .replace(",", "")}
+              </span>
             </div>
-          ))}
+          </div>
         </div>
 
-        <div className="row g-2 mt-3">
-          {Array.isArray(filteredData) && filteredData.length > 0 ? (
-            filteredData.map((item, index) => (
-              <div className="col-12 col-sm-6 col-md-6 col-lg-3" key={index}>
-                <div className="border rounded-3 h-100">
-                  <div
-                    className={`rounded-3 common-code ${getServiceClass(item.service)}`}
-                  >
-                    <span className="d-flex flex-wrap">
-                      <div className="hajj-package ms-2">{item.service}</div>
+        <div className="p-2 p-lg-3">
+          <div className="d-flex justify-content-between flex-wrap">
+            <div>
+              <h5 className="fw-bold overview-dashboard">Packages</h5>
+              <p className="text-muted overview-lead fw-bold">
+                {filteredData.length} active packages
+              </p>
+            </div>
 
-                      {item.status === "Trending" && (
-                        <div className="hajj-trend ms-2">🔥 Trending</div>
-                      )}
+            <div>
+              <Link
+                className="text-decoration-none btn new-leader text-nowrap"
+                to="/admin/packages/create"
+              >
+                + New Package
+              </Link>
+            </div>
+          </div>
 
-                      <div className="hajj-trend ms-auto me-2">
-                        <FontAwesomeIcon icon={faWarning} className="me-1" />
-                        2d
-                      </div>
-                    </span>
-                  </div>
+          <div className="d-flex flex-wrap flex-md-nowrap gap-2 border custom-packages mt-2">
+            {tabs.map((tab) => (
+              <div
+                key={tab}
+                onClick={() => setActive(tab)}
+                className={`custom-pad custom-styles ${
+                  active === tab ? "tab-active" : "tab-inactive"
+                }`}
+                role="button"
+                tabIndex={0}
+              >
+                {tab}
+              </div>
+            ))}
+          </div>
 
-                  <div className="mt-2 px-3 py-1">
-                    <div className="package-name">{item.package_name}</div>
-                    <div className="ramains-day">{item.remaining_days}</div>
+          <div className="row g-2 mt-3">
+            {Array.isArray(filteredData) && filteredData.length > 0 ? (
+              filteredData.map((item, index) => (
+                <div className="col-12 col-sm-6 col-md-6 col-lg-3" key={index}>
+                  <div className="border rounded-3 h-100">
+                    <div
+                      className={`rounded-3 common-code ${getServiceClass(item.service)}`}
+                    >
+                      <span className="d-flex flex-wrap">
+                        <div className="hajj-package ms-2">{item.service}</div>
 
-                    <div className="d-flex justify-content-between align-items-center flex-wrap">
-                      <div className="d-flex flex-column">
-                        <div className="price-package mt-2">{item.price}</div>
-                        <div className="seats-left mt-1 mb-2">
-                          <FontAwesomeIcon icon={faUsers} className="me-2" />
-                          {item.seats}
+                        {item.status === "Trending" && (
+                          <div className="hajj-trend ms-2">🔥 Trending</div>
+                        )}
+
+                        <div className="hajj-trend ms-auto me-2">
+                          <FontAwesomeIcon icon={faWarning} className="me-1" />
+                          2d
                         </div>
-                      </div>
+                      </span>
+                    </div>
 
-                      <div>
-                        <button className="btn new-leader px-2 py-1 new-books">
-                          Book
-                        </button>
+                    <div className="mt-2 px-3 py-1">
+                      <div className="package-name">{item.package_name}</div>
+                      <div className="ramains-day">{item.remaining_days}</div>
+
+                      <div className="d-flex justify-content-between align-items-center flex-wrap">
+                        <div className="d-flex flex-column">
+                          <div className="price-package mt-2">{item.price}</div>
+                          <div className="seats-left mt-1 mb-2">
+                            <FontAwesomeIcon icon={faUsers} className="me-2" />
+                            {item.seats}
+                          </div>
+                        </div>
+
+                        <div>
+                          <button className="btn new-leader px-2 py-1 new-books">
+                            Book
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="text-center w-100 mt-3 text-muted">
+                No packages available
               </div>
-            ))
-          ) : (
-            <div className="text-center w-100 mt-3 text-muted">
-              No packages available
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 

@@ -86,6 +86,12 @@ function StaffDashboard() {
 
   return (
     <>
+      <title>Staff Dashboard | CRM Staff Portal</title>
+      <meta
+        name="description"
+        content="Manage assigned leads, track daily calls, monitor follow-ups, view hot prospects, update lead status, and stay productive with real-time sales insights."
+      />
+
       <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
           <div className="row align-items-center">

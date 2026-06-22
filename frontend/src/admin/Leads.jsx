@@ -288,214 +288,243 @@ function Leads() {
   }
 
   return (
-    <main className="content-wrapper">
-      <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
-        <div className="row align-items-center">
-          <div className="col-10 col-md-11">
-            <div className="row align-items-center">
-              <div className="col-9 col-md-8 col-lg-6">
-                <input
-                  type="search"
-                  className="form-control sector-wise"
-                  placeholder="Search passport, name, phone, PNR..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
+    <>
+      <title>Leads Management | CRM Portal</title>
+      <meta
+        name="description"
+        content="Manage and track customer leads, monitor lead status, assign follow-ups, view lead sources, and streamline your sales pipeline in the CRM Leads Portal."
+      />
+
+      <main className="content-wrapper">
+        <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
+          <div className="row align-items-center">
+            <div className="col-10 col-md-11">
+              <div className="row align-items-center">
+                <div className="col-9 col-md-8 col-lg-6">
+                  <input
+                    type="search"
+                    className="form-control sector-wise"
+                    placeholder="Search passport, name, phone, PNR..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
               </div>
+            </div>
+
+            <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
+              <button className="btn border-0 position-relative">
+                <FontAwesomeIcon icon={faBell} />
+                <span className="notification-corner bg-danger">0</span>
+              </button>
+
+              <span className="text-nowrap ms-2 date-days">
+                {new Date()
+                  .toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short",
+                  })
+                  .replace(",", "")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
+          <div className="d-flex justify-content-between">
+            <div>
+              <h5 className="fw-bold overview-dashboard">Leads</h5>
+              <p className="text-muted overview-lead fw-bold">
+                {paginatedData.length} of {paginatedData.length} leads
+              </p>
             </div>
           </div>
 
-          <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
-            <button className="btn border-0 position-relative">
-              <FontAwesomeIcon icon={faBell} />
-              <span className="notification-corner bg-danger">0</span>
-            </button>
+          <div className="d-flex align-items-center flex-wrap justify-content-between gap-3 p-3 rounded-3 border">
+            <div className="flex-grow-1">
+              <input
+                type="search"
+                className="form-control sector-wise"
+                placeholder="Search name, phone, passport, city..."
+                value={search1}
+                onChange={(e) => setSearch1(e.target.value)}
+              />
+            </div>
 
-            <span className="text-nowrap ms-2 date-days">
-              {new Date()
-                .toLocaleDateString("en-GB", {
-                  weekday: "short",
-                  day: "2-digit",
-                  month: "short",
-                })
-                .replace(",", "")}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
-        <div className="d-flex justify-content-between">
-          <div>
-            <h5 className="fw-bold overview-dashboard">Leads</h5>
-            <p className="text-muted overview-lead fw-bold">
-              {paginatedData.length} of {paginatedData.length} leads
-            </p>
-          </div>
-        </div>
-
-        <div className="d-flex align-items-center flex-wrap justify-content-between gap-3 p-3 rounded-3 border">
-          <div className="flex-grow-1">
-            <input
-              type="search"
-              className="form-control sector-wise"
-              placeholder="Search name, phone, passport, city..."
-              value={search1}
-              onChange={(e) => setSearch1(e.target.value)}
-            />
-          </div>
-
-          <div className="d-flex align-items-center gap-2 p-1 rounded-4">
-            <select
-              className="form-select rounded-3 sector-wise"
-              aria-label="Lead category filter"
-              value={selectedService}
-              onChange={(e) => setSelectedService(e.target.value)}
-            >
-              <option value="">All services</option>
-              {Array.isArray(service) && service.length > 0 ? (
-                service
-                  .filter((item) => item.status === "Active")
-                  .map((item) => (
-                    <option key={item.id} value={item.service_name}>
-                      {item.service_name}
-                    </option>
-                  ))
-              ) : (
-                <option value="">No services available</option>
-              )}
-            </select>
-          </div>
-
-          <div className="d-flex gap-2">
-            <div>
+            <div className="d-flex align-items-center gap-2 p-1 rounded-4">
               <select
                 className="form-select rounded-3 sector-wise"
-                aria-label="Lead status filter"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                aria-label="Lead category filter"
+                value={selectedService}
+                onChange={(e) => setSelectedService(e.target.value)}
               >
-                <option value="">All</option>
-                <option value="New">New</option>
-                <option value="Contacted">Contacted</option>
-                <option value="Interested">Interested</option>
-                <option value="Not Interested">Not Interested</option>
-                <option value="Converted">Converted</option>
+                <option value="">All services</option>
+                {Array.isArray(service) && service.length > 0 ? (
+                  service
+                    .filter((item) => item.status === "Active")
+                    .map((item) => (
+                      <option key={item.id} value={item.service_name}>
+                        {item.service_name}
+                      </option>
+                    ))
+                ) : (
+                  <option value="">No services available</option>
+                )}
               </select>
             </div>
 
-            <div className="d-flex justify-content-start gap-2">
-              <div
-                ref={monthPillRef}
-                className="month-pill d-flex align-items-center"
-                onClick={toggleMonthPopover}
-                style={{ cursor: "pointer" }}
-              >
-                {months}
+            <div className="d-flex gap-2">
+              <div>
+                <select
+                  className="form-select rounded-3 sector-wise"
+                  aria-label="Lead status filter"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="">All</option>
+                  <option value="New">New</option>
+                  <option value="Contacted">Contacted</option>
+                  <option value="Interested">Interested</option>
+                  <option value="Not Interested">Not Interested</option>
+                  <option value="Converted">Converted</option>
+                </select>
               </div>
 
-              {month && (
+              <div className="d-flex justify-content-start gap-2">
                 <div
-                  ref={popoverRef}
-                  className="spending-card container"
-                  style={popoverStyle}
-                  aria-modal="true"
-                  role="dialog"
+                  ref={monthPillRef}
+                  className="month-pill d-flex align-items-center"
+                  onClick={toggleMonthPopover}
+                  style={{ cursor: "pointer" }}
                 >
-                  <h5 className="leads-show fw-bold">Show Leads</h5>
-                  <form
-                    className="spending-form"
-                    onSubmit={(e) => e.preventDefault()}
+                  {months}
+                </div>
+
+                {month && (
+                  <div
+                    ref={popoverRef}
+                    className="spending-card container"
+                    style={popoverStyle}
+                    aria-modal="true"
+                    role="dialog"
                   >
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="performance"
-                        id="halfYearly"
-                        checked={selectedFilter === "halfYearly"}
-                        aria-label="Half yearly"
-                        onChange={() => applyPresetFilter("halfYearly")}
-                      />
-                      <label className="form-check-label" htmlFor="halfYearly">
-                        Half-yearly
-                      </label>
-                    </div>
-
-                    <div className="form-check mt-1">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="performance"
-                        id="yearly"
-                        checked={selectedFilter === "yearly"}
-                        aria-label="Yearly"
-                        onChange={() => applyPresetFilter("yearly")}
-                      />
-                      <label className="form-check-label" htmlFor="yearly">
-                        Yearly
-                      </label>
-                    </div>
-
-                    <div className="form-check mt-1">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="performance"
-                        id="custom"
-                        checked={selectedFilter === "custom"}
-                        aria-label="Custom range"
-                        onChange={() => setSelectedFilter("custom")}
-                      />
-                      <label className="form-check-label" htmlFor="custom">
-                        Custom range
-                      </label>
-                    </div>
-
-                    {selectedFilter === "custom" && (
-                      <div
-                        className="custom-range-row"
-                        style={{ marginTop: 8 }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 6,
-                            alignItems: "start",
-                          }}
+                    <h5 className="leads-show fw-bold">Show Leads</h5>
+                    <form
+                      className="spending-form"
+                      onSubmit={(e) => e.preventDefault()}
+                    >
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="performance"
+                          id="halfYearly"
+                          checked={selectedFilter === "halfYearly"}
+                          aria-label="Half yearly"
+                          onChange={() => applyPresetFilter("halfYearly")}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="halfYearly"
                         >
-                          <label>From</label>
+                          Half-yearly
+                        </label>
+                      </div>
 
-                          <input
-                            type="date"
-                            className="form-control sector-wise"
-                            value={customFrom}
-                            onChange={(e) => setCustomFrom(e.target.value)}
-                            aria-label="From date"
-                          />
-                          <label>To</label>
-                          <input
-                            type="date"
-                            className="form-control sector-wise"
-                            value={customTo}
-                            onChange={(e) => setCustomTo(e.target.value)}
-                            aria-label="To date"
-                          />
-                        </div>
+                      <div className="form-check mt-1">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="performance"
+                          id="yearly"
+                          checked={selectedFilter === "yearly"}
+                          aria-label="Yearly"
+                          onChange={() => applyPresetFilter("yearly")}
+                        />
+                        <label className="form-check-label" htmlFor="yearly">
+                          Yearly
+                        </label>
+                      </div>
 
-                        <div className="mt-2">
-                          <button
-                            type="button"
-                            className="btn btn-primary apply-btn"
-                            onClick={applyCustomRange}
+                      <div className="form-check mt-1">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="performance"
+                          id="custom"
+                          checked={selectedFilter === "custom"}
+                          aria-label="Custom range"
+                          onChange={() => setSelectedFilter("custom")}
+                        />
+                        <label className="form-check-label" htmlFor="custom">
+                          Custom range
+                        </label>
+                      </div>
+
+                      {selectedFilter === "custom" && (
+                        <div
+                          className="custom-range-row"
+                          style={{ marginTop: 8 }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 6,
+                              alignItems: "start",
+                            }}
                           >
-                            Apply
-                          </button>
+                            <label>From</label>
 
+                            <input
+                              type="date"
+                              className="form-control sector-wise"
+                              value={customFrom}
+                              onChange={(e) => setCustomFrom(e.target.value)}
+                              aria-label="From date"
+                            />
+                            <label>To</label>
+                            <input
+                              type="date"
+                              className="form-control sector-wise"
+                              value={customTo}
+                              onChange={(e) => setCustomTo(e.target.value)}
+                              aria-label="To date"
+                            />
+                          </div>
+
+                          <div className="mt-2">
+                            <button
+                              type="button"
+                              className="btn btn-primary apply-btn"
+                              onClick={applyCustomRange}
+                            >
+                              Apply
+                            </button>
+
+                            <button
+                              type="button"
+                              className="btn btn-secondary mt-0 ms-2"
+                              onClick={() => {
+                                setMonth(false);
+                                setPopoverStyle(null);
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {selectedFilter !== "custom" && (
+                        <div
+                          className="d-flex justify-content-end"
+                          style={{ marginTop: 12 }}
+                        >
                           <button
                             type="button"
-                            className="btn btn-secondary mt-0 ms-2"
+                            className="cancel-btn ms-2"
                             onClick={() => {
                               setMonth(false);
                               setPopoverStyle(null);
@@ -504,223 +533,210 @@ function Leads() {
                             Cancel
                           </button>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </form>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
-                    {selectedFilter !== "custom" && (
-                      <div
-                        className="d-flex justify-content-end"
-                        style={{ marginTop: 12 }}
-                      >
-                        <button
-                          type="button"
-                          className="cancel-btn ms-2"
-                          onClick={() => {
-                            setMonth(false);
-                            setPopoverStyle(null);
-                          }}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    )}
-                  </form>
+          <div className="table-wrapper border p-0 mb-3">
+            <div className="table-responsive custom-scrollbar">
+              <table className="table table-hover mb-0">
+                <thead className="table-success header-table text-nowrap">
+                  <tr>
+                    <th>
+                      <input
+                        className="form-check-input custom-input"
+                        ref={headerRef}
+                        type="checkbox"
+                        checked={allChecked}
+                        aria-label="Select all rows"
+                        onChange={(e) =>
+                          setSelected(
+                            e.target.checked
+                              ? paginatedData.map((item) => item.id)
+                              : [],
+                          )
+                        }
+                      />
+                    </th>
+
+                    <th>Lead</th>
+                    <th>Service</th>
+                    <th>Source</th>
+                    <th>Status</th>
+                    <th>Temperature</th>
+                    <th>Follow-up</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="body-table">
+                  {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
+                    paginatedData.map((data) => (
+                      <tr key={data.id}>
+                        <td>
+                          <input
+                            className="form-check-input custom-input"
+                            type="checkbox"
+                            checked={selected.includes(data.id)}
+                            aria-label={`Select row ${data.name || data.id}`}
+                            onChange={(e) =>
+                              setSelected((prev) =>
+                                e.target.checked
+                                  ? [...prev, data.id]
+                                  : prev.filter((id) => id !== data.id),
+                              )
+                            }
+                          />
+                        </td>
+
+                        <td className="d-flex flex-column">
+                          <span className="name-span">{data.name || "--"}</span>
+                          <span className="phone-span">
+                            {data.phone || "--"}
+                          </span>
+                        </td>
+
+                        <td>
+                          <span className="service-border">
+                            {data.Service || "--"}
+                          </span>
+                        </td>
+
+                        <td className="text-muted walk-source">
+                          {data.Source || "--"}
+                        </td>
+
+                        <td>
+                          <span
+                            className={
+                              {
+                                "Follow-up": "follow-up cus-res",
+                                "Not Interested": "non-interested-cust cus-res",
+                                Interested: "interested-cust cus-res",
+                                Contacted: "convert-status cus-res",
+                                New: "new-customer cus-res",
+                                Converted: "convert-status cus-res",
+                              }[data.Status] || ""
+                            }
+                          >
+                            {data.Status || "--"}
+                          </span>
+                        </td>
+
+                        <td>
+                          <span
+                            className={
+                              {
+                                Hot: "hot-up hot-res",
+                                Warm: "warm-up hot-res",
+                                Cold: "cold-status hot-res",
+                              }[data.Temp] || ""
+                            }
+                          >
+                            {data.Temp === "Hot" && "🔥 "}
+                            {data.Temp || "--"}
+                          </span>
+                        </td>
+
+                        <td className="text-nowrap">
+                          <span
+                            className={
+                              data.Followup === "Today"
+                                ? "follow-today follow-to"
+                                : data.Followup?.includes("Missed")
+                                  ? "follow-missed follow-to"
+                                  : ""
+                            }
+                          >
+                            {data.Followup || "--"}
+                          </span>
+                        </td>
+
+                        <td>
+                          <span className="d-flex align-items-center">
+                            <Link className="opened-box text-decoration-none text-dark fw-bold text-nowrap">
+                              <FontAwesomeIcon icon={faPhone} /> Open
+                            </Link>
+
+                            <div
+                              className="whatsapp-icon"
+                              onClick={() => {
+                                const phone = data.phone?.replace(/\D/g, "");
+                                if (phone) {
+                                  window.open(
+                                    `https://wa.me/${phone}`,
+                                    "_blank",
+                                  );
+                                }
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faWhatsapp} />
+                            </div>
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="8" className="text-center">
+                        No Data Found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+
+              {paginatedData.length > 0 && (
+                <>
+                  <div className="d-flex justify-content-center mt-2 mb-2">
+                    <button className="btn download-btn">Download</button>
+                  </div>
+                </>
+              )}
+
+              {users.length > itemsPerPage && (
+                <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage <= 1
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage <= 1}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                  >
+                    ← Prev
+                  </button>
+
+                  <span className="fw-semibold px-2">
+                    Page {currentPage} of {totalPages}
+                  </span>
+
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage >= totalPages
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage >= totalPages}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                  >
+                    Next →
+                  </button>
                 </div>
               )}
             </div>
           </div>
         </div>
-
-        <div className="table-wrapper border p-0 mb-3">
-          <div className="table-responsive custom-scrollbar">
-            <table className="table table-hover mb-0">
-              <thead className="table-success header-table text-nowrap">
-                <tr>
-                  <th>
-                    <input
-                      className="form-check-input custom-input"
-                      ref={headerRef}
-                      type="checkbox"
-                      checked={allChecked}
-                      aria-label="Select all rows"
-                      onChange={(e) =>
-                        setSelected(
-                          e.target.checked
-                            ? paginatedData.map((item) => item.id)
-                            : [],
-                        )
-                      }
-                    />
-                  </th>
-
-                  <th>Lead</th>
-                  <th>Service</th>
-                  <th>Source</th>
-                  <th>Status</th>
-                  <th>Temperature</th>
-                  <th>Follow-up</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody className="body-table">
-                {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
-                  paginatedData.map((data) => (
-                    <tr key={data.id}>
-                      <td>
-                        <input
-                          className="form-check-input custom-input"
-                          type="checkbox"
-                          checked={selected.includes(data.id)}
-                          aria-label={`Select row ${data.name || data.id}`}
-                          onChange={(e) =>
-                            setSelected((prev) =>
-                              e.target.checked
-                                ? [...prev, data.id]
-                                : prev.filter((id) => id !== data.id),
-                            )
-                          }
-                        />
-                      </td>
-
-                      <td className="d-flex flex-column">
-                        <span className="name-span">{data.name || "--"}</span>
-                        <span className="phone-span">{data.phone || "--"}</span>
-                      </td>
-
-                      <td>
-                        <span className="service-border">
-                          {data.Service || "--"}
-                        </span>
-                      </td>
-
-                      <td className="text-muted walk-source">
-                        {data.Source || "--"}
-                      </td>
-
-                      <td>
-                        <span
-                          className={
-                            {
-                              "Follow-up": "follow-up cus-res",
-                              "Not Interested": "non-interested-cust cus-res",
-                              Interested: "interested-cust cus-res",
-                              Contacted: "convert-status cus-res",
-                              New: "new-customer cus-res",
-                              Converted: "convert-status cus-res",
-                            }[data.Status] || ""
-                          }
-                        >
-                          {data.Status || "--"}
-                        </span>
-                      </td>
-
-                      <td>
-                        <span
-                          className={
-                            {
-                              Hot: "hot-up hot-res",
-                              Warm: "warm-up hot-res",
-                              Cold: "cold-status hot-res",
-                            }[data.Temp] || ""
-                          }
-                        >
-                          {data.Temp === "Hot" && "🔥 "}
-                          {data.Temp || "--"}
-                        </span>
-                      </td>
-
-                      <td className="text-nowrap">
-                        <span
-                          className={
-                            data.Followup === "Today"
-                              ? "follow-today follow-to"
-                              : data.Followup?.includes("Missed")
-                                ? "follow-missed follow-to"
-                                : ""
-                          }
-                        >
-                          {data.Followup || "--"}
-                        </span>
-                      </td>
-
-                      <td>
-                        <span className="d-flex align-items-center">
-                          <Link className="opened-box text-decoration-none text-dark fw-bold text-nowrap">
-                            <FontAwesomeIcon icon={faPhone} /> Open
-                          </Link>
-
-                          <div
-                            className="whatsapp-icon"
-                            onClick={() => {
-                              const phone = data.phone?.replace(/\D/g, "");
-                              if (phone) {
-                                window.open(`https://wa.me/${phone}`, "_blank");
-                              }
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faWhatsapp} />
-                          </div>
-                        </span>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="8" className="text-center">
-                      No Data Found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-
-            {paginatedData.length > 0 && (
-              <>
-                <div className="d-flex justify-content-center mt-2 mb-2">
-                  <button className="btn download-btn">Download</button>
-                </div>
-              </>
-            )}
-
-            {users.length > itemsPerPage && (
-              <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
-                <button
-                  className={`btn rounded-pill px-3 py-1 shadow-sm ${
-                    currentPage <= 1
-                      ? "btn-light border text-muted"
-                      : "btn-success border-0"
-                  }`}
-                  disabled={currentPage <= 1}
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
-                  }
-                >
-                  ← Prev
-                </button>
-
-                <span className="fw-semibold px-2">
-                  Page {currentPage} of {totalPages}
-                </span>
-
-                <button
-                  className={`btn rounded-pill px-3 py-1 shadow-sm ${
-                    currentPage >= totalPages
-                      ? "btn-light border text-muted"
-                      : "btn-success border-0"
-                  }`}
-                  disabled={currentPage >= totalPages}
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                >
-                  Next →
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 

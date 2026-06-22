@@ -56,6 +56,12 @@ function CallerFollowup() {
 
   return (
     <>
+      <title>Follow-Ups Management | CRM Staff Portal</title>
+      <meta
+        name="description"
+        content="Track missed, pending, and scheduled follow-ups, manage customer commitments, prioritize leads, and ensure timely customer engagement."
+      />
+
       <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
           <div className="row align-items-center">

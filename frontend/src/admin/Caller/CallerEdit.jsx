@@ -103,198 +103,207 @@ function CallersEdit() {
   }, [API_URL, id]);
 
   return (
-    <main className="content-wrapper">
-      <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
-        <div className="row align-items-center">
-          <div className="col-10 col-md-11">
-            <div className="row align-items-center">
-              <div className="col-9 col-md-8 col-lg-6">
-                <input
-                  type="search"
-                  className="form-control sector-wise"
-                  placeholder="Search passport, name, phone, PNR..."
-                />
+    <>
+      <title>Edit Caller Executive | CRM Staff Portal</title>
+      <meta
+        name="description"
+        content="Update caller executive profiles, manage accounts, modify contact details, assign roles, change status, and maintain staff records in the CRM Staff Portal."
+      />
+
+      <main className="content-wrapper">
+        <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
+          <div className="row align-items-center">
+            <div className="col-10 col-md-11">
+              <div className="row align-items-center">
+                <div className="col-9 col-md-8 col-lg-6">
+                  <input
+                    type="search"
+                    className="form-control sector-wise"
+                    placeholder="Search passport, name, phone, PNR..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
+              <button className="btn border-0 position-relative">
+                <FontAwesomeIcon icon={faBell} />
+                <span className="notification-corner bg-danger">0</span>
+              </button>
+
+              <span className="text-nowrap ms-2 date-days">
+                {new Date()
+                  .toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short",
+                  })
+                  .replace(",", "")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-2 p-lg-3 mt-2">
+          <div className="col-12">
+            <div className="card shadow border-0">
+              <div className="card-header profile-header">
+                Edit Caller: {call.fullname}
+              </div>
+
+              <div className="card-body">
+                <form action={handleFormSubmit}>
+                  <div className="row">
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="fullname" className="form-label">
+                        Full Name{" "}
+                        <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="fullname"
+                        className="form-control sector-wise mb-1"
+                        placeholder="Enter full name"
+                        name="fullname"
+                        value={fullname}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="email" className="form-label">
+                        Email <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        className="form-control sector-wise mb-1"
+                        placeholder="Enter email"
+                        name="email"
+                        value={email}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="position-relative col-md-6">
+                      <label htmlFor="password" className="form-label">
+                        New Password{" "}
+                        <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className={`form-control sector-wise pe-5 ${
+                          passwordError ? "border border-danger" : ""
+                        }`}
+                        id="password"
+                        placeholder="New Password"
+                        name="password"
+                        value={password || ""}
+                        autoComplete="new-password"
+                        onChange={handlePasswordChange}
+                      />
+
+                      <span
+                        className="eye-login1"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        <FontAwesomeIcon
+                          icon={showPassword ? faEyeSlash : faEye}
+                          className="me-2"
+                        />
+                      </span>
+                    </div>
+
+                    <div className="position-relative col-md-6">
+                      <label htmlFor="confirm_password" className="form-label">
+                        Confirm Password{" "}
+                        <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className={`form-control sector-wise pe-5 ${
+                          passwordError ? "border border-danger" : ""
+                        }`}
+                        id="confirm_password"
+                        placeholder="Confirm Password"
+                        name="confirmPassword"
+                        value={confirmPassword || ""}
+                        autoComplete="new-password"
+                        onChange={handlePasswordChange}
+                      />
+                      <span
+                        className="eye-login1"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        <FontAwesomeIcon
+                          icon={showPassword ? faEyeSlash : faEye}
+                          className="me-2"
+                        />
+                      </span>
+                      {passwordError && (
+                        <small className="text-danger d-block mt-1">
+                          {passwordError}
+                        </small>
+                      )}
+                    </div>
+
+                    <div className="col-md-6 mt-2">
+                      <label htmlFor="status" className="form-label">
+                        Status <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <select
+                        aria-label="Select status"
+                        id="status"
+                        className="form-select sector-wise mb-1"
+                        name="status"
+                        value={status}
+                        onChange={onInputChange}
+                        required
+                      >
+                        <option value="">Select status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6 mt-2">
+                      <label htmlFor="notes" className="form-label">
+                        Notes (optional)
+                      </label>
+                      <textarea
+                        id="notes"
+                        className="form-control py-2 sector-wise"
+                        placeholder="Add a short note..."
+                        name="notes"
+                        value={notes}
+                        onChange={onInputChange}
+                        style={{ height: "60px" }}
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="col-md-6 d-flex flex-column mt-2">
+                    <div>
+                      <button type="submit" className="btn btn-update mb-2">
+                        Update
+                      </button>
+                    </div>
+
+                    <Link className="text-success" to="/admin/callers">
+                      Back
+                    </Link>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-
-          <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
-            <button className="btn border-0 position-relative">
-              <FontAwesomeIcon icon={faBell} />
-              <span className="notification-corner bg-danger">0</span>
-            </button>
-
-            <span className="text-nowrap ms-2 date-days">
-              {new Date()
-                .toLocaleDateString("en-GB", {
-                  weekday: "short",
-                  day: "2-digit",
-                  month: "short",
-                })
-                .replace(",", "")}
-            </span>
-          </div>
         </div>
-      </div>
 
-      <div className="p-2 p-lg-3 mt-2">
-        <div className="col-12">
-          <div className="card shadow border-0">
-            <div className="card-header profile-header">
-              Edit Caller: {call.fullname}
-            </div>
-
-            <div className="card-body">
-              <form action={handleFormSubmit}>
-                <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="fullname" className="form-label">
-                      Full Name <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="fullname"
-                      className="form-control sector-wise mb-1"
-                      placeholder="Enter full name"
-                      name="fullname"
-                      value={fullname}
-                      onChange={onInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="email" className="form-label">
-                      Email <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="form-control sector-wise mb-1"
-                      placeholder="Enter email"
-                      name="email"
-                      value={email}
-                      onChange={onInputChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="position-relative col-md-6">
-                    <label htmlFor="password" className="form-label">
-                      New Password{" "}
-                      <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className={`form-control sector-wise pe-5 ${
-                        passwordError ? "border border-danger" : ""
-                      }`}
-                      id="password"
-                      placeholder="New Password"
-                      name="password"
-                      value={password || ""}
-                      autoComplete="new-password"
-                      onChange={handlePasswordChange}
-                    />
-
-                    <span
-                      className="eye-login1"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        className="me-2"
-                      />
-                    </span>
-                  </div>
-
-                  <div className="position-relative col-md-6">
-                    <label htmlFor="confirm_password" className="form-label">
-                      Confirm Password{" "}
-                      <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className={`form-control sector-wise pe-5 ${
-                        passwordError ? "border border-danger" : ""
-                      }`}
-                      id="confirm_password"
-                      placeholder="Confirm Password"
-                      name="confirmPassword"
-                      value={confirmPassword || ""}
-                      autoComplete="new-password"
-                      onChange={handlePasswordChange}
-                    />
-                    <span
-                      className="eye-login1"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        className="me-2"
-                      />
-                    </span>
-                    {passwordError && (
-                      <small className="text-danger d-block mt-1">
-                        {passwordError}
-                      </small>
-                    )}
-                  </div>
-
-                  <div className="col-md-6 mt-2">
-                    <label htmlFor="status" className="form-label">
-                      Status <span className="text-danger fw-bolder">*</span>
-                    </label>
-                    <select
-                      aria-label="Select status"
-                      id="status"
-                      className="form-select sector-wise mb-1"
-                      name="status"
-                      value={status}
-                      onChange={onInputChange}
-                      required
-                    >
-                      <option value="">Select status</option>
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-6 mt-2">
-                    <label htmlFor="notes" className="form-label">
-                      Notes (optional)
-                    </label>
-                    <textarea
-                      id="notes"
-                      className="form-control py-2 sector-wise"
-                      placeholder="Add a short note..."
-                      name="notes"
-                      value={notes}
-                      onChange={onInputChange}
-                      style={{ height: "60px" }}
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div className="col-md-6 d-flex flex-column mt-2">
-                  <div>
-                    <button type="submit" className="btn btn-update mb-2">
-                      Update
-                    </button>
-                  </div>
-
-                  <Link className="text-success" to="/admin/callers">
-                    Back
-                  </Link>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ToastContainer position="bottom-right" autoClose={1500} />
-    </main>
+        <ToastContainer position="bottom-right" autoClose={1500} />
+      </main>
+    </>
   );
 }
 

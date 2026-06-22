@@ -99,194 +99,206 @@ function BulkUpload() {
   };
 
   return (
-    <main className="content-wrapper">
-      <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
-        <div className="row align-items-center">
-          <div className="col-10 col-md-11">
-            <div className="row align-items-center">
-              <div className="col-9 col-md-8 col-lg-6">
-                <input
-                  type="search"
-                  className="form-control sector-wise"
-                  placeholder="Search passport, name, phone, PNR..."
-                />
+    <>
+      <title>Bulk Upload Contacts | CRM Portal</title>
+      <meta
+        name="description"
+        content="Upload customer and agent data via Excel or CSV, validate fields, avoid duplicates, and manage CRM records quickly through the Bulk Upload Portal."
+      />
+
+      <main className="content-wrapper">
+        <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
+          <div className="row align-items-center">
+            <div className="col-10 col-md-11">
+              <div className="row align-items-center">
+                <div className="col-9 col-md-8 col-lg-6">
+                  <input
+                    type="search"
+                    className="form-control sector-wise"
+                    placeholder="Search passport, name, phone, PNR..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
+              <button className="btn border-0 position-relative">
+                <FontAwesomeIcon icon={faBell} />
+                <span className="notification-corner bg-danger">0</span>
+              </button>
+
+              <span className="text-nowrap ms-2 date-days">
+                {new Date()
+                  .toLocaleDateString("en-GB", {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short",
+                  })
+                  .replace(",", "")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="row mt-2 gx-2 ms-2 me-2 gy-12">
+          <div className="mb-3">
+            <h5 className="fw-bold overview-dashboard">Bulk Upload</h5>
+            <p className="text-muted mb-md-0 overview-lead fw-bold">
+              Import Contacts from Excel. Duplicates auto-skipped
+            </p>
+          </div>
+
+          <div className="col-12 col-lg-6 d-flex flex-column h-100">
+            <form action={handleBulkSubmit}>
+              <div className="card rounded-3 h-100 px-3 py-3 border">
+                <span className="mb-2 uploaded-customer">Customers Upload</span>
+
+                <div className="dotted-class text-center">
+                  <div className="mb-3">
+                    <div className="d-inline-flex align-items-center justify-content-center bg-success text-white custom-typo">
+                      <FontAwesomeIcon icon={faFileExcel} size="lg" />
+                    </div>
+                  </div>
+
+                  <h6 className="mb-2 fw-semibold">
+                    Drop your Excel file here
+                  </h6>
+
+                  <p className="text-secondary-safe mb-2">
+                    .xlsx, .csv up to 10MB
+                  </p>
+
+                  {file && (
+                    <div className="file-selected mb-2">
+                      Selected File: {file.name}
+                      <FontAwesomeIcon
+                        icon={faX}
+                        className="text-danger fw-bold pointer-cursor ms-2"
+                        onClick={() => setFile(null)}
+                      />
+                    </div>
+                  )}
+
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <label className="btn btn-success btn-sm select-file-btn">
+                      <FontAwesomeIcon icon={faUpload} /> Select file
+                      <input
+                        type="file"
+                        hidden
+                        accept=".xlsx,.csv"
+                        onChange={handleFileChange}
+                      />
+                    </label>
+
+                    <button
+                      className="btn btn-success submit-file-btn mt-2"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
+
+                    <div className="mt-3 text-success-safe fw-bold">
+                      Total Customer Records: {customers}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div className="alert alert-light border rounded-3 d-flex text-start gap-2 mt-3">
+              <div className="text-success fs-5">
+                <FontAwesomeIcon icon={faCircleInfo} />
+              </div>
+
+              <div className="ms-0">
+                <div className="fw-semibold mb-1">Required columns</div>
+
+                <small className="text-secondary-safe fw-medium">
+                  name, phone, city, source (Hajj / Umrah / Ticket / Medical),
+                  source. Phone numbers are checked for duplicates across your
+                  entire database.
+                </small>
               </div>
             </div>
           </div>
 
-          <div className="col-2 col-md-1 d-flex justify-content-end align-items-center">
-            <button className="btn border-0 position-relative">
-              <FontAwesomeIcon icon={faBell} />
-              <span className="notification-corner bg-danger">0</span>
-            </button>
+          <div className="col-12 col-lg-6 d-flex flex-column">
+            <form action={handleBulkAgent}>
+              <div className="card rounded-3 h-100 px-3 py-3 border">
+                <span className="mb-2 uploaded-customer">Agents Upload</span>
 
-            <span className="text-nowrap ms-2 date-days">
-              {new Date()
-                .toLocaleDateString("en-GB", {
-                  weekday: "short",
-                  day: "2-digit",
-                  month: "short",
-                })
-                .replace(",", "")}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="row mt-2 gx-2 ms-2 me-2 gy-12">
-        <div className="mb-3">
-          <h5 className="fw-bold overview-dashboard">Bulk Upload</h5>
-          <p className="text-muted mb-md-0 overview-lead fw-bold">
-            Import Contacts from Excel. Duplicates auto-skipped
-          </p>
-        </div>
-
-        <div className="col-12 col-lg-6 d-flex flex-column h-100">
-          <form action={handleBulkSubmit}>
-            <div className="card rounded-3 h-100 px-3 py-3 border">
-              <span className="mb-2 uploaded-customer">Customers Upload</span>
-
-              <div className="dotted-class text-center">
-                <div className="mb-3">
-                  <div className="d-inline-flex align-items-center justify-content-center bg-success text-white custom-typo">
-                    <FontAwesomeIcon icon={faFileExcel} size="lg" />
+                <div className="dotted-class text-center">
+                  <div className="mb-3">
+                    <div className="d-inline-flex align-items-center justify-content-center bg-success text-white custom-typo">
+                      <FontAwesomeIcon icon={faFileExcel} size="lg" />
+                    </div>
                   </div>
-                </div>
 
-                <h6 className="mb-2 fw-semibold">Drop your Excel file here</h6>
+                  <h6 className="mb-2 fw-semibold">
+                    Drop your Excel file here
+                  </h6>
 
-                <p className="text-secondary-safe mb-2">
-                  .xlsx, .csv up to 10MB
-                </p>
+                  <p className="text-secondary-safe mb-2">
+                    .xlsx, .csv up to 10MB
+                  </p>
 
-                {file && (
-                  <div className="file-selected mb-2">
-                    Selected File: {file.name}
-                    <FontAwesomeIcon
-                      icon={faX}
-                      className="text-danger fw-bold pointer-cursor ms-2"
-                      onClick={() => setFile(null)}
-                    />
-                  </div>
-                )}
+                  {files && (
+                    <div className="file-selected mb-2">
+                      Selected File: {files.name}
+                      <FontAwesomeIcon
+                        icon={faX}
+                        className="text-danger fw-bold pointer-cursor ms-2"
+                        onClick={() => setFiles(null)}
+                      />
+                    </div>
+                  )}
 
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                  <label className="btn btn-success btn-sm select-file-btn">
-                    <FontAwesomeIcon icon={faUpload} /> Select file
-                    <input
-                      type="file"
-                      hidden
-                      accept=".xlsx,.csv"
-                      onChange={handleFileChange}
-                    />
-                  </label>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <label className="btn btn-success btn-sm select-file-btn">
+                      <FontAwesomeIcon icon={faUpload} /> Select file
+                      <input
+                        type="file"
+                        hidden
+                        accept=".xlsx,.csv"
+                        onChange={handleChange}
+                      />
+                    </label>
 
-                  <button
-                    className="btn btn-success submit-file-btn mt-2"
-                    type="submit"
-                  >
-                    Submit
-                  </button>
+                    <button
+                      className="btn btn-success submit-file-btn mt-2"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
 
-                  <div className="mt-3 text-success-safe fw-bold">
-                    Total Customer Records: {customers}
+                    <div className="mt-3 text-success-safe fw-bold">
+                      Total Agent Records: {agents}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </form>
+            </form>
 
-          <div className="alert alert-light border rounded-3 d-flex text-start gap-2 mt-3">
-            <div className="text-success fs-5">
-              <FontAwesomeIcon icon={faCircleInfo} />
-            </div>
+            <div className="alert alert-light border rounded-3 d-flex text-start gap-2 mt-3">
+              <div className="text-success fs-5">
+                <FontAwesomeIcon icon={faCircleInfo} />
+              </div>
 
-            <div className="ms-0">
-              <div className="fw-semibold mb-1">Required columns</div>
+              <div className="ms-0">
+                <div className="fw-semibold mb-1">Required columns</div>
 
-              <small className="text-secondary-safe fw-medium">
-                name, phone, city, source (Hajj / Umrah / Ticket / Medical),
-                source. Phone numbers are checked for duplicates across your
-                entire database.
-              </small>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-12 col-lg-6 d-flex flex-column">
-          <form action={handleBulkAgent}>
-            <div className="card rounded-3 h-100 px-3 py-3 border">
-              <span className="mb-2 uploaded-customer">Agents Upload</span>
-
-              <div className="dotted-class text-center">
-                <div className="mb-3">
-                  <div className="d-inline-flex align-items-center justify-content-center bg-success text-white custom-typo">
-                    <FontAwesomeIcon icon={faFileExcel} size="lg" />
-                  </div>
-                </div>
-
-                <h6 className="mb-2 fw-semibold">Drop your Excel file here</h6>
-
-                <p className="text-secondary-safe mb-2">
-                  .xlsx, .csv up to 10MB
-                </p>
-
-                {files && (
-                  <div className="file-selected mb-2">
-                    Selected File: {files.name}
-                    <FontAwesomeIcon
-                      icon={faX}
-                      className="text-danger fw-bold pointer-cursor ms-2"
-                      onClick={() => setFiles(null)}
-                    />
-                  </div>
-                )}
-
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                  <label className="btn btn-success btn-sm select-file-btn">
-                    <FontAwesomeIcon icon={faUpload} /> Select file
-                    <input
-                      type="file"
-                      hidden
-                      accept=".xlsx,.csv"
-                      onChange={handleChange}
-                    />
-                  </label>
-
-                  <button
-                    className="btn btn-success submit-file-btn mt-2"
-                    type="submit"
-                  >
-                    Submit
-                  </button>
-
-                  <div className="mt-3 text-success-safe fw-bold">
-                    Total Agent Records: {agents}
-                  </div>
-                </div>
+                <small className="text-secondary-safe fw-medium">
+                  name, phone, email, password source. Phone numbers and email
+                  are checked for duplicates across your entire database.
+                </small>
               </div>
             </div>
-          </form>
-
-          <div className="alert alert-light border rounded-3 d-flex text-start gap-2 mt-3">
-            <div className="text-success fs-5">
-              <FontAwesomeIcon icon={faCircleInfo} />
-            </div>
-
-            <div className="ms-0">
-              <div className="fw-semibold mb-1">Required columns</div>
-
-              <small className="text-secondary-safe fw-medium">
-                name, phone, email, password source. Phone numbers and email are
-                checked for duplicates across your entire database.
-              </small>
-            </div>
           </div>
         </div>
-      </div>
 
-      <ToastContainer position="bottom-right" autoClose={1500} />
-    </main>
+        <ToastContainer position="bottom-right" autoClose={1500} />
+      </main>
+    </>
   );
 }
 

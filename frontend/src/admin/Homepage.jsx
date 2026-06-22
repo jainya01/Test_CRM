@@ -162,6 +162,12 @@ function Homepage() {
 
   return (
     <>
+      <title>Dashboard | CRM Management Portal</title>
+      <meta
+        name="description"
+        content="Monitor leads, bookings, follow-ups, conversions, and business performance from the CRM dashboard with real-time insights and daily operations control."
+      />
+
       <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
           <div className="row align-items-center">

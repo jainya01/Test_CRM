@@ -47,6 +47,12 @@ function AgentDashboard() {
 
   return (
     <>
+      <title>Agent Dashboard | CRM Agent Portal</title>
+      <meta
+        name="description"
+        content="Access the B2B Agent Dashboard to manage customers, track bookings, monitor requests, discover travel packages, and view hot deals."
+      />
+
       <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
           <div className="row align-items-center">
