@@ -127,12 +127,6 @@ function AgentsEdit() {
 
   return (
     <>
-      <title>Edit Agent | CRM Agent Portal</title>
-      <meta
-        name="description"
-        content="Update agent profiles, manage accounts, modify contact details, change status, and maintain records in the CRM Agent Management Portal."
-      />
-
       <main className="content-wrapper">
         <div className="container-fluid border-bottom bg-light pb-2 pt-md-2 pb-lg-1 top-searchbar">
           <div className="row align-items-center">
