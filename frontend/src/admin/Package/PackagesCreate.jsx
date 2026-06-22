@@ -153,7 +153,7 @@ function PackagesCreate() {
                   <div className="row">
                     <div className="col-md-6 mb-3">
                       <label className="form-label" htmlFor="package_name">
-                        Package Name
+                        Package Name{" "}
                         <span className="text-danger fw-bolder">*</span>
                       </label>
                       <input
@@ -196,7 +196,7 @@ function PackagesCreate() {
 
                     <div className="col-md-6 mb-3">
                       <label className="form-label" htmlFor="start_date">
-                        Start Date
+                        Start Date{" "}
                         <span className="text-danger fw-bolder">*</span>
                       </label>
                       <input

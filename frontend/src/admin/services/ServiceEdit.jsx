@@ -146,7 +146,7 @@ function ServiceEdit() {
                   <div className="row">
                     <div className="col-md-6 mb-3">
                       <label htmlFor="service_name" className="form-label">
-                        Service Name
+                        Service Name{" "}
                         <span className="text-danger fw-bolder">*</span>
                       </label>
                       <input
