@@ -186,7 +186,6 @@ function Settings() {
 
   const handleCancelled = (e) => {
     e.preventDefault();
-
     setFormData({
       fullname: "",
       email: "",

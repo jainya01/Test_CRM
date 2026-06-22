@@ -97,7 +97,6 @@ function Homepage() {
     const allData = async () => {
       try {
         const adminId = localStorage.getItem("id");
-
         const [adminRes] = await Promise.allSettled([
           axios.get(`${API_URL}/alladmindata`, {
             headers: authHeader(),

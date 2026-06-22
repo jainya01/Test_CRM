@@ -31,3 +31,25 @@
 // };
 
 // xyz();
+
+// import { createClient } from "redis";
+
+// const redisClient = createClient();
+// redisClient.on("error", (err) => console.log("error", err));
+// await redisClient.connect();
+
+// async function init() {
+//   const setValues = await redisClient.set("users", "Pankaj singh");
+//   console.log(setValues);
+
+//   const result = await redisClient.get("users");
+//   console.log(result);
+
+// const setvalues=await redisClient.setEx("users", 10, "John doe")
+// console.log(setvalues)
+
+//   const result = await redisClient.get("users");
+//   console.log(result);
+// }
+
+// init();
