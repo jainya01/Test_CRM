@@ -1270,91 +1270,91 @@ router.get(
   }),
 );
 
-router.delete(
-  "/servicedelete/:id",
-  authenticate,
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
+// router.delete(
+//   "/servicedelete/:id",
+//   authenticate,
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
 
-    const SQL = "DELETE FROM services WHERE id = ?";
-    const [result] = await pool.execute(SQL, [id]);
+//     const SQL = "DELETE FROM services WHERE id = ?";
+//     const [result] = await pool.execute(SQL, [id]);
 
-    if (result.affectedRows <= 0) {
-      const error = new Error("data deleted failed");
-      error.statusCode = 404;
-      throw error;
-    }
+//     if (result.affectedRows <= 0) {
+//       const error = new Error("data deleted failed");
+//       error.statusCode = 404;
+//       throw error;
+//     }
 
-    await redisClient.del(`crm2:someservices:${id}`);
-    await redisClient.del("crm2:services:all");
+//     await redisClient.del(`crm2:someservices:${id}`);
+//     await redisClient.del("crm2:services:all");
 
-    return res.status(200).json({
-      success: true,
-      message: "data deleted failed",
-      result,
-    });
-  }),
-);
+//     return res.status(200).json({
+//       success: true,
+//       message: "data deleted failed",
+//       result,
+//     });
+//   }),
+// );
 
-router.get(
-  "/someservices/:id",
-  authenticate,
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const cacheKey = `crm2:someservices:${id}`;
-    const cache = await redisClient.get(cacheKey);
-    if (cache) {
-      return res.status(200).json(JSON.parse(cache));
-    }
+// router.get(
+//   "/someservices/:id",
+//   authenticate,
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const cacheKey = `crm2:someservices:${id}`;
+//     const cache = await redisClient.get(cacheKey);
+//     if (cache) {
+//       return res.status(200).json(JSON.parse(cache));
+//     }
 
-    const SQL =
-      "SELECT id, service_name, status, notes FROM services WHERE id = ?";
-    const [result] = await pool.execute(SQL, [id]);
+//     const SQL =
+//       "SELECT id, service_name, status, notes FROM services WHERE id = ?";
+//     const [result] = await pool.execute(SQL, [id]);
 
-    if (result.length === 0) {
-      const error = new Error("data not found");
-      error.statusCode = 404;
-      throw error;
-    }
+//     if (result.length === 0) {
+//       const error = new Error("data not found");
+//       error.statusCode = 404;
+//       throw error;
+//     }
 
-    const response = {
-      success: true,
-      message: "data fetched successfully",
-      count: result.length,
-      result,
-    };
+//     const response = {
+//       success: true,
+//       message: "data fetched successfully",
+//       count: result.length,
+//       result,
+//     };
 
-    await redisClient.set(cacheKey, JSON.stringify(response));
-    return res.status(200).json(response);
-  }),
-);
+//     await redisClient.set(cacheKey, JSON.stringify(response));
+//     return res.status(200).json(response);
+//   }),
+// );
 
-router.put(
-  "/servicesedit/:id",
-  authenticate,
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { service_name, status, notes } = req.body;
+// router.put(
+//   "/servicesedit/:id",
+//   authenticate,
+//   asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const { service_name, status, notes } = req.body;
 
-    const SQL =
-      "UPDATE services SET service_name = ?, status = ?, notes = ? WHERE id=?";
-    const [result] = await pool.execute(SQL, [service_name, status, notes, id]);
+//     const SQL =
+//       "UPDATE services SET service_name = ?, status = ?, notes = ? WHERE id=?";
+//     const [result] = await pool.execute(SQL, [service_name, status, notes, id]);
 
-    if (result.affectedRows <= 0) {
-      const error = new Error("data update failed");
-      error.statusCode = 404;
-      throw error;
-    }
+//     if (result.affectedRows <= 0) {
+//       const error = new Error("data update failed");
+//       error.statusCode = 404;
+//       throw error;
+//     }
 
-    await redisClient.del(`crm2:someservices:${id}`);
-    await redisClient.del("crm2:services:all");
+//     await redisClient.del(`crm2:someservices:${id}`);
+//     await redisClient.del("crm2:services:all");
 
-    return res.status(200).json({
-      success: true,
-      message: "data update successfully",
-      result,
-    });
-  }),
-);
+//     return res.status(200).json({
+//       success: true,
+//       message: "data update successfully",
+//       result,
+//     });
+//   }),
+// );
 
 export default router;
