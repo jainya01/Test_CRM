@@ -79,8 +79,8 @@ router.post(
       success: true,
       message: "Login successful",
       token,
-      role: admin.role,
       id: admin.id,
+      role: admin.role,
       email: admin.email,
     });
   }),
@@ -138,8 +138,8 @@ router.post(
       success: true,
       message: "Login successful",
       token,
-      role: agent.role,
       id: agent.id,
+      role: agent.role,
       email: agent.email,
     });
   }),
@@ -197,8 +197,8 @@ router.post(
       success: true,
       message: "Login successful",
       token,
-      role: staff.role,
       id: staff.id,
+      role: staff.role,
       email: staff.email,
     });
   }),
