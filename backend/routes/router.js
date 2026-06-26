@@ -99,7 +99,7 @@ router.post(
     }
 
     const [rows] = await pool.execute(
-      "SELECT id, email, password, role from agents WHERE email = ?",
+      "SELECT id, email, password, role FROM agents WHERE email = ?",
       [email],
     );
 
@@ -343,7 +343,7 @@ router.get("/profile", async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     const [rows] = await pool.execute(
-      "SELECT id, fullname, email, role, profile_image from agents WHERE id = ?",
+      "SELECT id, fullname, email, role, profile_image FROM agents WHERE id = ?",
       [decoded.id],
     );
 
@@ -726,7 +726,7 @@ router.put(
       const { id } = req.params;
       const { fullname, email, password } = req.body;
       const [agentData] = await pool.execute(
-        "SELECT * from agents WHERE id = ?",
+        "SELECT * FROM agents WHERE id = ?",
         [id],
       );
 
@@ -968,7 +968,7 @@ router.get(
     }
 
     const SQL =
-      "SELECT id, fullname, phone, email, status, profile_image from agents ORDER BY id DESC";
+      "SELECT id, fullname, phone, email, status, profile_image FROM agents ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
     if (result.length === 0) {
@@ -1250,7 +1250,7 @@ router.get(
     }
 
     const SQL =
-      "SELECT id, service_name, status, notes from services ORDER BY id DESC";
+      "SELECT id, service_name, status, notes FROM services ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
     if (result.length === 0) {
