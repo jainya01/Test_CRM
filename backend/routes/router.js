@@ -765,6 +765,7 @@ router.put(
         message: "Profile updated successfully",
       });
     } catch (error) {
+      console.error("error", error);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -1193,7 +1194,7 @@ router.patch(
     const { date } = req.body;
 
     const SQL = "UPDATE customers SET date = ? WHERE id = ?";
-    const [result] = await pool.execute(SQL);
+    const [result] = await pool.execute(SQL, [date, id]);
 
     if (result.affectedRows <= 0) {
       const error = new Error("data update failed");
