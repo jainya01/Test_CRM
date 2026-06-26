@@ -356,7 +356,7 @@ router.get("/profile", async (req, res) => {
       result: rows[0],
     });
   } catch (error) {
-    console.log(error);
+    console.log("error", error);
     res.status(500).json({ message: "Server error" });
   }
 });

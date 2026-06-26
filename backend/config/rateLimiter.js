@@ -5,7 +5,7 @@ const limiter = rateLimit({
   max: 20,
   message: {
     success: true,
-    message: "too many login attempt, try again after 5 minutes",
+    message: "too many login attempts, try again after 5 minutes",
   },
 });
 
