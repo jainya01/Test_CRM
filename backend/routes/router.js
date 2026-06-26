@@ -1352,7 +1352,7 @@ router.put(
 
     return res.status(200).json({
       success: true,
-      message: "data update successfully",
+      message: "data updated successfully",
       result,
     });
   }),

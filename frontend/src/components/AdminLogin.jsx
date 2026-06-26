@@ -66,7 +66,7 @@ const AdminLogin = () => {
 
       navigate("/admin/dashboard", { replace: true });
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "Login failed");
+      setErrorMessage(error.response?.data?.message || "invalid credentials");
     }
   };
 

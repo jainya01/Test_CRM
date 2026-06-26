@@ -7,8 +7,8 @@ const AdminLogin = lazy(() => import("./components/AdminLogin"));
 const StaffLogin = lazy(() => import("./components/StaffLogin"));
 const AgentLogin = lazy(() => import("./components/AgentLogin"));
 
-import User from "./User";
-import Protected from "./components/Protected";
+const User = lazy(() => import("./User"));
+const Protected = lazy(() => import("./components/Protected"));
 
 const Homepage = lazy(() => import("./admin/Homepage"));
 const Leads = lazy(() => import("./admin/Leads"));

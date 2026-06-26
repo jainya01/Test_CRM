@@ -60,7 +60,7 @@ const AgentLogin = () => {
 
       navigate("/agent/overview", { replace: true });
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "Login failed");
+      setErrorMessage(error.response?.data?.message || "invalid credentials");
     }
   };
 
