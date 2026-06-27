@@ -1,4 +1,5 @@
 import axios from "axios";
+const APP_URL = import.meta.env.VITE_BASE_URL;
 
 const getToken = () => {
   return (
@@ -42,7 +43,7 @@ axios.interceptors.response.use(
       localStorage.removeItem("staffToken");
       localStorage.removeItem("role");
       localStorage.removeItem("id");
-      window.location.href = "/";
+      window.location.href = APP_URL;
     }
 
     return Promise.reject(error);
