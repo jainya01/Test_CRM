@@ -55,8 +55,8 @@ const StaffLogin = () => {
       const { token, role, id } = response.data;
 
       localStorage.setItem("staffToken", token);
-      localStorage.setItem("role", role);
-      localStorage.setItem("id", id);
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("userId", id);
 
       navigate("/staff/leads", { replace: true });
     } catch (error) {

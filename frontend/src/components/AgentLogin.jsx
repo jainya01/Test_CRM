@@ -55,8 +55,8 @@ const AgentLogin = () => {
       const { token, role, id } = response.data;
 
       localStorage.setItem("agentToken", token);
-      localStorage.setItem("role", role);
-      localStorage.setItem("id", id);
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("userId", id);
 
       navigate("/agent/overview", { replace: true });
     } catch (error) {

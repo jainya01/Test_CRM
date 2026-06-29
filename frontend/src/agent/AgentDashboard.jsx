@@ -19,7 +19,7 @@ function AgentDashboard() {
   useEffect(() => {
     const allData = async () => {
       try {
-        const agentId = localStorage.getItem("id");
+        const agentId = localStorage.getItem("userId");
 
         const [agentRes] = await Promise.allSettled([
           axios.get(`${API_URL}/allagents`, {

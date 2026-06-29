@@ -102,7 +102,7 @@ function Sidebar() {
 
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("userRole");
   const navLinks =
     role === "admin"
       ? ADMIN_LINKS
@@ -186,8 +186,8 @@ function Sidebar() {
   }, [API_URL]);
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
-    const id = Number(localStorage.getItem("id"));
+    const role = localStorage.getItem("userRole");
+    const id = Number(localStorage.getItem("userId"));
 
     let user = null;
 
@@ -245,9 +245,9 @@ function Sidebar() {
 
           <Link
             to={
-              localStorage.getItem("role") === "admin"
+              localStorage.getItem("userRole") === "admin"
                 ? "/admin/dashboard"
-                : localStorage.getItem("role") === "agent"
+                : localStorage.getItem("userRole") === "agent"
                   ? "/agent/overview"
                   : "/staff/leads"
             }
@@ -262,11 +262,11 @@ function Sidebar() {
               <div className="d-flex flex-column ms-2 font-alfasseh">
                 <span className="text-dark fw-bold">Jainya CRM</span>
                 <span className="laundry-app text-dark">
-                  {localStorage.getItem("role") === "admin"
+                  {localStorage.getItem("userRole") === "admin"
                     ? "Admin Panel"
-                    : localStorage.getItem("role") === "agent"
+                    : localStorage.getItem("userRole") === "agent"
                       ? "Agent Panel"
-                      : localStorage.getItem("role") === "staff"
+                      : localStorage.getItem("userRole") === "staff"
                         ? "Staff Panel"
                         : "Panel"}
                 </span>
@@ -283,9 +283,9 @@ function Sidebar() {
           <div className="d-flex justify-content-between align-items-center">
             <Link
               to={
-                localStorage.getItem("role") === "admin"
+                localStorage.getItem("userRole") === "admin"
                   ? "/admin/dashboard"
-                  : localStorage.getItem("role") === "agent"
+                  : localStorage.getItem("userRole") === "agent"
                     ? "/agent/overview"
                     : "/staff/leads"
               }
@@ -376,9 +376,9 @@ function Sidebar() {
         <div className="p-0 d-flex flex-column" style={{ minHeight: "100vh" }}>
           <Link
             to={
-              localStorage.getItem("role") === "admin"
+              localStorage.getItem("userRole") === "admin"
                 ? "/admin/dashboard"
-                : localStorage.getItem("role") === "agent"
+                : localStorage.getItem("userRole") === "agent"
                   ? "/agent/overview"
                   : "/staff/leads"
             }
@@ -392,11 +392,11 @@ function Sidebar() {
               <div className="d-flex flex-column ms-2 font-alfasseh">
                 <span className="text-light fw-bold">Jainya CRM</span>
                 <span className="laundry-app text-light">
-                  {localStorage.getItem("role") === "admin"
+                  {localStorage.getItem("userRole") === "admin"
                     ? "Admin Panel"
-                    : localStorage.getItem("role") === "agent"
+                    : localStorage.getItem("userRole") === "agent"
                       ? "Agent Panel"
-                      : localStorage.getItem("role") === "staff"
+                      : localStorage.getItem("userRole") === "staff"
                         ? "Staff Panel"
                         : "Panel"}
                 </span>

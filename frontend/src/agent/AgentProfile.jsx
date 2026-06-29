@@ -23,7 +23,7 @@ function AgentEdit() {
 
   const handleUpdateProfile = async () => {
     try {
-      const id = localStorage.getItem("id");
+      const id = localStorage.getItem("userId");
       const formData = new FormData();
       formData.append("fullname", fullname);
       formData.append("email", email);

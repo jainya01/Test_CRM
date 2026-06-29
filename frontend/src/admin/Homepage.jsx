@@ -96,7 +96,7 @@ function Homepage() {
   useEffect(() => {
     const allData = async () => {
       try {
-        const adminId = localStorage.getItem("id");
+        const adminId = localStorage.getItem("userId");
         const [adminRes] = await Promise.allSettled([
           axios.get(`${API_URL}/alladmindata`, {
             headers: authHeader(),

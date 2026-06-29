@@ -60,9 +60,9 @@ const AdminLogin = () => {
         return;
       }
 
-      localStorage.setItem("adminToken", token);
-      localStorage.setItem("role", role);
-      localStorage.setItem("id", id);
+      localStorage.setItem("myAdminToken", token);
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("userId", id);
 
       navigate("/admin/dashboard", { replace: true });
     } catch (error) {
@@ -78,7 +78,7 @@ const AdminLogin = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem("myAdminToken");
     if (token) {
       navigate("/admin/dashboard", { replace: true });
     }

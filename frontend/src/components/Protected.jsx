@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const Protected = ({ allow = [] }) => {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("userRole");
 
   const config = {
     admin: {
-      token: localStorage.getItem("adminToken"),
+      token: localStorage.getItem("myAdminToken"),
       redirect: "/admin/dashboard",
     },
     agent: {

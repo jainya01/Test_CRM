@@ -3,7 +3,7 @@ const APP_URL = import.meta.env.VITE_BASE_URL;
 
 const getToken = () => {
   return (
-    localStorage.getItem("adminToken") ||
+    localStorage.getItem("myAdminToken") ||
     localStorage.getItem("agentToken") ||
     localStorage.getItem("staffToken")
   );
@@ -38,11 +38,11 @@ axios.interceptors.response.use(
       currentPath === "/staff/login";
 
     if (error.response?.status === 401 && !isLoginPage) {
-      localStorage.removeItem("adminToken");
+      localStorage.removeItem("myAdminToken");
       localStorage.removeItem("agentToken");
       localStorage.removeItem("staffToken");
-      localStorage.removeItem("role");
-      localStorage.removeItem("id");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userId");
       window.location.href = APP_URL;
     }
 

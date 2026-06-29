@@ -13,8 +13,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    const role = localStorage.getItem("role");
+    const token = localStorage.getItem("myAdminToken");
+    const role = localStorage.getItem("userRole");
     const agentToken = localStorage.getItem("agentToken");
     const staffToken = localStorage.getItem("staffToken");
 
