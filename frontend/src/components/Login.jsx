@@ -3,8 +3,6 @@ import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
-  faCircleNotch,
-  faPhone,
   faPlane,
   faUserShield,
   faUserTie,
