@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "../App.css";
+import { authHeader } from "../utils/authHeader";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import axios from "axios";
-import { authHeader } from "../utils/authHeader";
 
 const users = [
   {
