@@ -155,7 +155,7 @@ function Passport() {
 
           {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
             paginatedData.map((user) => (
-              <div className="col-12 col-lg-8" key={user.id}>
+              <div className="col-12 col-lg-4" key={user.id}>
                 <div className="customer-card p-3 bg-white border rounded-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex align-items-center gap-3">
@@ -207,7 +207,7 @@ function Passport() {
                       )}
 
                       {user.status === "pending" && (
-                        <div className="d-flex gap-2">
+                        <div className="d-flex gap-2 flex-wrap">
                           <button className="btn btn-light fw-semibold btn-pending">
                             Pending
                           </button>
