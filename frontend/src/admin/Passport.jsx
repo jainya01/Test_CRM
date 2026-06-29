@@ -159,7 +159,7 @@ function Passport() {
                 <div className="customer-card p-3 bg-white border rounded-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex align-items-center gap-3">
-                      <div className="status-icon-wrapper">
+                      <div className="status-icon-wrapper border">
                         {user.status === "verified" && (
                           <FontAwesomeIcon
                             icon={faFileCircleCheck}
