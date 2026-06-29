@@ -115,7 +115,7 @@ function PackagesCreate() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by Package name"
+                    placeholder="Search by package name"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />

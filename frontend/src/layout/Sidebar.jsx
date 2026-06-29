@@ -51,12 +51,6 @@ const AGENT_LINKS = [
     icon: faArrowTrendUp,
   },
   {
-    path: "/agent/customers",
-    label: "My Customers",
-    exact: true,
-    icon: faUserCircle,
-  },
-  {
     path: "/agent/packages",
     label: "Packages",
     exact: true,
@@ -67,6 +61,12 @@ const AGENT_LINKS = [
     label: "Bookings",
     exact: true,
     icon: faBriefcase,
+  },
+  {
+    path: "/agent/customers",
+    label: "My Customers",
+    exact: true,
+    icon: faUserCircle,
   },
   {
     path: "/agent/profile",

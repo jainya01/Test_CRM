@@ -6,6 +6,8 @@ import {
   faCircleNotch,
   faPhone,
   faPlane,
+  faUserShield,
+  faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -75,7 +77,7 @@ const Login = () => {
                   >
                     <div className="d-flex align-items-center">
                       <div className="phone-awesome me-2">
-                        <FontAwesomeIcon icon={faCircleNotch} />
+                        <FontAwesomeIcon icon={faUserShield} />
                       </div>
 
                       <div>
@@ -97,7 +99,7 @@ const Login = () => {
                   >
                     <div className="d-flex align-items-center">
                       <div className="phone-awesome me-2">
-                        <FontAwesomeIcon icon={faPhone} />
+                        <FontAwesomeIcon icon={faUserTie} />
                       </div>
 
                       <div>

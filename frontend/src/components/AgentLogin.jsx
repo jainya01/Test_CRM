@@ -128,7 +128,7 @@ const AgentLogin = () => {
                     <input
                       type="email"
                       className="form-control sector-wise mb-0"
-                      placeholder="you@company.com"
+                      placeholder="agent@example.com"
                       name="email"
                       value={email}
                       onChange={handleChange}
