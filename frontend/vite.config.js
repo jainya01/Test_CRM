@@ -4,7 +4,6 @@ import { visualizer } from "rollup-plugin-visualizer";
 import purgecss from "vite-plugin-purgecss";
 
 export default defineConfig({
-  base: "/laraib/",
   plugins: [
     react(),
 
