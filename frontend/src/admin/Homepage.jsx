@@ -23,7 +23,7 @@ function Homepage() {
     {
       id: 1,
       name: "Muhammad Tariq",
-      phone: "+92 300 10000",
+      phone: "+91 300 10000",
       service: "Hajj",
       source: "John Doe",
       status: "New",
@@ -32,7 +32,7 @@ function Homepage() {
     {
       id: 2,
       name: "Ayesha Siddiqui",
-      phone: "+92 301 10101",
+      phone: "+91 301 10101",
       service: "Umrah",
       source: "Sarah Khan",
       status: "Contacted",
@@ -41,7 +41,7 @@ function Homepage() {
     {
       id: 3,
       name: "Imran Malik",
-      phone: "+92 302 10202",
+      phone: "+91 302 10202",
       service: "Ticket",
       source: "Ali Raza",
       status: "Interested",
@@ -50,7 +50,7 @@ function Homepage() {
     {
       id: 4,
       name: "Fatima Noor",
-      phone: "+92 303 10303",
+      phone: "+91 303 10303",
       service: "Medical",
       source: "Michael Smith",
       status: "Not Interested",
@@ -59,7 +59,7 @@ function Homepage() {
     {
       id: 5,
       name: "Zain Abbas",
-      phone: "+92 304 10404",
+      phone: "+91 304 10404",
       service: "Hajj",
       source: "Ayesha Malik",
       status: "Converted",
@@ -68,7 +68,7 @@ function Homepage() {
     {
       id: 6,
       name: "Hira Sheikh",
-      phone: "+92 305 10505",
+      phone: "+91 305 10505",
       service: "Umrah",
       source: "David Johnson",
       status: "New",
@@ -176,7 +176,7 @@ function Homepage() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by name, email & service"
                   />
                 </div>
               </div>

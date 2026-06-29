@@ -11,7 +11,7 @@ const users = [
   {
     id: 1,
     name: "Muhammad Tariq",
-    phone: "+92 300 10000",
+    phone: "+91 300 10000",
     Service: "Hajj",
     Source: "John Doe",
     Status: "New",
@@ -21,7 +21,7 @@ const users = [
   {
     id: 2,
     name: "Ayesha Siddiqui",
-    phone: "+92 301 10101",
+    phone: "+91 301 10101",
     Service: "Umrah",
     Source: "Sarah Khan",
     Status: "Contacted",
@@ -31,7 +31,7 @@ const users = [
   {
     id: 3,
     name: "Imran Malik",
-    phone: "+92 302 10202",
+    phone: "+91 302 10202",
     Service: "Ticket",
     Source: "Ali Raza",
     Status: "Interested",
@@ -41,7 +41,7 @@ const users = [
   {
     id: 4,
     name: "Fatima Noor",
-    phone: "+92 303 10303",
+    phone: "+91 303 10303",
     Service: "Medical",
     Source: "Michael Smith",
     Status: "Not Interested",
@@ -51,7 +51,7 @@ const users = [
   {
     id: 5,
     name: "Zain Abbas",
-    phone: "+92 304 10404",
+    phone: "+91 304 10404",
     Service: "Hajj",
     Source: "Ayesha Malik",
     Status: "Converted",
@@ -61,7 +61,7 @@ const users = [
   {
     id: 6,
     name: "Hira Sheikh",
-    phone: "+92 305 10505",
+    phone: "+91 305 10505",
     Service: "Umrah",
     Source: "David Johnson",
     Status: "New",
@@ -71,7 +71,7 @@ const users = [
   {
     id: 7,
     name: "Ayesha Khan",
-    phone: "+92 311 4455667",
+    phone: "+91 311 4455667",
     Service: "Hajj",
     Source: "Fatima Noor",
     Status: "Contacted",
@@ -81,7 +81,7 @@ const users = [
   {
     id: 8,
     name: "Bilal Ahmed",
-    phone: "+92 300 7788991",
+    phone: "+91 300 7788991",
     Service: "Umrah",
     Source: "Usman Tariq",
     Status: "New",
@@ -91,7 +91,7 @@ const users = [
   {
     id: 9,
     name: "Sara Malik",
-    phone: "+92 322 5566778",
+    phone: "+91 322 5566778",
     Service: "Visa",
     Source: "Emily Brown",
     Status: "Qualified",
@@ -304,7 +304,7 @@ function Leads() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by name & Phone"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
@@ -346,7 +346,7 @@ function Leads() {
               <input
                 type="search"
                 className="form-control sector-wise"
-                placeholder="Search name, phone, passport, city..."
+                placeholder="Search by name & Phone"
                 value={search1}
                 onChange={(e) => setSearch1(e.target.value)}
               />

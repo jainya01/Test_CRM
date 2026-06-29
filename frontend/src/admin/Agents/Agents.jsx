@@ -68,7 +68,7 @@ function Agents() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by name & email"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />

@@ -7,49 +7,49 @@ function StaffFollowup() {
     {
       id: 1,
       name: "Muhammad Tariq",
-      phone: "+92 300 10000",
+      phone: "+91 300 10000",
       service: "Hajj",
     },
     {
       id: 2,
       name: "Zain Abbas",
-      phone: "+92 304 10404",
+      phone: "+91 304 10404",
       service: "Hajj",
     },
     {
       id: 3,
       name: "Bilal Hussain",
-      phone: "+92 308 10808",
+      phone: "+91 308 10808",
       service: "Hajj",
     },
     {
       id: 4,
       name: "Faisal Mehmood",
-      phone: "+92 302 11212",
+      phone: "+91 302 11212",
       service: "Hajj",
     },
     {
       id: 5,
       name: "Kamran Akmal",
-      phone: "+92 304 11414",
+      phone: "+91 304 11414",
       service: "Ticket",
     },
     {
       id: 6,
       name: "Muhammad Tariq",
-      phone: "+92 306 11616",
+      phone: "+91 306 11616",
       service: "Hajj",
     },
     {
       id: 7,
       name: "Zain Abbas",
-      phone: "+92 300 12020",
+      phone: "+91 300 12020",
       service: "Hajj",
     },
     {
       id: 8,
       name: "Bilal Hussain",
-      phone: "+92 304 12424",
+      phone: "+91 304 12424",
       service: "Hajj",
     },
   ];
@@ -71,7 +71,7 @@ function StaffFollowup() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by name & service"
                   />
                 </div>
               </div>

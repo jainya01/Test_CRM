@@ -97,7 +97,7 @@ function AgentEdit() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by name & email"
                   />
                 </div>
               </div>

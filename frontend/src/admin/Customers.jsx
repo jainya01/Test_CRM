@@ -7,121 +7,121 @@ const data = [
   {
     id: 1,
     name: "Mohammad Tariq",
-    phone: "+92 300 10000",
+    phone: "+91 300 10000",
     service: "Hajj",
   },
   {
     id: 2,
     name: "Fatima Noor",
-    phone: "+92 303 10303",
+    phone: "+91 303 10303",
     service: "Medical",
   },
   {
     id: 3,
     name: "Zain Abbas",
-    phone: "+92 304 10404",
+    phone: "+91 304 10404",
     service: "Hajj",
   },
   {
     id: 4,
     name: "Usman Raza",
-    phone: "+92 306 10606",
+    phone: "+91 306 10606",
     service: "Ticket",
   },
   {
     id: 5,
     name: "Mariam Yusuf",
-    phone: "+92 309 10909",
+    phone: "+91 309 10909",
     service: "Umrah",
   },
   {
     id: 6,
     name: "Faisal Mahmood",
-    phone: "+92 302 11212",
+    phone: "+91 302 11212",
     service: "Hajj",
   },
   {
     id: 7,
     name: "Kamran Akmal",
-    phone: "+92 304 11414",
+    phone: "+91 304 11414",
     service: "Ticket",
   },
   {
     id: 8,
     name: "Saima Jamil",
-    phone: "+92 305 11515",
+    phone: "+91 305 11515",
     service: "Medical",
   },
   {
     id: 9,
     name: "Imran Malik",
-    phone: "+92 308 11818",
+    phone: "+91 308 11818",
     service: "Ticket",
   },
   {
     id: 10,
     name: "Fatima Noor",
-    phone: "+92 309 11919",
+    phone: "+91 309 11919",
     service: "Medical",
   },
   {
     id: 11,
     name: "Hira Sheikh",
-    phone: "+92 301 12121",
+    phone: "+91 301 12121",
     service: "Umrah",
   },
   {
     id: 12,
     name: "Bilal Hussain",
-    phone: "+92 304 12424",
+    phone: "+91 304 12424",
     service: "Hajj",
   },
   {
     id: 13,
     name: "Sana Javed",
-    phone: "+92 307 12727",
+    phone: "+91 307 12727",
     service: "Medical",
   },
   {
     id: 14,
     name: "Ahmed Khan",
-    phone: "+92 311 1414141",
+    phone: "+91 311 1414141",
     service: "Umrah",
   },
   {
     id: 15,
     name: "Ayesha Malik",
-    phone: "+92 312 1515151",
+    phone: "+91 312 1515151",
     service: "Medical",
   },
   {
     id: 16,
     name: "Hassan Raza",
-    phone: "+92 313 1616161",
+    phone: "+91 313 1616161",
     service: "Ticket",
   },
   {
     id: 17,
     name: "Noor Fatima",
-    phone: "+92 314 1717171",
+    phone: "+91 314 1717171",
     service: "Hajj",
   },
   {
     id: 18,
     name: "Ali Hamza",
-    phone: "+92 315 1818181",
+    phone: "+91 315 1818181",
     service: "Umrah",
   },
   {
     id: 19,
     name: "Zoya Sheikh",
-    phone: "+92 316 1919191",
+    phone: "+91 316 1919191",
     service: "Medical",
   },
   {
     id: 20,
     name: "Talha Javed",
-    phone: "+92 317 2020202",
+    phone: "+91 317 2020202",
     service: "Ticket",
   },
 ];
@@ -171,7 +171,7 @@ function Customers() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by name, phone & service"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />

@@ -37,7 +37,7 @@ const ADMIN_LINKS = [
   { path: "/admin/customers", label: "Customers", icon: faUserCircle },
   { path: "/admin/agents", label: "Agents", icon: faBriefcase },
   { path: "/admin/passports", label: "Passports", icon: faPassport },
-  { path: "/admin/callers", label: "Caller Executive", icon: faHeadset },
+  { path: "/admin/callers", label: "Staffs", icon: faHeadset },
   { path: "/admin/services", label: "Services", icon: faTools },
   { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
   { path: "/admin/settings", label: "Settings", icon: faCog },
@@ -260,7 +260,7 @@ function Sidebar() {
               </div>
 
               <div className="d-flex flex-column ms-2 font-alfasseh">
-                <span className="text-dark fw-bold">Jainya CRM</span>
+                <span className="text-dark fw-bold">Laraib CRM</span>
                 <span className="laundry-app text-dark">
                   {localStorage.getItem("userRole") === "admin"
                     ? "Admin Panel"
@@ -390,7 +390,7 @@ function Sidebar() {
               </div>
 
               <div className="d-flex flex-column ms-2 font-alfasseh">
-                <span className="text-light fw-bold">Jainya CRM</span>
+                <span className="text-light fw-bold">Laraib CRM</span>
                 <span className="laundry-app text-light">
                   {localStorage.getItem("userRole") === "admin"
                     ? "Admin Panel"

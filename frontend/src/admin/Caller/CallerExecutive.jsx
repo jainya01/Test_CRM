@@ -117,7 +117,7 @@ function CallerExecutive() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by staff name"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
@@ -147,9 +147,9 @@ function CallerExecutive() {
         <div className="p-2 p-lg-3">
           <div className="d-flex justify-content-between flex-wrap">
             <div>
-              <h5 className="fw-bold overview-dashboard">Callers</h5>
+              <h5 className="fw-bold overview-dashboard">Staffs</h5>
               <p className="text-muted overview-lead fw-bold">
-                {paginatedData.length} callers
+                {paginatedData.length} staffs
               </p>
             </div>
 
@@ -158,7 +158,7 @@ function CallerExecutive() {
                 className="text-decoration-none btn new-leader text-nowrap"
                 to="/admin/callers/create"
               >
-                + New Caller
+                + New Staff
               </Link>
             </div>
           </div>

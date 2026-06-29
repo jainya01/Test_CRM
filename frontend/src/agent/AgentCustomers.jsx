@@ -1,63 +1,83 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
 const data = [
-  { id: 1, name: "Ahsan Ali", phone: "+92 300 11001", service: "Hajj" },
-  { id: 2, name: "Zoya Khan", phone: "+92 303 22002", service: "Medical" },
-  { id: 3, name: "Usman Tariq", phone: "+92 304 33003", service: "Hajj" },
-  { id: 4, name: "Hina Shah", phone: "+92 306 44004", service: "Ticket" },
-  { id: 5, name: "Ali Raza", phone: "+92 309 55005", service: "Umrah" },
-  { id: 6, name: "Sara Mehmood", phone: "+92 302 66006", service: "Hajj" },
-  { id: 7, name: "Bilal Ahmed", phone: "+92 304 77007", service: "Ticket" },
-  { id: 8, name: "Ayesha Noor", phone: "+92 305 88008", service: "Medical" },
-  { id: 9, name: "Hamza Malik", phone: "+92 308 99009", service: "Ticket" },
+  { id: 1, name: "Ahsan Ali", phone: "+91 300 11001", service: "Hajj" },
+  { id: 2, name: "Zoya Khan", phone: "+91 303 22002", service: "Medical" },
+  { id: 3, name: "Usman Tariq", phone: "+91 304 33003", service: "Hajj" },
+  { id: 4, name: "Hina Shah", phone: "+91 306 44004", service: "Ticket" },
+  { id: 5, name: "Ali Raza", phone: "+91 309 55005", service: "Umrah" },
+  { id: 6, name: "Sara Mehmood", phone: "+91 302 66006", service: "Hajj" },
+  { id: 7, name: "Bilal Ahmed", phone: "+91 304 77007", service: "Ticket" },
+  { id: 8, name: "Ayesha Noor", phone: "+91 305 88008", service: "Medical" },
+  { id: 9, name: "Hamza Malik", phone: "+91 308 99009", service: "Ticket" },
   {
     id: 10,
     name: "Fatima Zahra",
-    phone: "+92 309 101010",
+    phone: "+91 309 101010",
     service: "Medical",
   },
-  { id: 11, name: "Imran Shah", phone: "+92 301 111011", service: "Umrah" },
-  { id: 12, name: "Khadija Ali", phone: "+92 304 121212", service: "Hajj" },
+  { id: 11, name: "Imran Shah", phone: "+91 301 111011", service: "Umrah" },
+  { id: 12, name: "Khadija Ali", phone: "+91 304 121212", service: "Hajj" },
   {
     id: 13,
     name: "Omar Farooq",
-    phone: "+92 307 131313",
+    phone: "+91 307 131313",
     service: "Medical",
   },
-  { id: 14, name: "Hassan Iqbal", phone: "+92 311 141414", service: "Umrah" },
+  { id: 14, name: "Hassan Iqbal", phone: "+91 311 141414", service: "Umrah" },
   {
     id: 15,
     name: "Mariam Saeed",
-    phone: "+92 312 151515",
+    phone: "+91 312 151515",
     service: "Medical",
   },
-  { id: 16, name: "Noman Javed", phone: "+92 313 161616", service: "Ticket" },
+  { id: 16, name: "Noman Javed", phone: "+91 313 161616", service: "Ticket" },
   {
     id: 17,
     name: "Zainab Hussain",
-    phone: "+92 314 171717",
+    phone: "+91 314 171717",
     service: "Hajj",
   },
-  { id: 18, name: "Saad Khan", phone: "+92 315 181818", service: "Umrah" },
+  { id: 18, name: "Saad Khan", phone: "+91 315 181818", service: "Umrah" },
   {
     id: 19,
     name: "Laiba Sheikh",
-    phone: "+92 316 191919",
+    phone: "+91 316 191919",
     service: "Medical",
   },
-  { id: 20, name: "Talha Ahmed", phone: "+92 317 202020", service: "Ticket" },
+  { id: 20, name: "Talha Ahmed", phone: "+91 317 202020", service: "Ticket" },
 ];
 
 function AgentCustomers() {
+  const [search, setSearch] = useState("");
+
+  const filteredCustomers = useMemo(() => {
+    const keyword = search.toLowerCase();
+
+    return data.filter((item) => {
+      return (
+        item.name?.toLowerCase().includes(keyword) ||
+        item.service?.toLowerCase().includes(keyword) ||
+        item.phone?.toLowerCase().includes(keyword)
+      );
+    });
+  }, [search]);
+
   const itemsPerPage = 24;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const paginatedData = filteredCustomers.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
 
   return (
     <>
@@ -76,7 +96,9 @@ function AgentCustomers() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by name, phone & service"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>
@@ -109,8 +131,8 @@ function AgentCustomers() {
             </p>
           </div>
 
-          {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
-            paginatedData.map((user) => (
+          {Array.isArray(filteredCustomers) && filteredCustomers.length > 0 ? (
+            filteredCustomers.map((user) => (
               <div
                 className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3"
                 key={user.id}

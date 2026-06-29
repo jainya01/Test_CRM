@@ -82,7 +82,7 @@ function ServiceCreate() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search passport, name, phone, PNR..."
+                    placeholder="Search by staff name"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
