@@ -160,7 +160,7 @@ function AgentCustomers() {
                     </span>
 
                     <span className="last-service text-end text-muted">
-                      Last: Umrah 2023
+                      Last: {user?.service || "N/A"} 2025
                     </span>
                   </div>
                 </div>
