@@ -2,15 +2,16 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-const Login = lazy(() => import("./components/Login"));
-const AdminLogin = lazy(() => import("./components/AdminLogin"));
-const StaffLogin = lazy(() => import("./components/StaffLogin"));
-const AgentLogin = lazy(() => import("./components/AgentLogin"));
 
-const User = lazy(() => import("./User"));
-const Protected = lazy(() => import("./components/Protected"));
+import Login from "./components/Login";
+import AdminLogin from "./components/AdminLogin";
+import StaffLogin from "./components/StaffLogin";
+import AgentLogin from "./components/AgentLogin";
 
-const Homepage = lazy(() => import("./admin/Homepage"));
+import User from "./User";
+import Protected from "./components/Protected";
+
+import Homepage from "./admin/Homepage";
 const Leads = lazy(() => import("./admin/Leads"));
 
 const Packages = lazy(() => import("./admin/Package/Packages"));
@@ -36,13 +37,13 @@ const ServicesEdit = lazy(() => import("./admin/services/ServiceEdit"));
 
 const Settings = lazy(() => import("./admin/Settings"));
 
-const AgentDashboard = lazy(() => import("./agent/AgentDashboard"));
+import AgentDashboard from "./agent/AgentDashboard";
 const AgentCustomers = lazy(() => import("./agent/AgentCustomers"));
 const AgentPackages = lazy(() => import("./agent/AgentPackages"));
 const AgentBookings = lazy(() => import("./agent/AgentBookings"));
 const AgentProfile = lazy(() => import("./agent/AgentProfile"));
 
-const StaffDashboard = lazy(() => import("./staff/StaffDashboard"));
+import StaffDashboard from "./staff/StaffDashboard";
 const StaffPackage = lazy(() => import("./staff/StaffPackage"));
 const StaffFollowup = lazy(() => import("./staff/StaffFollowup"));
 
