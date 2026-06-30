@@ -32,10 +32,10 @@ function CallersView() {
 
   return (
     <>
-      <title>Caller Executive Details | CRM Staff Portal</title>
+      <title>Staff Performance | CRM Admin Portal</title>
       <meta
         name="description"
-        content="View caller performance, track calls, monitor follow-ups, conversion rates, call history, and customer engagement metrics in the CRM Staff Portal."
+        content="View staff performance, monitor assigned leads, track calls, follow-ups, conversion rates, call history, and overall activity in the CRM Admin Portal."
       />
 
       <main className="content-wrapper">
@@ -136,7 +136,7 @@ function CallersView() {
                   </div>
 
                   <div className="mt-3">
-                    <Link className="text-success" to="/admin/callers">
+                    <Link className="text-success" to="/admin/staffs">
                       Back
                     </Link>
                   </div>

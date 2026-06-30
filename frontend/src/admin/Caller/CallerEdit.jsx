@@ -42,7 +42,7 @@ function CallersEdit() {
       toast.success("Caller credentials updated successfully");
 
       setTimeout(() => {
-        navigate("/admin/callers");
+        navigate("/admin/staffs");
       }, 1000);
     } catch (error) {
       console.log(error);
@@ -104,10 +104,10 @@ function CallersEdit() {
 
   return (
     <>
-      <title>Edit Caller Executive | CRM Staff Portal</title>
+      <title>Edit Staff | CRM Admin Portal</title>
       <meta
         name="description"
-        content="Update caller executive profiles, manage accounts, modify contact details, assign roles, change status, and maintain staff records in the CRM Staff Portal."
+        content="Update staff profiles, edit contact details, assign roles, manage permissions, change account status, and maintain staff records."
       />
 
       <main className="content-wrapper">
@@ -148,7 +148,7 @@ function CallersEdit() {
           <div className="col-12">
             <div className="card shadow border-0">
               <div className="card-header profile-header">
-                Edit Caller: {call.fullname}
+                Edit Staff: {call.fullname}
               </div>
 
               <div className="card-body">
@@ -291,7 +291,7 @@ function CallersEdit() {
                       </button>
                     </div>
 
-                    <Link className="text-success" to="/admin/callers">
+                    <Link className="text-success" to="/admin/staffs">
                       Back
                     </Link>
                   </div>

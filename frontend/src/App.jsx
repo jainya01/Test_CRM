@@ -48,7 +48,7 @@ const StaffFollowup = lazy(() => import("./staff/StaffFollowup"));
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/laraib">
       <Suspense>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -61,10 +61,10 @@ function App() {
               <Route path="dashboard" element={<Homepage />} />
               <Route path="leads" element={<Leads />} />
 
-              <Route path="callers" element={<CallerExecutive />} />
-              <Route path="callers/create" element={<CallersCreate />} />
-              <Route path="callers/edit/:id" element={<CallersEdit />} />
-              <Route path="callers/view/:id" element={<CallersView />} />
+              <Route path="staffs" element={<CallerExecutive />} />
+              <Route path="staffs/create" element={<CallersCreate />} />
+              <Route path="staffs/edit/:id" element={<CallersEdit />} />
+              <Route path="staffs/view/:id" element={<CallersView />} />
 
               <Route path="packages" element={<Packages />} />
               <Route path="packages/create" element={<PackagesCreate />} />

@@ -102,10 +102,10 @@ function CallerExecutive() {
 
   return (
     <>
-      <title>Caller Executive Dashboard | CRM Staff Portal</title>
+      <title>Staff Management | CRM Admin Portal</title>
       <meta
         name="description"
-        content="Manage customer leads, handle follow-ups, update lead status, track call activity, schedule callbacks, and streamline daily interactions in the CRM Caller Portal."
+        content="View, manage, and monitor all staff members, assign roles, update staff information, track activity, and oversee team operations from the CRM Admin Portal."
       />
 
       <main className="content-wrapper">
@@ -156,7 +156,7 @@ function CallerExecutive() {
             <div>
               <Link
                 className="text-decoration-none btn new-leader text-nowrap"
-                to="/admin/callers/create"
+                to="/admin/staffs/create"
               >
                 + New Staff
               </Link>
@@ -186,7 +186,7 @@ function CallerExecutive() {
                     </th>
 
                     <th className="py-2">Rank</th>
-                    <th>Caller</th>
+                    <th>Staff Name</th>
                     <th>Conversion</th>
                     <th>Performance</th>
                     <th>Status</th>
@@ -254,7 +254,7 @@ function CallerExecutive() {
                           <div className="d-flex align-items-center">
                             <Link
                               title="View"
-                              to={`/admin/callers/view/${item.id}`}
+                              to={`/admin/staffs/view/${item.id}`}
                               className="p-1 d-inline-flex align-items-center justify-content-center"
                             >
                               <FontAwesomeIcon
@@ -265,7 +265,7 @@ function CallerExecutive() {
 
                             <Link
                               title="Edit"
-                              to={`/admin/callers/edit/${item.id}`}
+                              to={`/admin/staffs/edit/${item.id}`}
                               className="p-1 d-inline-flex align-items-center justify-content-center"
                             >
                               <FontAwesomeIcon

@@ -69,7 +69,7 @@ function CallersCreate() {
       toast.success("Caller created successfully");
 
       setTimeout(() => {
-        navigate("/admin/callers");
+        navigate("/admin/staffs");
       }, 1000);
     } catch (error) {
       console.error("error", error);
@@ -86,10 +86,10 @@ function CallersCreate() {
 
   return (
     <>
-      <title>Create Caller Executive | CRM Staff Portal</title>
+      <title>Add Staff Member | CRM Admin Portal</title>
       <meta
         name="description"
-        content="Add and manage caller executives, assign roles, configure accounts, manage permissions, and streamline customer communication in the CRM Staff Portal."
+        content="Add a new staff member, assign roles and permissions, configure account information, and manage your team through the CRM Admin Portal."
       />
 
       <main className="content-wrapper">
@@ -130,7 +130,7 @@ function CallersCreate() {
           <div className="col-12">
             <div className="card shadow border-0">
               <div className="card-header profile-header">
-                Create New Callers
+                Create New Staffs
               </div>
 
               <div className="card-body">
@@ -262,7 +262,7 @@ function CallersCreate() {
                       </button>
                     </div>
 
-                    <Link className="text-success" to="/admin/callers">
+                    <Link className="text-success" to="/admin/staffs">
                       Back
                     </Link>
                   </div>
