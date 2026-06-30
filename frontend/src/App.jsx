@@ -25,10 +25,10 @@ const AgentsEdit = lazy(() => import("./admin/Agents/AgentsEdit"));
 const Passport = lazy(() => import("./admin/Passport"));
 const BulkUpload = lazy(() => import("./admin/BulkUpload"));
 
-const CallerExecutive = lazy(() => import("./admin/Caller/CallerExecutive"));
-const CallersCreate = lazy(() => import("./admin/Caller/CallerCreate"));
-const CallersEdit = lazy(() => import("./admin/Caller/CallerEdit"));
-const CallersView = lazy(() => import("./admin/Caller/CallersView"));
+const StaffExecutive = lazy(() => import("./admin/Caller/StaffExecutive"));
+const StaffCreate = lazy(() => import("./admin/Caller/StaffCreate"));
+const StaffEdit = lazy(() => import("./admin/Caller/StaffEdit"));
+const StaffView = lazy(() => import("./admin/Caller/StaffView"));
 
 const Service = lazy(() => import("./admin/services/Service"));
 const ServiceCreate = lazy(() => import("./admin/services/ServiceCreate"));
@@ -61,10 +61,10 @@ function App() {
               <Route path="dashboard" element={<Homepage />} />
               <Route path="leads" element={<Leads />} />
 
-              <Route path="staffs" element={<CallerExecutive />} />
-              <Route path="staffs/create" element={<CallersCreate />} />
-              <Route path="staffs/edit/:id" element={<CallersEdit />} />
-              <Route path="staffs/view/:id" element={<CallersView />} />
+              <Route path="staffs" element={<StaffExecutive />} />
+              <Route path="staffs/create" element={<StaffCreate />} />
+              <Route path="staffs/edit/:id" element={<StaffEdit />} />
+              <Route path="staffs/view/:id" element={<StaffView />} />
 
               <Route path="packages" element={<Packages />} />
               <Route path="packages/create" element={<PackagesCreate />} />
