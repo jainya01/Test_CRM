@@ -1,7 +1,12 @@
 import { useMemo, useState } from "react";
 import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBell,
+  faUsers,
+  faWarning,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const data = [
@@ -102,6 +107,19 @@ function Packages() {
     );
   }, [active, search]);
 
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = (item) => {
+    setSelectedPackage(item);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedPackage(null);
+  };
+
   return (
     <>
       <title>Packages Management | Travel CRM Portal</title>
@@ -185,7 +203,10 @@ function Packages() {
             {Array.isArray(filteredData) && filteredData.length > 0 ? (
               filteredData.map((item, index) => (
                 <div className="col-12 col-sm-6 col-md-6 col-lg-3" key={index}>
-                  <div className="border rounded-3 h-100">
+                  <div
+                    className="border rounded-3 h-100 pointer-cursor"
+                    onClick={() => handleOpenModal(item)}
+                  >
                     <div
                       className={`rounded-3 common-code ${getServiceClass(item.service)}`}
                     >
@@ -229,6 +250,63 @@ function Packages() {
             ) : (
               <div className="text-center w-100 mt-3 text-muted">
                 No packages available
+              </div>
+            )}
+
+            {showModal && selectedPackage && (
+              <div className="modal-overlay-flyer" onClick={handleCloseModal}>
+                <div
+                  className="flyer-modal border border-light"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flyer-header d-flex justify-content-between">
+                    <div>
+                      <h4 className="mb-1 package-name-flyer">
+                        {selectedPackage.package_name}
+                      </h4>
+                      <span
+                        className={`badge ${
+                          selectedPackage.service === "Hajj"
+                            ? "bg-primary"
+                            : selectedPackage.service === "Umrah"
+                              ? "bg-success"
+                              : selectedPackage.service === "Ticket"
+                                ? "bg-warning"
+                                : "bg-info"
+                        }`}
+                      >
+                        {selectedPackage.service}
+                      </span>
+                    </div>
+
+                    <div onClick={handleCloseModal} className="pointer-cursor">
+                      <FontAwesomeIcon icon={faX} className="fw-bold" />
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <div className="flyer-body">
+                    <div className="flyer-item">
+                      <strong>Price:</strong> {selectedPackage.price}
+                    </div>
+
+                    <div className="flyer-item">
+                      <strong>Seats:</strong> {selectedPackage.seats}
+                    </div>
+
+                    <div className="flyer-item">
+                      <strong>Remaining Days:</strong>{" "}
+                      {selectedPackage.remaining_days}
+                    </div>
+                  </div>
+
+                  <div className="flyer-footer">
+                    <button className="btn new-leader new-books ms-2">
+                      Book Now
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

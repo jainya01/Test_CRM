@@ -1470,3 +1470,60 @@ body {
 .status-span {
   font-size: 13px;
 }
+
+.modal-overlay-flyer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.flyer-modal {
+  width: 400px;
+  background: #073125;
+  border-radius: 12px;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-in-out;
+  color: #fff;
+}
+
+.flyer-header {
+  text-align: center;
+}
+
+.flyer-body {
+  margin-top: 10px;
+}
+
+.flyer-item {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.flyer-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.package-name-flyer {
+  font-size: 17px;
+  line-height: 22.5px;
+}
