@@ -1,58 +1,78 @@
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCalendar, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { useMemo, useState } from "react";
+
+const data = [
+  {
+    id: 1,
+    name: "Muhammad Tariq",
+    phone: "+91 300 10000",
+    service: "Hajj",
+  },
+  {
+    id: 2,
+    name: "Zain Abbas",
+    phone: "+91 304 10404",
+    service: "Hajj",
+  },
+  {
+    id: 3,
+    name: "Bilal Hussain",
+    phone: "+91 308 10808",
+    service: "Hajj",
+  },
+  {
+    id: 4,
+    name: "Faisal Mehmood",
+    phone: "+91 302 11212",
+    service: "Hajj",
+  },
+  {
+    id: 5,
+    name: "Kamran Akmal",
+    phone: "+91 304 11414",
+    service: "Ticket",
+  },
+  {
+    id: 6,
+    name: "Muhammad Tariq",
+    phone: "+91 306 11616",
+    service: "Hajj",
+  },
+  {
+    id: 7,
+    name: "Zain Abbas",
+    phone: "+91 300 12020",
+    service: "Hajj",
+  },
+  {
+    id: 8,
+    name: "Bilal Hussain",
+    phone: "+91 304 12424",
+    service: "Hajj",
+  },
+];
 
 function StaffFollowup() {
-  const data = [
-    {
-      id: 1,
-      name: "Muhammad Tariq",
-      phone: "+91 300 10000",
-      service: "Hajj",
-    },
-    {
-      id: 2,
-      name: "Zain Abbas",
-      phone: "+91 304 10404",
-      service: "Hajj",
-    },
-    {
-      id: 3,
-      name: "Bilal Hussain",
-      phone: "+91 308 10808",
-      service: "Hajj",
-    },
-    {
-      id: 4,
-      name: "Faisal Mehmood",
-      phone: "+91 302 11212",
-      service: "Hajj",
-    },
-    {
-      id: 5,
-      name: "Kamran Akmal",
-      phone: "+91 304 11414",
-      service: "Ticket",
-    },
-    {
-      id: 6,
-      name: "Muhammad Tariq",
-      phone: "+91 306 11616",
-      service: "Hajj",
-    },
-    {
-      id: 7,
-      name: "Zain Abbas",
-      phone: "+91 300 12020",
-      service: "Hajj",
-    },
-    {
-      id: 8,
-      name: "Bilal Hussain",
-      phone: "+91 304 12424",
-      service: "Hajj",
-    },
-  ];
+  const [search, setSearch] = useState("");
+
+  const filteredStaff = useMemo(() => {
+    const keyword = search.toLowerCase().trim();
+    return data.filter(
+      (data) =>
+        data.name?.toLowerCase().includes(keyword) ||
+        data.phone?.toLowerCase().includes(keyword) ||
+        data.service?.toLowerCase().includes(keyword),
+    );
+  }, [search]);
+
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = filteredStaff.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredStaff.length / itemsPerPage);
 
   return (
     <>
@@ -71,7 +91,9 @@ function StaffFollowup() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by name & service"
+                    placeholder="Search by name, phone & service"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>
@@ -179,8 +201,8 @@ function StaffFollowup() {
                 </div>
               </div>
 
-              {Array.isArray(data) && data.length > 0 ? (
-                data.map((item) => (
+              {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
+                paginatedData.map((item) => (
                   <div
                     className="border mt-2 rounded-3 d-flex flex-wrap justify-content-between align-items-center hover-changed"
                     key={item.id}
@@ -193,9 +215,7 @@ function StaffFollowup() {
 
                         <div className="custom-call">
                           <span>{item?.phone || "N/A"}</span>
-
                           <span className="fw-bold me-1 ms-1">·</span>
-
                           <span>{item?.service || "N/A"}</span>
                         </div>
                       </div>
@@ -215,11 +235,47 @@ function StaffFollowup() {
                   </div>
                 ))
               ) : (
-                <div className="text-center py-4">
+                <div className="text-center">
                   <h6 className="mb-1">No Data Found</h6>
-                  <p className="text-muted mb-0">
+                  <p className="text-muted mb-2">
                     There are no customers available right now.
                   </p>
+                </div>
+              )}
+
+              {filteredStaff.length > itemsPerPage && (
+                <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage <= 1
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage <= 1}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                  >
+                    ← Prev
+                  </button>
+
+                  <span className="fw-semibold px-2">
+                    Page {currentPage} of {totalPages}
+                  </span>
+
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage >= totalPages
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage >= totalPages}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                  >
+                    Next →
+                  </button>
                 </div>
               )}
             </div>

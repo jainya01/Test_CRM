@@ -161,7 +161,7 @@ function AgentDashboard() {
 
           <div className="row g-3 mt-1">
             <div className="col-12 col-lg-6">
-              <div className="urgency-card">
+              <div className="urgency-card border">
                 <div className="d-flex justify-content-between align-items-center mt-1">
                   <h4 className="pipeline-title mb-3 mt-2">
                     <FontAwesomeIcon

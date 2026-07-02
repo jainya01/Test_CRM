@@ -127,17 +127,17 @@ function AgentCustomers() {
           <div>
             <h5 className="fw-bold overview-dashboard">Customers</h5>
             <p className="text-muted mb-md-0 overview-lead fw-bold">
-              {paginatedData.length} customers
+              {filteredCustomers.length} customers
             </p>
           </div>
 
-          {Array.isArray(filteredCustomers) && filteredCustomers.length > 0 ? (
-            filteredCustomers.map((user) => (
+          {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
+            paginatedData.map((user) => (
               <div
                 className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3"
                 key={user.id}
               >
-                <div className="customer-card p-3 bg-white rounded-3 h-100">
+                <div className="customer-card border p-3 bg-white rounded-3 h-100">
                   <div className="d-flex align-items-start gap-2">
                     <div className="avatar-circle">
                       {user?.name?.charAt(0) || "N"}
@@ -170,7 +170,7 @@ function AgentCustomers() {
             <div className="text-center py-5 rounded-3">No Customers Found</div>
           )}
 
-          {data.length > itemsPerPage && (
+          {filteredCustomers.length > itemsPerPage && (
             <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
               <button
                 className={`btn rounded-pill px-3 py-1 shadow-sm ${

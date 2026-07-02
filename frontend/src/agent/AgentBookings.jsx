@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
@@ -55,12 +55,24 @@ const data = [
 ];
 
 function AgentBookings() {
-  const itemsPerPage = 10;
+  const [search, setSearch] = useState("");
+
+  const filteredAgent = useMemo(() => {
+    const keyword = search.toLowerCase().trim();
+    return data.filter(
+      (data) =>
+        data.name?.toLowerCase().includes(keyword) ||
+        data.airline?.toLowerCase().includes(keyword) ||
+        data.passport?.toLowerCase().includes(keyword),
+    );
+  }, [search]);
+
+  const itemsPerPage = 21;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const paginatedData = filteredAgent.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredAgent.length / itemsPerPage);
 
   return (
     <>
@@ -79,7 +91,9 @@ function AgentBookings() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by passport no & customer name"
+                    placeholder="Search by passport, airline name & customer name"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>
@@ -108,14 +122,14 @@ function AgentBookings() {
           <div>
             <h5 className="fw-bold overview-dashboard">Bookings</h5>
             <p className="text-muted overview-lead fw-bold">
-              {paginatedData.length} booking requests
+              {filteredAgent.length} booking requests
             </p>
           </div>
 
           {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
             paginatedData.map((user) => (
-              <div className="col-12 col-lg-8" key={user.id}>
-                <div className="customer-card p-3 bg-white rounded-3">
+              <div className="col-12 col-lg-4" key={user.id}>
+                <div className="customer-card p-3 border bg-white rounded-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex align-items-center gap-3">
                       <div>
@@ -138,7 +152,7 @@ function AgentBookings() {
 
                       {user.status === "pending" && (
                         <div className="d-flex gap-2">
-                          <button className="btn btn-light fw-semibold btn-pending">
+                          <button className="btn btn-light border fw-semibold btn-pending">
                             Pending
                           </button>
                         </div>
@@ -156,7 +170,7 @@ function AgentBookings() {
             </div>
           )}
 
-          {data.length > itemsPerPage && (
+          {filteredAgent.length > itemsPerPage && (
             <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
               <button
                 className={`btn rounded-pill px-3 py-1 shadow-sm ${

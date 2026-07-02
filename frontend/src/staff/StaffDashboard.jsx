@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,81 +9,100 @@ import {
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 
+const data = [
+  {
+    id: 1,
+    name: "Muhammad Tariq",
+    phone: "+91 300 10000",
+    city: "Dubai",
+    service: "Hajj",
+    status: "Hot",
+    lead: "New",
+  },
+  {
+    id: 2,
+    name: "Zain Abbas",
+    phone: "+91 304 10404",
+    city: "Abu Dhabi",
+    service: "Hajj",
+    status: "Warm",
+    lead: "Interested",
+  },
+  {
+    id: 3,
+    name: "Bilal Hussain",
+    phone: "+91 308 10808",
+    city: "Sharjah",
+    service: "Hajj",
+    status: "Cold",
+    lead: "Converted",
+  },
+  {
+    id: 4,
+    name: "Faisal Mehmood",
+    phone: "+91 302 11212",
+    city: "Ajman",
+    service: "Hajj",
+    status: "Hot",
+    lead: "Contacted",
+  },
+  {
+    id: 5,
+    name: "Kamran Akmal",
+    phone: "+91 304 11414",
+    city: "Ras Al Khaimah",
+    service: "Ticket",
+    status: "Cold",
+    lead: "Not Interested",
+  },
+  {
+    id: 6,
+    name: "Muhammad Tariq",
+    phone: "+91 306 11616",
+    city: "Fujairah",
+    service: "Hajj",
+    status: "Warm",
+    lead: "New",
+  },
+  {
+    id: 7,
+    name: "Zain Abbas",
+    phone: "+91 300 12020",
+    city: "Umm Al Quwain",
+    service: "Hajj",
+    status: "Cold",
+    lead: "Interested",
+  },
+  {
+    id: 8,
+    name: "Bilal Hussain",
+    phone: "+91 304 12424",
+    city: "Al Ain",
+    service: "Hajj",
+    status: "Hot",
+    lead: "Converted",
+  },
+];
+
 function StaffDashboard() {
-  const data = [
-    {
-      id: 1,
-      name: "Muhammad Tariq",
-      phone: "+91 300 10000",
-      city: "Dubai",
-      service: "Hajj",
-      status: "Hot",
-      lead: "New",
-    },
-    {
-      id: 2,
-      name: "Zain Abbas",
-      phone: "+91 304 10404",
-      city: "Abu Dhabi",
-      service: "Hajj",
-      status: "Warm",
-      lead: "Interested",
-    },
-    {
-      id: 3,
-      name: "Bilal Hussain",
-      phone: "+91 308 10808",
-      city: "Sharjah",
-      service: "Hajj",
-      status: "Cold",
-      lead: "Converted",
-    },
-    {
-      id: 4,
-      name: "Faisal Mehmood",
-      phone: "+91 302 11212",
-      city: "Ajman",
-      service: "Hajj",
-      status: "Hot",
-      lead: "Contacted",
-    },
-    {
-      id: 5,
-      name: "Kamran Akmal",
-      phone: "+91 304 11414",
-      city: "Ras Al Khaimah",
-      service: "Ticket",
-      status: "Cold",
-      lead: "Not Interested",
-    },
-    {
-      id: 6,
-      name: "Muhammad Tariq",
-      phone: "+91 306 11616",
-      city: "Fujairah",
-      service: "Hajj",
-      status: "Warm",
-      lead: "New",
-    },
-    {
-      id: 7,
-      name: "Zain Abbas",
-      phone: "+91 300 12020",
-      city: "Umm Al Quwain",
-      service: "Hajj",
-      status: "Cold",
-      lead: "Interested",
-    },
-    {
-      id: 8,
-      name: "Bilal Hussain",
-      phone: "+91 304 12424",
-      city: "Al Ain",
-      service: "Hajj",
-      status: "Hot",
-      lead: "Converted",
-    },
-  ];
+  const [search, setSearch] = useState("");
+
+  const filteredStaff = useMemo(() => {
+    const keyword = search.toLowerCase().trim();
+    return data.filter(
+      (data) =>
+        data.name?.toLowerCase().includes(keyword) ||
+        data.phone?.toLowerCase().includes(keyword) ||
+        data.service?.toLowerCase().includes(keyword),
+    );
+  }, [search]);
+
+  const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = filteredStaff.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredStaff.length / itemsPerPage);
 
   return (
     <>
@@ -101,7 +121,9 @@ function StaffDashboard() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by name & service"
+                    placeholder="Search by name, phone & service"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>
@@ -207,14 +229,14 @@ function StaffDashboard() {
                 </div>
 
                 <div>
-                  <button className="btn btn-light fw-semibold btn-caller">
+                  <button className="btn btn-light border fw-semibold btn-caller">
                     8 Pending
                   </button>
                 </div>
               </div>
 
-              {Array.isArray(data) && data.length > 0 ? (
-                data.map((item) => (
+              {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
+                paginatedData.map((item) => (
                   <div
                     className="border mt-2 rounded-3 d-flex flex-wrap justify-content-between align-items-center hover-changed"
                     key={item.id}
@@ -270,6 +292,42 @@ function StaffDashboard() {
                   </p>
                 </div>
               )}
+
+              {filteredStaff.length > itemsPerPage && (
+                <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage <= 1
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage <= 1}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                  >
+                    ← Prev
+                  </button>
+
+                  <span className="fw-semibold px-2">
+                    Page {currentPage} of {totalPages}
+                  </span>
+
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage >= totalPages
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage >= totalPages}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="col-12 bg-white px-3 py-2 rounded-3 mt-3 border">
@@ -279,8 +337,8 @@ function StaffDashboard() {
                 </div>
               </div>
 
-              {Array.isArray(data) && data.length > 0 ? (
-                data.map((item) => (
+              {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
+                paginatedData.map((item) => (
                   <div
                     className="mt-2 px-2 pb-2 rounded-3 d-flex flex-wrap pb-1 justify-content-between align-items-center hover-changed"
                     key={item.id}
@@ -336,6 +394,42 @@ function StaffDashboard() {
                   <p className="text-muted mb-0">
                     There are no customers available right now.
                   </p>
+                </div>
+              )}
+
+              {filteredStaff.length > itemsPerPage && (
+                <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage <= 1
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage <= 1}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                  >
+                    ← Prev
+                  </button>
+
+                  <span className="fw-semibold px-2">
+                    Page {currentPage} of {totalPages}
+                  </span>
+
+                  <button
+                    className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                      currentPage >= totalPages
+                        ? "btn-light border text-muted"
+                        : "btn-success border-0"
+                    }`}
+                    disabled={currentPage >= totalPages}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                  >
+                    Next →
+                  </button>
                 </div>
               )}
             </div>
