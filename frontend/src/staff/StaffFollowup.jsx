@@ -1,7 +1,7 @@
+import { useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCalendar, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { useMemo, useState } from "react";
 
 const data = [
   {
