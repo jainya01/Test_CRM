@@ -11,7 +11,6 @@ function ServiceEdit() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [errors, setErrors] = useState({});
 
   const [services, setServices] = useState({
@@ -107,9 +106,7 @@ function ServiceEdit() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by staff name"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search by service name"
                   />
                 </div>
               </div>

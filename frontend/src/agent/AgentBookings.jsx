@@ -93,7 +93,7 @@ function AgentBookings() {
                     className="form-control sector-wise"
                     placeholder="Search by passport, airline name & customer name"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

@@ -93,7 +93,7 @@ function StaffFollowup() {
                     className="form-control sector-wise"
                     placeholder="Search by name, phone & service"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

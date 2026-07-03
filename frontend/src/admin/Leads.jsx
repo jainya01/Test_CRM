@@ -306,7 +306,7 @@ function Leads() {
                     className="form-control sector-wise"
                     placeholder="Search by name & phone"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>
@@ -348,7 +348,7 @@ function Leads() {
                 className="form-control sector-wise"
                 placeholder="Search by name & phone"
                 value={search1}
-                onChange={(e) => setSearch1(e.target.value)}
+                onChange={(e) => setSearch1(e.target.value.trim())}
               />
             </div>
 

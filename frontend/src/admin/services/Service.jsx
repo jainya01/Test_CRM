@@ -87,9 +87,9 @@ function CallerExecutive() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by staff name"
+                    placeholder="Search by service name"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

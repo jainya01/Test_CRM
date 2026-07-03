@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "../App.css";
 import { authHeader } from "../utils/authHeader";
 import { Link } from "react-router-dom";
@@ -17,6 +17,7 @@ import {
 function Homepage() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const scheduleRef = useRef();
 
   const users = [
@@ -152,12 +153,22 @@ function Homepage() {
     }
   }, [isIndeterminate]);
 
+  const filteredCustomers = useMemo(() => {
+    const keyword = search.toLowerCase();
+    return users.filter((item) => {
+      return (
+        item.name?.toLowerCase().includes(keyword) ||
+        item.phone?.toLowerCase().includes(keyword)
+      );
+    });
+  }, [search]);
+
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = users.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const paginatedData = filteredCustomers.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
   return (
     <>
@@ -177,6 +188,8 @@ function Homepage() {
                     type="search"
                     className="form-control sector-wise"
                     placeholder="Search by name, email & service"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

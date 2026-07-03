@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 function PackagesCreate() {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const [search, setSearch] = useState("");
   const [services, setServices] = useState([]);
   const navigate = useNavigate();
 
@@ -116,8 +115,6 @@ function PackagesCreate() {
                     type="search"
                     className="form-control sector-wise"
                     placeholder="Search by package name"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>

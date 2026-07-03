@@ -10,7 +10,6 @@ function ServiceCreate() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [errors, setErrors] = useState({});
 
   const [services, setServices] = useState({
@@ -82,9 +81,7 @@ function ServiceCreate() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by staff name"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search by service name"
                   />
                 </div>
               </div>

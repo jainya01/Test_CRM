@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 function Settings() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
@@ -220,6 +221,8 @@ function Settings() {
                     type="search"
                     className="form-control sector-wise"
                     placeholder="Search by email"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

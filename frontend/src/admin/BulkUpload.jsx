@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 function BulkUpload() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const [file, setFile] = useState(null);
   const [files, setFiles] = useState(null);
   const [customers, setCustomers] = useState(0);
@@ -116,6 +117,8 @@ function BulkUpload() {
                     type="search"
                     className="form-control sector-wise"
                     placeholder="Search passport, name, phone, PNR..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

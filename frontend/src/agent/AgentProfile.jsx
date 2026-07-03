@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 function AgentEdit() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const fileInputRef = useRef(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -98,6 +99,8 @@ function AgentEdit() {
                     type="search"
                     className="form-control sector-wise"
                     placeholder="Search by name & email"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

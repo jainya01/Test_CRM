@@ -14,6 +14,7 @@ import {
 function AgentDashboard() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const [search, setSearch] = useState("");
   const [agentName, setAgentName] = useState("");
 
   useEffect(() => {
@@ -63,6 +64,8 @@ function AgentDashboard() {
                     type="search"
                     className="form-control sector-wise"
                     placeholder="Search by package name"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>

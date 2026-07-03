@@ -70,7 +70,7 @@ function Agents() {
                     className="form-control sector-wise"
                     placeholder="Search by name & email"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value.trim())}
                   />
                 </div>
               </div>
