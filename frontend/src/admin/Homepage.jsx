@@ -20,62 +20,65 @@ function Homepage() {
   const [search, setSearch] = useState("");
   const scheduleRef = useRef();
 
-  const users = [
-    {
-      id: 1,
-      name: "Muhammad Tariq",
-      phone: "+91 300 10000",
-      service: "Hajj",
-      source: "John Doe",
-      status: "New",
-      temp: "Hot",
-    },
-    {
-      id: 2,
-      name: "Ayesha Siddiqui",
-      phone: "+91 301 10101",
-      service: "Umrah",
-      source: "Sarah Khan",
-      status: "Contacted",
-      temp: "Warm",
-    },
-    {
-      id: 3,
-      name: "Imran Malik",
-      phone: "+91 302 10202",
-      service: "Ticket",
-      source: "Ali Raza",
-      status: "Interested",
-      temp: "Cold",
-    },
-    {
-      id: 4,
-      name: "Fatima Noor",
-      phone: "+91 303 10303",
-      service: "Medical",
-      source: "Michael Smith",
-      status: "Not Interested",
-      temp: "Hot",
-    },
-    {
-      id: 5,
-      name: "Zain Abbas",
-      phone: "+91 304 10404",
-      service: "Hajj",
-      source: "Ayesha Malik",
-      status: "Converted",
-      temp: "Warm",
-    },
-    {
-      id: 6,
-      name: "Hira Sheikh",
-      phone: "+91 305 10505",
-      service: "Umrah",
-      source: "David Johnson",
-      status: "New",
-      temp: "Cold",
-    },
-  ];
+  const users = useMemo(
+    () => [
+      {
+        id: 1,
+        name: "Muhammad Tariq",
+        phone: "+91 300 10000",
+        service: "Hajj",
+        source: "John Doe",
+        status: "New",
+        temp: "Hot",
+      },
+      {
+        id: 2,
+        name: "Ayesha Siddiqui",
+        phone: "+91 301 10101",
+        service: "Umrah",
+        source: "Sarah Khan",
+        status: "Contacted",
+        temp: "Warm",
+      },
+      {
+        id: 3,
+        name: "Imran Malik",
+        phone: "+91 302 10202",
+        service: "Ticket",
+        source: "Ali Raza",
+        status: "Interested",
+        temp: "Cold",
+      },
+      {
+        id: 4,
+        name: "Fatima Noor",
+        phone: "+91 303 10303",
+        service: "Medical",
+        source: "Michael Smith",
+        status: "Not Interested",
+        temp: "Hot",
+      },
+      {
+        id: 5,
+        name: "Zain Abbas",
+        phone: "+91 304 10404",
+        service: "Hajj",
+        source: "Ayesha Malik",
+        status: "Converted",
+        temp: "Warm",
+      },
+      {
+        id: 6,
+        name: "Hira Sheikh",
+        phone: "+91 305 10505",
+        service: "Umrah",
+        source: "David Johnson",
+        status: "New",
+        temp: "Cold",
+      },
+    ],
+    [],
+  );
 
   const [reschedule, setReschedule] = useState({
     open: false,
@@ -154,14 +157,13 @@ function Homepage() {
   }, [isIndeterminate]);
 
   const filteredCustomers = useMemo(() => {
-    const keyword = search.toLowerCase();
-    return users.filter((item) => {
-      return (
+    const keyword = search.trim().toLowerCase();
+    return users.filter(
+      (item) =>
         item.name?.toLowerCase().includes(keyword) ||
-        item.phone?.toLowerCase().includes(keyword)
-      );
-    });
-  }, [search]);
+        item.phone?.toLowerCase().includes(keyword),
+    );
+  }, [users, search]);
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);

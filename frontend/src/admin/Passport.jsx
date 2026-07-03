@@ -208,7 +208,7 @@ function Passport() {
 
                       {user.status === "pending" && (
                         <div className="d-flex gap-2 flex-wrap">
-                          <button className="btn btn-light fw-semibold btn-pending">
+                          <button className="btn btn-light fw-semibold border btn-pending">
                             Pending
                           </button>
 
