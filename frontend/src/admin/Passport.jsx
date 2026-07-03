@@ -76,7 +76,6 @@ function Passport() {
 
   const filteredPassports = useMemo(() => {
     const keyword = search.toLowerCase();
-
     return data.filter((item) => {
       return (
         item.name?.toLowerCase().includes(keyword) ||
