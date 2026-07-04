@@ -44,6 +44,7 @@ const AgentBookings = lazy(() => import("./agent/AgentBookings"));
 const AgentProfile = lazy(() => import("./agent/AgentProfile"));
 
 import StaffDashboard from "./staff/StaffDashboard";
+import PackagesEdit from "./admin/Package/PackagesEdit";
 const StaffPackage = lazy(() => import("./staff/StaffPackage"));
 const StaffFollowup = lazy(() => import("./staff/StaffFollowup"));
 
@@ -69,6 +70,7 @@ function App() {
 
               <Route path="packages" element={<Packages />} />
               <Route path="packages/create" element={<PackagesCreate />} />
+              <Route path="packages/edit/:id" element={<PackagesEdit />} />
 
               <Route path="agents" element={<Agents />} />
               <Route path="agents/create" element={<AgentsCreate />} />

@@ -15,15 +15,21 @@ function PackagesCreate() {
 
   const [packages, setPackages] = useState({
     package_name: "",
-    price: "",
+    package_price: "",
     start_date: "",
     end_date: "",
-    service: "",
+    service_name: "",
     notes: "",
   });
 
-  const { package_name, price, start_date, end_date, service, notes } =
-    packages;
+  const {
+    package_name,
+    package_price,
+    start_date,
+    end_date,
+    service_name,
+    notes,
+  } = packages;
 
   const [errors, setErrors] = useState({});
 
@@ -34,8 +40,8 @@ function PackagesCreate() {
       newErrors.package_name = "Package name is required";
     }
 
-    if (!price.trim()) {
-      newErrors.price = "Price is required";
+    if (!package_price.trim()) {
+      newErrors.price = "Package Price is required";
     }
 
     if (!start_date.trim()) {
@@ -46,8 +52,8 @@ function PackagesCreate() {
       newErrors.end_date = "End Date is required";
     }
 
-    if (!service) {
-      newErrors.service = "Service is required";
+    if (!service_name) {
+      newErrors.service = "Service Name is required";
     }
 
     setErrors(newErrors);
@@ -59,7 +65,7 @@ function PackagesCreate() {
     if (!isValid) return;
 
     try {
-      await axios.post(`${API_URL}/`, packages, {
+      await await axios.post(`${API_URL}/packagespost`, packages, {
         headers: authHeader(),
       });
 
@@ -177,17 +183,17 @@ function PackagesCreate() {
                       </label>
                       <input
                         type="tel"
-                        id="price"
+                        id="package_price"
                         className="form-control sector-wise mb-1"
                         placeholder="Enter price (e.g. INR 1850k)"
-                        name="price"
-                        value={price}
+                        name="package_price"
+                        value={package_price}
                         onChange={onInputChange}
                         required
                       />
-                      {errors.price && (
+                      {errors.package_price && (
                         <small className="text-danger mt-1">
-                          {errors.price}
+                          {errors.package_price}
                         </small>
                       )}
                     </div>
@@ -241,6 +247,9 @@ function PackagesCreate() {
                       <select
                         className="form-select sector-wise mb-1"
                         aria-label="Select service"
+                        name="service_name"
+                        value={service_name}
+                        onChange={onInputChange}
                       >
                         <option value="">All services</option>
                         {Array.isArray(services) && services.length > 0 ? (

@@ -1,60 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../App.css";
 import { authHeader } from "../../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-function AgentsCreate() {
+function PackagesEdit() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const { id } = useParams();
+  const [services, setServices] = useState([]);
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
 
-  const [agent, SetAgent] = useState({
-    fullname: "",
-    phone: "",
-    email: "",
-    password: "",
-    status: "",
+  const [packages, setPackages] = useState({
+    package_name: "",
+    package_price: "",
+    start_date: "",
+    end_date: "",
+    service_name: "",
     notes: "",
   });
 
-  const { fullname, phone, email, password, status, notes } = agent;
+  const {
+    package_name,
+    package_price,
+    start_date,
+    end_date,
+    service_name,
+    notes,
+  } = packages;
+
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
     let newErrors = {};
 
-    if (!fullname.trim()) {
-      newErrors.fullname = "Full name is required";
+    if (!package_name.trim()) {
+      newErrors.package_name = "Package name is required";
     }
 
-    if (!phone.trim()) {
-      newErrors.phone = "Phone is required";
+    if (!package_price.trim()) {
+      newErrors.price = "Package Price is required";
     }
 
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
+    if (!start_date.trim()) {
+      newErrors.start_date = "Start Date is required";
     }
 
-    if (!password.trim()) {
-      newErrors.password = "Password is required";
+    if (!end_date.trim()) {
+      newErrors.end_date = "End Date is required";
     }
 
-    if (!status) {
-      newErrors.status = "Status is required";
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email && !emailRegex.test(email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (password && password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    if (!service_name) {
+      newErrors.service = "Service Name is required";
     }
 
     setErrors(newErrors);
@@ -66,33 +66,50 @@ function AgentsCreate() {
     if (!isValid) return;
 
     try {
-      await axios.post(`${API_URL}/agentpost`, agent, {
+      await axios.put(`${API_URL}/packagesupdate/${id}`, packages, {
         headers: authHeader(),
       });
 
-      toast.success("Agent created successfully");
+      toast.success("Package updated successfully");
 
       setTimeout(() => {
-        navigate("/admin/agents");
+        navigate("/admin/packages");
       }, 1000);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add agent");
+      toast.error(error.response?.data?.message || "Failed to updated package");
     }
   };
 
   const onInputChange = (e) => {
-    SetAgent({
-      ...agent,
+    setPackages({
+      ...packages,
       [e.target.name]: e.target.value,
     });
   };
 
+  useEffect(() => {
+    const allData = async () => {
+      try {
+        const [serviceRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/allservices`, { headers: authHeader }),
+        ]);
+
+        if (serviceRes.status === "fulfilled") {
+          setServices(serviceRes.value.data.result);
+        }
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+    allData();
+  }, [API_URL]);
+
   return (
     <>
-      <title>Create Agent | CRM Agent Portal</title>
+      <title>Create New Package | Travel CRM Portal</title>
       <meta
         name="description"
-        content="Add and manage B2B agents in the CRM portal. Create profiles, assign accounts, manage status, and streamline customer and booking operations."
+        content="Create and manage Hajj, Umrah, Ticket, and Medical Visa packages. Add details, pricing, duration, availability, inclusions, and booking info in the Travel CRM Portal."
       />
 
       <main className="content-wrapper">
@@ -104,7 +121,7 @@ function AgentsCreate() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by name & email"
+                    placeholder="Search by package name"
                   />
                 </div>
               </div>
@@ -133,138 +150,131 @@ function AgentsCreate() {
           <div className="col-12">
             <div className="card shadow border-0">
               <div className="card-header profile-header">
-                Create New Agents
+                Create New Package
               </div>
 
               <div className="card-body">
                 <form action={handleFormSubmit}>
                   <div className="row">
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="fullname" className="form-label">
-                        Full Name{" "}
+                      <label className="form-label" htmlFor="package_name">
+                        Package Name{" "}
                         <span className="text-danger fw-bolder">*</span>
                       </label>
                       <input
                         type="text"
-                        id="fullname"
+                        id="package_name"
                         className="form-control sector-wise mb-1"
-                        placeholder="Enter Full Name"
-                        name="fullname"
-                        value={fullname}
+                        placeholder="Enter package name"
+                        name="package_name"
+                        value={package_name}
                         onChange={onInputChange}
                         required
                       />
-                      {errors.fullname && (
+                      {errors.package_name && (
                         <small className="text-danger mt-1">
-                          {errors.fullname}
+                          {errors.package_name}
                         </small>
                       )}
                     </div>
 
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="phone" className="form-label">
-                        Phone <span className="text-danger fw-bolder">*</span>
+                      <label className="form-label" htmlFor="price">
+                        Price <span className="text-danger fw-bolder">*</span>
                       </label>
                       <input
                         type="tel"
-                        id="phone"
+                        id="price"
                         className="form-control sector-wise mb-1"
-                        placeholder="Enter Phone Number (e.g. 9876543210)"
-                        name="phone"
-                        value={phone}
+                        placeholder="Enter price (e.g. INR 1850k)"
+                        name="package_price"
+                        value={package_price}
                         onChange={onInputChange}
                         required
                       />
-                      {errors.phone && (
+                      {errors.package_price && (
                         <small className="text-danger mt-1">
-                          {errors.phone}
+                          {errors.package_price}
                         </small>
                       )}
                     </div>
 
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="email" className="form-label">
-                        Email <span className="text-danger fw-bolder">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        className="form-control sector-wise mb-1"
-                        placeholder="Enter Email (e.g. user@gmail.com)"
-                        name="email"
-                        value={email}
-                        onChange={onInputChange}
-                        required
-                      />
-                      {errors.email && (
-                        <small className="text-danger mt-1">
-                          {errors.email}
-                        </small>
-                      )}
-                    </div>
-
-                    <div className="position-relative col-md-6">
-                      <label htmlFor="password" className="form-label">
-                        Password{" "}
+                      <label className="form-label" htmlFor="start_date">
+                        Start Date{" "}
                         <span className="text-danger fw-bolder">*</span>
                       </label>
-
                       <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        className="form-control sector-wise pe-5"
-                        placeholder="Enter Password"
-                        name="password"
-                        value={password}
+                        type="date"
+                        id="start_date"
+                        className="form-control sector-wise mb-1"
+                        name="start_date"
+                        value={start_date}
                         onChange={onInputChange}
-                        autoComplete="new-password"
                         required
                       />
-
-                      {errors.password && (
+                      {errors.start_date && (
                         <small className="text-danger mt-1">
-                          {errors.password}
+                          {errors.start_date}
                         </small>
                       )}
-
-                      <span
-                        className="eye-login1"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        <FontAwesomeIcon
-                          icon={showPassword ? faEyeSlash : faEye}
-                          className="me-2"
-                        />
-                      </span>
                     </div>
 
-                    <div className="col-md-6 mt-2">
-                      <label htmlFor="status" className="form-label">
-                        Status <span className="text-danger fw-bolder">*</span>
+                    <div className="col-md-6">
+                      <label className="form-label" htmlFor="end_date">
+                        End Date{" "}
+                        <span className="text-danger fw-bolder">*</span>
                       </label>
-                      <select
-                        aria-label="Select status"
-                        id="status"
-                        className="form-select sector-wise mb-1"
-                        name="status"
-                        value={status}
+                      <input
+                        type="date"
+                        id="end_date"
+                        className="form-control sector-wise"
+                        name="end_date"
+                        value={end_date}
                         onChange={onInputChange}
                         required
-                      >
-                        <option value="">Select status</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                      </select>
-
-                      {errors.status && (
+                      />
+                      {errors.end_date && (
                         <small className="text-danger mt-1">
-                          {errors.status}
+                          {errors.end_date}
                         </small>
                       )}
                     </div>
 
-                    <div className="col-md-6 mt-2">
-                      <label htmlFor="notes" className="form-label">
+                    <div className="col-md-6">
+                      <label className="form-label" htmlFor="service">
+                        Service <span className="text-danger fw-bolder">*</span>
+                      </label>
+                      <select
+                        className="form-select sector-wise mb-1"
+                        aria-label="Select service"
+                        name="service_name"
+                        value={service_name}
+                        onChange={onInputChange}
+                      >
+                        <option value="">All services</option>
+                        {Array.isArray(services) && services.length > 0 ? (
+                          services
+                            .filter((item) => item.status === "Active")
+                            .map((item) => (
+                              <option key={item.id} value={item.service_name}>
+                                {item.service_name}
+                              </option>
+                            ))
+                        ) : (
+                          <option value="">No services available</option>
+                        )}
+                      </select>
+
+                      {errors.service_name && (
+                        <small className="text-danger mt-1">
+                          {errors.service_name}
+                        </small>
+                      )}
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label" htmlFor="package_name">
                         Notes (optional)
                       </label>
                       <textarea
@@ -286,7 +296,7 @@ function AgentsCreate() {
                       </button>
                     </div>
 
-                    <Link className="text-success" to="/admin/agents">
+                    <Link className="text-success" to="/admin/packages">
                       Back
                     </Link>
                   </div>
@@ -302,4 +312,4 @@ function AgentsCreate() {
   );
 }
 
-export default AgentsCreate;
+export default PackagesEdit;

@@ -1358,4 +1358,170 @@ router.put(
   }),
 );
 
+// packages
+
+router.post(
+  "/packagespost",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const {
+      package_name,
+      package_price,
+      start_date,
+      end_date,
+      service_name,
+      notes,
+    } = req.body;
+
+    const SQL =
+      "INSERT INTO packages(package_name, package_price, start_date, end_date, service_name, notes) VALUES (?, ?, ?, ?, ?, ?)";
+
+    const [result] = await pool.execute(SQL, [
+      package_name,
+      package_price,
+      start_date,
+      end_date,
+      service_name,
+      notes,
+    ]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("package post failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await redisClient.del(`crm2:somepackages:${id}`);
+    await redisClient.del("crm2:allpackages:all");
+
+    return res.status(200).json({
+      success: true,
+      message: "package added successfully",
+      result,
+    });
+  }),
+);
+
+router.get(
+  "/allpackages",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const cacheKey = `crm2:allpackages:all`;
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
+    const SQL =
+      "SELECT id, package_name, package_price, start_date, end_date, service_name FROM packages ORDER BY id DESC limit 50";
+    const [result] = await pool.execute(SQL);
+
+    const response = {
+      success: true,
+      message: "packages fetched successfully",
+      count: result.length,
+      result,
+    };
+
+    await redisClient.set(cacheKey, JSON.stringify(response));
+    return res.status(200).json(response);
+  }),
+);
+
+router.put(
+  "/packagesupdate/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const {
+      package_name,
+      package_price,
+      start_date,
+      end_date,
+      service_name,
+      notes,
+    } = req.body;
+
+    const SQL =
+      "UPDATE packages SET package_name = ?, package_price = ?, start_date = ?, end_date = ?, service_name = ?, notes = ? WHERE id = ?";
+
+    const [result] = await pool.execute(SQL, [
+      package_name,
+      package_price,
+      start_date,
+      end_date,
+      service_name,
+      notes,
+      id,
+    ]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("packages update failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await redisClient.del(`crm2:somepackages:${id}`);
+    await redisClient.del("crm2:allpackages:all");
+
+    return res.status(200).json({
+      success: true,
+      message: "data updated successfully",
+      result,
+    });
+  }),
+);
+
+router.delete(
+  "/packagesdelete/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const SQL = "DELETE FROM packages WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("packages deleted failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await redisClient.del(`crm2:somepackages:${id}`);
+    await redisClient.del("crm2:allpackages:all");
+    return res.status(200).json(result);
+  }),
+);
+
+router.get(
+  "/somepackages/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const cacheKey = `crm2:somepackages:${id}`;
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
+    const SQL =
+      "SELECT id, package_name, package_price, start_date, end_date, service_name FROM packages WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.length === 0) {
+      const error = new Error("package not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    const response = {
+      success: true,
+      message: "Package fetched successfully",
+      result: result[0],
+    };
+
+    await redisClient.set(cacheKey, JSON.stringify(response));
+    return res.status(200).json(response);
+  }),
+);
+
 export default router;

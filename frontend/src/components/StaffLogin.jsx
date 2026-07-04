@@ -97,7 +97,7 @@ const StaffLogin = () => {
 
               <div className="d-flex flex-column ms-2">
                 <span className="fw-bold text-white signal-crm">
-                  Laraib CRM
+                  Jainya Client CRM
                 </span>
               </div>
             </div>
@@ -109,7 +109,7 @@ const StaffLogin = () => {
               medical travel teams.
             </h1>
             <div className="copyright-travel">
-              © {new Date().getFullYear()} Laraib Travel Group
+              © {new Date().getFullYear()} Jainya Client CRM Travel Group
             </div>
           </div>
 

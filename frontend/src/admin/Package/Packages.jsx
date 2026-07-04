@@ -3,11 +3,14 @@ import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
-  faUsers,
+  faEdit,
+  faTrash,
   faWarning,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 const data = [
   {
@@ -80,7 +83,10 @@ const data = [
 ];
 
 function Packages() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [search, setSearch] = useState("");
+  const [packages, setPackages] = useState([]);
   const [active, setActive] = useState("All");
   const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
 
@@ -119,6 +125,19 @@ function Packages() {
     setShowModal(false);
     setSelectedPackage(null);
   };
+
+  useEffect(() => {
+    const packagesData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/allpackages`);
+        setPackages(response.data.result);
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+
+    packagesData();
+  }, [API_URL]);
 
   return (
     <>
@@ -172,15 +191,6 @@ function Packages() {
                 {filteredData.length} active packages
               </p>
             </div>
-
-            <div>
-              <Link
-                className="text-decoration-none btn new-leader text-nowrap"
-                to="/admin/packages/create"
-              >
-                + New Package
-              </Link>
-            </div>
           </div>
 
           <div className="d-flex flex-wrap flex-md-nowrap gap-2 border custom-packages mt-2">
@@ -199,7 +209,7 @@ function Packages() {
             ))}
           </div>
 
-          <div className="row g-2 mt-3">
+          {/* <div className="row g-2 mt-3">
             {Array.isArray(filteredData) && filteredData.length > 0 ? (
               filteredData.map((item, index) => (
                 <div className="col-12 col-sm-6 col-md-6 col-lg-3" key={index}>
@@ -309,6 +319,126 @@ function Packages() {
                 </div>
               </div>
             )}
+          </div> */}
+
+          <div className="row g-2 mt-3">
+            <div className="card shadow-sm border">
+              <div className="card-header d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">Package</h5>
+
+                <div>
+                  <Link
+                    className="text-decoration-none btn new-leader text-nowrap"
+                    to="/admin/packages/create"
+                  >
+                    + New Package
+                  </Link>
+                </div>
+              </div>
+
+              <div className="card-body">
+                <div className="table-responsive custom-scrollbar">
+                  <table className="table table-striped table-hover align-middle">
+                    <thead className="table-light">
+                      <tr>
+                        <th>Package Name</th>
+                        <th>Package Type</th>
+                        <th>Price</th>
+                        <th>Seats</th>
+                        <th width="260">Actions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {filteredData?.length > 0 ? (
+                        filteredData.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item.package_name}</td>
+
+                            <td>
+                              <span
+                                className={`badge ${
+                                  item.service === "Hajj"
+                                    ? "bg-primary"
+                                    : item.service === "Umrah"
+                                      ? "bg-success"
+                                      : item.service === "Ticket"
+                                        ? "bg-warning text-dark"
+                                        : "bg-info"
+                                }`}
+                              >
+                                {item.service}
+                              </span>
+                            </td>
+
+                            <td>{item.price}</td>
+                            <td>{item.seats}</td>
+
+                            {/* <td>
+                              <div className="d-flex gap-2">
+                                <button
+                                  className="btn btn-primary btn-sm"
+                                  onClick={() => handleOpenModal(item)}
+                                >
+                                  Booking
+                                </button>
+
+                                <button
+                                  className="btn btn-info btn-sm text-white"
+                                  onClick={() => handleEdit(item)}
+                                >
+                                  Edit
+                                </button>
+
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  onClick={() => handleDelete(item.id)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </td> */}
+
+                            <td className="text-start">
+                              <div className="d-flex align-items-center">
+                                <Link
+                                  title="Edit"
+                                  to={`/admin/packages/edit/${item.id}`}
+                                  className="p-1 d-inline-flex align-items-center justify-content-center"
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faEdit}
+                                    className="icons-color"
+                                  />
+                                </Link>
+
+                                <button
+                                  type="button"
+                                  title="Delete"
+                                  // onClick={() => deleteData(item.id)}
+                                  className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className="p-1 icons-color1"
+                                  />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="text-center">
+                            No packages available
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
