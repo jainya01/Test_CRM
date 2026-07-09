@@ -75,6 +75,7 @@ function PackagesCreate() {
         navigate("/admin/packages");
       }, 1000);
     } catch (error) {
+      console.error("error", error);
       toast.error(error.response?.data?.message || "Failed to add package");
     }
   };

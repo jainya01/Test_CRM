@@ -1364,6 +1364,7 @@ router.post(
   "/packagespost",
   authenticate,
   asyncHandler(async (req, res) => {
+    const { id } = req.params;
     const {
       package_name,
       package_price,
