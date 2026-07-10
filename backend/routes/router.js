@@ -1358,47 +1358,158 @@ router.put(
   }),
 );
 
+
+
+
+
+
 // packages
 
 router.post(
   "/packagespost",
   authenticate,
+  upload.single("package_flyer"),
   asyncHandler(async (req, res) => {
-    const { id } = req.params;
     const {
+      service,
       package_name,
+      flight_pnr,
+      flight_number,
+      trip_way,
       package_price,
+      package_type,
+      package_duration,
+      category,
+      zone,
+      departure_city,
+      room_sharing,
+      number_of_seats,
       start_date,
       end_date,
-      service_name,
-      notes,
+      departure_date,
+      departure_time,
+      dept_am,
+      arrival_date,
+      arrival_time,
+      arrival_am,
+      number_of_days,
+      makkah_hotel,
+      makkah_rating,
+      madinah_hotel,
+      madinah_rating,
+      azizia_rating,
+      package_include,
+      package_excludes,
+      flights,
+      flights_no,
+      flight_date,
+      luggage_type,
+      luggage_details,
     } = req.body;
 
-    const SQL =
-      "INSERT INTO packages(package_name, package_price, start_date, end_date, service_name, notes) VALUES (?, ?, ?, ?, ?, ?)";
+    const package_flyer = req.file ? req.file.filename : null;
 
-    const [result] = await pool.execute(SQL, [
+    const SQL = `
+      INSERT INTO packages (
+        service,
+        package_name,
+        flight_pnr,
+        flight_number,
+        trip_way,
+        package_price,
+        package_type,
+        package_duration,
+        category,
+        zone,
+        departure_city,
+        room_sharing,
+        number_of_seats,
+        start_date,
+        end_date,
+        departure_date,
+        departure_time,
+        dept_am,
+        arrival_date,
+        arrival_time,
+        arrival_am,
+        number_of_days,
+        makkah_hotel,
+        makkah_rating,
+        madinah_hotel,
+        madinah_rating,
+        azizia_rating,
+        package_include,
+        package_excludes,
+        flights,
+        flights_no,
+        flight_date,
+        package_flyer,
+        luggage_type,
+        luggage_details
+      )
+      VALUES (
+        ?,?,?,?,?,?,?,?,?,?,
+        ?,?,?,?,?,
+        ?,?,?,?,?,
+        ?,?,?,?,?,
+        ?,?,?,?,?,
+        ?,?,?,?,?
+      )
+    `;
+
+    const values = [
+      service,
       package_name,
+      flight_pnr,
+      flight_number,
+      trip_way,
       package_price,
+      package_type,
+      package_duration,
+      category,
+      zone,
+      departure_city,
+      room_sharing,
+      number_of_seats,
       start_date,
       end_date,
-      service_name,
-      notes,
-    ]);
+      departure_date,
+      departure_time,
+      dept_am,
+      arrival_date,
+      arrival_time,
+      arrival_am,
+      number_of_days,
+      makkah_hotel,
+      makkah_rating,
+      madinah_hotel,
+      madinah_rating,
+      azizia_rating,
+      package_include,
+      package_excludes,
+      flights,
+      flights_no,
+      flight_date,
+      package_flyer,
+      luggage_type,
+      luggage_details,
+    ];
 
-    if (result.affectedRows <= 0) {
-      const error = new Error("package post failed");
-      error.statusCode = 404;
+    const [result] = await pool.execute(SQL, values);
+
+    if (result.affectedRows === 0) {
+      const error = new Error("Package creation failed");
+      error.statusCode = 400;
       throw error;
     }
 
-    await redisClient.del(`crm2:somepackages:${id}`);
     await redisClient.del("crm2:allpackages:all");
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
-      message: "package added successfully",
-      result,
+      message: "Package created successfully",
+      packageId: result.insertId,
+      package_flyer,
     });
   }),
 );
@@ -1407,57 +1518,182 @@ router.get(
   "/allpackages",
   authenticate,
   asyncHandler(async (req, res) => {
-    const cacheKey = `crm2:allpackages:all`;
+    const cacheKey = "crm2:allpackages:all";
+
     const cache = await redisClient.get(cacheKey);
     if (cache) {
       return res.status(200).json(JSON.parse(cache));
     }
 
-    const SQL =
-      "SELECT id, package_name, package_price, start_date, end_date, service_name FROM packages ORDER BY id DESC limit 50";
+    const SQL = `
+      SELECT
+        id,
+        service,
+        package_name,
+        package_price,
+        number_of_seats,
+        start_date,
+        end_date,
+        departure_date,
+        package_flyer,
+        status
+      FROM packages
+      ORDER BY id DESC
+      LIMIT 50
+    `;
+
     const [result] = await pool.execute(SQL);
 
     const response = {
       success: true,
-      message: "packages fetched successfully",
+      message: "Packages fetched successfully",
       count: result.length,
       result,
     };
 
-    await redisClient.set(cacheKey, JSON.stringify(response));
+    await redisClient.setEx(
+      cacheKey,
+      600,
+      JSON.stringify(response)
+    );
+
     return res.status(200).json(response);
-  }),
+  })
 );
 
 router.put(
   "/packagesupdate/:id",
   authenticate,
+  upload.single("package_flyer"),
   asyncHandler(async (req, res) => {
     const { id } = req.params;
+
     const {
+      service,
       package_name,
+      flight_pnr,
+      flight_number,
+      trip_way,
       package_price,
+      package_type,
+      package_duration,
+      category,
+      zone,
+      departure_city,
+      room_sharing,
+      number_of_seats,
       start_date,
       end_date,
-      service_name,
-      notes,
+      departure_date,
+      departure_time,
+      dept_am,
+      arrival_date,
+      arrival_time,
+      arrival_am,
+      number_of_days,
+      makkah_hotel,
+      makkah_rating,
+      madinah_hotel,
+      madinah_rating,
+      azizia_rating,
+      package_include,
+      package_excludes,
+      flights,
+      flights_no,
+      flight_date,
+      luggage_type,
+      luggage_details,
     } = req.body;
 
-    const SQL =
-      "UPDATE packages SET package_name = ?, package_price = ?, start_date = ?, end_date = ?, service_name = ?, notes = ? WHERE id = ?";
+    let package_flyer = req.body.package_flyer || null;
 
-    const [result] = await pool.execute(SQL, [
+    if (req.file) {
+      package_flyer = req.file.filename;
+    }
+
+    const SQL = `
+      UPDATE packages SET
+        service = ?,
+        package_name = ?,
+        flight_pnr = ?,
+        flight_number = ?,
+        trip_way = ?,
+        package_price = ?,
+        package_type = ?,
+        package_duration = ?,
+        category = ?,
+        zone = ?,
+        departure_city = ?,
+        room_sharing = ?,
+        number_of_seats = ?,
+        start_date = ?,
+        end_date = ?,
+        departure_date = ?,
+        departure_time = ?,
+        dept_am = ?,
+        arrival_date = ?,
+        arrival_time = ?,
+        arrival_am = ?,
+        number_of_days = ?,
+        makkah_hotel = ?,
+        makkah_rating = ?,
+        madinah_hotel = ?,
+        madinah_rating = ?,
+        azizia_rating = ?,
+        package_include = ?,
+        package_excludes = ?,
+        flights = ?,
+        flights_no = ?,
+        flight_date = ?,
+        package_flyer = ?,
+        luggage_type = ?,
+        luggage_details = ?
+      WHERE id = ?
+    `;
+
+    const values = [
+      service,
       package_name,
+      flight_pnr,
+      flight_number,
+      trip_way,
       package_price,
+      package_type,
+      package_duration,
+      category,
+      zone,
+      departure_city,
+      room_sharing,
+      number_of_seats,
       start_date,
       end_date,
-      service_name,
-      notes,
+      departure_date,
+      departure_time,
+      dept_am,
+      arrival_date,
+      arrival_time,
+      arrival_am,
+      number_of_days,
+      makkah_hotel,
+      makkah_rating,
+      madinah_hotel,
+      madinah_rating,
+      azizia_rating,
+      package_include,
+      package_excludes,
+      flights,
+      flights_no,
+      flight_date,
+      package_flyer,
+      luggage_type,
+      luggage_details,
       id,
-    ]);
+    ];
 
-    if (result.affectedRows <= 0) {
-      const error = new Error("packages update failed");
+    const [result] = await pool.execute(SQL, values);
+
+    if (result.affectedRows === 0) {
+      const error = new Error("Package update failed");
       error.statusCode = 404;
       throw error;
     }
@@ -1467,10 +1703,9 @@ router.put(
 
     return res.status(200).json({
       success: true,
-      message: "data updated successfully",
-      result,
+      message: "Package updated successfully",
     });
-  }),
+  })
 );
 
 router.delete(
@@ -1498,18 +1733,64 @@ router.get(
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
+
     const cacheKey = `crm2:somepackages:${id}`;
+
     const cache = await redisClient.get(cacheKey);
     if (cache) {
       return res.status(200).json(JSON.parse(cache));
     }
 
-    const SQL =
-      "SELECT id, package_name, package_price, start_date, end_date, service_name FROM packages WHERE id = ?";
+    const SQL = `
+      SELECT
+        id,
+        service,
+        package_name,
+        flight_pnr,
+        flight_number,
+        trip_way,
+        package_price,
+        package_type,
+        package_duration,
+        category,
+        zone,
+        departure_city,
+        room_sharing,
+        number_of_seats,
+        start_date,
+        end_date,
+        departure_date,
+        departure_time,
+        dept_am,
+        arrival_date,
+        arrival_time,
+        arrival_am,
+        number_of_days,
+        makkah_hotel,
+        makkah_rating,
+        madinah_hotel,
+        madinah_rating,
+        azizia_rating,
+        package_include,
+        package_excludes,
+        flights,
+        flights_no,
+        flight_date,
+        package_flyer,
+        luggage_type,
+        luggage_details,
+        status,
+        created_at,
+        updated_at
+      FROM packages
+      WHERE id = ?
+      LIMIT 1
+    `;
+
     const [result] = await pool.execute(SQL, [id]);
 
     if (result.length === 0) {
-      const error = new Error("package not found");
+      const error = new Error("Package not found");
       error.statusCode = 404;
       throw error;
     }
@@ -1520,9 +1801,23 @@ router.get(
       result: result[0],
     };
 
-    await redisClient.set(cacheKey, JSON.stringify(response));
+    // Cache for 10 minutes
+    await redisClient.setEx(
+      cacheKey,
+      600,
+      JSON.stringify(response)
+    );
+
     return res.status(200).json(response);
-  }),
+  })
 );
+
+
+
+
+
+
+
+
 
 export default router;

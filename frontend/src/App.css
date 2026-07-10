@@ -914,7 +914,7 @@ body {
 }
 
 .price-package {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .seats-left {
@@ -1526,4 +1526,56 @@ body {
 .package-name-flyer {
   font-size: 17px;
   line-height: 22.5px;
+}
+
+.stepper {
+  display: flex;
+  background: #edf1f7;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.step-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 5px;
+  font-weight: 550;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.step-btn.active {
+  background: #073125 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.dotted-border {
+  border: 1.8px dotted black;
+  border-radius: 8px;
+  padding-right: 45px;
+}
+
+@media (max-width: 768px) {
+  .step-btn {
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+.submit-btn {
+  font-size: 14px;
+}
+
+.flight-box {
+  border: 1px solid #dfe8df;
+  border-radius: 18px;
+  padding: 14px;
+  background: #fbfcfb;
+}
+
+.flight-input {
+  border-radius: 12px;
 }

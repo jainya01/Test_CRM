@@ -1,94 +1,23 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
-  faEdit,
-  faTrash,
   faWarning,
   faX,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { authHeader } from "../../utils/authHeader";
 import axios from "axios";
-
-const data = [
-  {
-    service: "Hajj",
-    status: "Trending",
-    package_name: "Premium Hajj 2026 — 40 Days",
-    remaining_days: "40 days",
-    price: "INR 1850k",
-    seats: "12 seats left",
-  },
-  {
-    service: "Hajj",
-    status: "",
-    package_name: "Economy Hajj — Shifting",
-    remaining_days: "35 days",
-    price: "INR 1250k",
-    seats: "30 seats left",
-  },
-  {
-    service: "Umrah",
-    status: "Trending",
-    package_name: "Umrah Express — 10 Days",
-    remaining_days: "10 days",
-    price: "INR 285k",
-    seats: "8 seats left",
-    alert_days: "5d",
-  },
-  {
-    service: "Umrah",
-    status: "",
-    package_name: "Umrah Family Package — 14 Days",
-    remaining_days: "14 days",
-    price: "INR 425k",
-    seats: "24 seats left",
-  },
-  {
-    service: "Umrah",
-    status: "Trending",
-    package_name: "Ramadan Umrah Special",
-    remaining_days: "15 days",
-    price: "INR 540k",
-    seats: "6 seats left",
-    alert_days: "3d",
-  },
-  {
-    service: "Ticket",
-    status: "",
-    package_name: "Dubai-Jeddah Return Ticket",
-    remaining_days: "Open",
-    price: "INR 95k",
-    seats: "50 seats left",
-  },
-  {
-    service: "Medical",
-    status: "",
-    package_name: "Medical Visa — Thailand",
-    remaining_days: "21 days",
-    price: "INR 320k",
-    seats: "10 seats left",
-  },
-  {
-    service: "Medical",
-    status: "",
-    package_name: "Medical Visa — Turkey",
-    remaining_days: "30 days",
-    price: "INR 410k",
-    seats: "4 seats left",
-    alert_days: "2d",
-  },
-];
 
 function Packages() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [search, setSearch] = useState("");
   const [packages, setPackages] = useState([]);
-  const [active, setActive] = useState("All");
-  const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
+  const [active, setActive] = useState("Hajj");
+  const tabs = ["Hajj", "Umrah", "Ticket"];
 
   const getServiceClass = (service) => {
     switch (service) {
@@ -98,20 +27,10 @@ function Packages() {
         return "umrah-premium";
       case "Ticket":
         return "ticket-premium";
-      case "Medical":
-        return "medical-premium";
       default:
         return "";
     }
   };
-
-  const filteredData = useMemo(() => {
-    return data.filter(
-      (item) =>
-        (active === "All" || item.service === active) &&
-        item.package_name.toLowerCase().includes(search.toLowerCase()),
-    );
-  }, [active, search]);
 
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -129,15 +48,26 @@ function Packages() {
   useEffect(() => {
     const packagesData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/allpackages`);
+        const response = await axios.get(`${API_URL}/allpackages`, {
+          headers: authHeader(),
+        });
+
         setPackages(response.data.result);
+        console.log(response.data.result);
       } catch (error) {
         console.error("error", error);
       }
     };
-
     packagesData();
   }, [API_URL]);
+
+  const filteredData = useMemo(() => {
+    return packages.filter(
+      (item) =>
+        item.service === active &&
+        item.package_name.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [packages, active, search]);
 
   return (
     <>
@@ -191,6 +121,15 @@ function Packages() {
                 {filteredData.length} active packages
               </p>
             </div>
+
+            <div>
+              <Link
+                className="text-decoration-none btn new-leader text-nowrap"
+                to={`/admin/packages/create?service=${active}`}
+              >
+                + New {active} Package
+              </Link>
+            </div>
           </div>
 
           <div className="d-flex flex-wrap flex-md-nowrap gap-2 border custom-packages mt-2">
@@ -209,16 +148,14 @@ function Packages() {
             ))}
           </div>
 
-          {/* <div className="row g-2 mt-3">
+          <div className="row g-2 mt-3">
             {Array.isArray(filteredData) && filteredData.length > 0 ? (
               filteredData.map((item, index) => (
                 <div className="col-12 col-sm-6 col-md-6 col-lg-3" key={index}>
-                  <div
-                    className="border rounded-3 h-100 pointer-cursor"
-                    onClick={() => handleOpenModal(item)}
-                  >
+                  <div className="border rounded-3 h-100 pointer-cursor">
                     <div
                       className={`rounded-3 common-code ${getServiceClass(item.service)}`}
+                      onClick={() => handleOpenModal(item)}
                     >
                       <span className="d-flex flex-wrap">
                         <div className="hajj-package ms-2">{item.service}</div>
@@ -235,15 +172,23 @@ function Packages() {
                     </div>
 
                     <div className="mt-2 px-3 py-1">
-                      <div className="package-name">{item.package_name}</div>
-                      <div className="ramains-day">{item.remaining_days}</div>
+                      <div className="package-name">
+                        <Link
+                          to={`/admin/packages/edit/${item.id}?service=${item.service}`}
+                          className="text-dark text-decoration-none"
+                        >
+                          {item.package_name}
+                        </Link>
+                      </div>
 
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <div className="d-flex flex-column">
-                          <div className="price-package mt-2">{item.price}</div>
+                          <div className="price-package mt-2">
+                            INR {item.package_price}
+                          </div>
                           <div className="seats-left mt-1 mb-2">
                             <FontAwesomeIcon icon={faUsers} className="me-2" />
-                            {item.seats}
+                            {item.number_of_seats} seats left
                           </div>
                         </div>
 
@@ -298,16 +243,11 @@ function Packages() {
 
                   <div className="flyer-body">
                     <div className="flyer-item">
-                      <strong>Price:</strong> {selectedPackage.price}
+                      <strong>Price:</strong> {selectedPackage.package_price}
                     </div>
 
                     <div className="flyer-item">
-                      <strong>Seats:</strong> {selectedPackage.seats}
-                    </div>
-
-                    <div className="flyer-item">
-                      <strong>Remaining Days:</strong>{" "}
-                      {selectedPackage.remaining_days}
+                      <strong>Seats:</strong> {selectedPackage.number_of_seats}
                     </div>
                   </div>
 
@@ -319,126 +259,6 @@ function Packages() {
                 </div>
               </div>
             )}
-          </div> */}
-
-          <div className="row g-2 mt-3">
-            <div className="card shadow-sm border">
-              <div className="card-header d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">Package</h5>
-
-                <div>
-                  <Link
-                    className="text-decoration-none btn new-leader text-nowrap"
-                    to="/admin/packages/create"
-                  >
-                    + New Package
-                  </Link>
-                </div>
-              </div>
-
-              <div className="card-body">
-                <div className="table-responsive custom-scrollbar">
-                  <table className="table table-striped table-hover align-middle">
-                    <thead className="table-light">
-                      <tr>
-                        <th>Package Name</th>
-                        <th>Package Type</th>
-                        <th>Price</th>
-                        <th>Seats</th>
-                        <th width="260">Actions</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {filteredData?.length > 0 ? (
-                        filteredData.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.package_name}</td>
-
-                            <td>
-                              <span
-                                className={`badge ${
-                                  item.service === "Hajj"
-                                    ? "bg-primary"
-                                    : item.service === "Umrah"
-                                      ? "bg-success"
-                                      : item.service === "Ticket"
-                                        ? "bg-warning text-dark"
-                                        : "bg-info"
-                                }`}
-                              >
-                                {item.service}
-                              </span>
-                            </td>
-
-                            <td>{item.price}</td>
-                            <td>{item.seats}</td>
-
-                            {/* <td>
-                              <div className="d-flex gap-2">
-                                <button
-                                  className="btn btn-primary btn-sm"
-                                  onClick={() => handleOpenModal(item)}
-                                >
-                                  Booking
-                                </button>
-
-                                <button
-                                  className="btn btn-info btn-sm text-white"
-                                  onClick={() => handleEdit(item)}
-                                >
-                                  Edit
-                                </button>
-
-                                <button
-                                  className="btn btn-danger btn-sm"
-                                  onClick={() => handleDelete(item.id)}
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            </td> */}
-
-                            <td className="text-start">
-                              <div className="d-flex align-items-center">
-                                <Link
-                                  title="Edit"
-                                  to={`/admin/packages/edit/${item.id}`}
-                                  className="p-1 d-inline-flex align-items-center justify-content-center"
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faEdit}
-                                    className="icons-color"
-                                  />
-                                </Link>
-
-                                <button
-                                  type="button"
-                                  title="Delete"
-                                  // onClick={() => deleteData(item.id)}
-                                  className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faTrash}
-                                    className="p-1 icons-color1"
-                                  />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="5" className="text-center">
-                            No packages available
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </main>
