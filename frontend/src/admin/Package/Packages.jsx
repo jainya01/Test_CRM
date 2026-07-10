@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBell,
-  faWarning,
-  faX,
-  faUsers,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBell, faX, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { authHeader } from "../../utils/authHeader";
 import axios from "axios";
@@ -14,6 +9,7 @@ import axios from "axios";
 function Packages() {
   const API_URL = import.meta.env.VITE_API_URL;
 
+  const today = new Date();
   const [search, setSearch] = useState("");
   const [packages, setPackages] = useState([]);
   const [active, setActive] = useState("Hajj");
@@ -159,15 +155,6 @@ function Packages() {
                     >
                       <span className="d-flex flex-wrap">
                         <div className="hajj-package ms-2">{item.service}</div>
-
-                        {item.status === "Trending" && (
-                          <div className="hajj-trend ms-2">🔥 Trending</div>
-                        )}
-
-                        <div className="hajj-trend ms-auto me-2">
-                          <FontAwesomeIcon icon={faWarning} className="me-1" />
-                          2d
-                        </div>
                       </span>
                     </div>
 
@@ -179,6 +166,13 @@ function Packages() {
                         >
                           {item.package_name}
                         </Link>
+
+                        <div className="mt-1 days-client">
+                          {Math.ceil(
+                            (new Date(item.departure_date) - today) / 86400000,
+                          )}{" "}
+                          days
+                        </div>
                       </div>
 
                       <div className="d-flex justify-content-between align-items-center flex-wrap">

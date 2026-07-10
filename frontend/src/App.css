@@ -1579,3 +1579,7 @@ body {
 .flight-input {
   border-radius: 12px;
 }
+
+.days-client {
+  font-size: 16px;
+}
