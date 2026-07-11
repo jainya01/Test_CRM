@@ -54,7 +54,7 @@ function AgentEdit() {
         fileInputRef.current.value = "";
       }
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
       toast.error("Profile update failed");
     }
   };

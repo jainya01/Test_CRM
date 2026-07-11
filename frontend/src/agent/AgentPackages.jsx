@@ -48,7 +48,6 @@ function AgentPackages() {
         });
 
         setPackages(response.data.result);
-        console.log(response.data.result);
       } catch (error) {
         console.error("error", error);
       }

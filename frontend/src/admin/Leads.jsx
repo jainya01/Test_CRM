@@ -687,7 +687,7 @@ function Leads() {
                   ) : (
                     <tr>
                       <td colSpan="8" className="text-center">
-                        No Data Found
+                        No Leads Available
                       </td>
                     </tr>
                   )}

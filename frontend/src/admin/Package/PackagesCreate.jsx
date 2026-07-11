@@ -106,7 +106,7 @@ function PackagesCreate() {
 
       setTimeout(() => {
         navigate("/admin/packages");
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || "Failed to add package");

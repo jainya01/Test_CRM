@@ -55,7 +55,7 @@ function ServiceCreate() {
 
       setTimeout(() => {
         navigate("/admin/services");
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.error("error", error);
       toast.error("service post failed");
@@ -81,7 +81,6 @@ function ServiceCreate() {
         sub_category: updated.join(","),
       }));
       setSubCategory("");
-      console.log("After clearing");
     }
   };
 

@@ -70,7 +70,7 @@ function CallersCreate() {
 
       setTimeout(() => {
         navigate("/admin/staffs");
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.error("error", error);
       toast.error("Failed to add caller");

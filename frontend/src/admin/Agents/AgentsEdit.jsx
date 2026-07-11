@@ -85,7 +85,7 @@ function AgentsEdit() {
 
       setTimeout(() => {
         navigate("/admin/agents");
-      }, 1000);
+      }, 500);
     } catch (error) {
       toast.error(error.response?.result?.message || "Failed to update agent");
     }

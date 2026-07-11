@@ -56,7 +56,7 @@ function ServiceEdit() {
 
       setTimeout(() => {
         navigate("/admin/services");
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.error("error", error);
       toast.error("service update failed");

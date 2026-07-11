@@ -74,7 +74,7 @@ function AgentsCreate() {
 
       setTimeout(() => {
         navigate("/admin/agents");
-      }, 1000);
+      }, 500);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to add agent");
     }

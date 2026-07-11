@@ -622,7 +622,7 @@ function Homepage() {
                           ) : (
                             <tr>
                               <td colSpan="6" className="text-center">
-                                No Data Found
+                                No Leads Available
                               </td>
                             </tr>
                           )}

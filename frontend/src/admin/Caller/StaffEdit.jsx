@@ -43,9 +43,9 @@ function CallersEdit() {
 
       setTimeout(() => {
         navigate("/admin/staffs");
-      }, 1000);
+      }, 500);
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
       toast.error("Failed to update caller");
     }
   };
