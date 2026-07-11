@@ -369,7 +369,7 @@ function Settings() {
                       value={selectedAdmin}
                       onChange={handleSelectAdmin}
                     >
-                      <option value="">Choose a Admin</option>
+                      <option value="" hidden>Choose a Admin</option>
                       {Array.isArray(adminEmail) && adminEmail.length > 0 ? (
                         adminEmail.map((item) => (
                           <option key={item.id} value={item.id}>

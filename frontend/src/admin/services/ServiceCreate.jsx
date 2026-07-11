@@ -242,7 +242,9 @@ function ServiceCreate() {
                         onChange={handleChange}
                         required
                       >
-                        <option value="">Select status</option>
+                        <option value="" hidden>
+                          Select status
+                        </option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                       </select>
