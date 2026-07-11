@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import { authHeader } from "../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -123,6 +123,13 @@ function Settings() {
     }
   };
 
+  const filteredAdmin = useMemo(() => {
+    const keyword = search.toLowerCase().trim();
+    return adminEmail.filter((item) =>
+      item.email?.toLowerCase().includes(keyword),
+    );
+  }, [adminEmail, search]);
+
   const [selectedAdmin, setSelectedAdmin] = useState("");
 
   const [updateForm, setUpdateForm] = useState({
@@ -220,7 +227,7 @@ function Settings() {
                   <input
                     type="search"
                     className="form-control sector-wise"
-                    placeholder="Search by email"
+                    placeholder="Search by admin email"
                     value={search}
                     onChange={(e) => setSearch(e.target.value.trim())}
                   />
@@ -369,7 +376,9 @@ function Settings() {
                       value={selectedAdmin}
                       onChange={handleSelectAdmin}
                     >
-                      <option value="" hidden>Choose a Admin</option>
+                      <option value="" hidden>
+                        Choose a Admin
+                      </option>
                       {Array.isArray(adminEmail) && adminEmail.length > 0 ? (
                         adminEmail.map((item) => (
                           <option key={item.id} value={item.id}>
@@ -446,13 +455,13 @@ function Settings() {
               <h6 className="mb-0 fw-semibold">Admin Account</h6>
             </div>
 
-            {Array.isArray(adminEmail) && adminEmail.length > 0 ? (
-              adminEmail.map((data, index) => (
+            {Array.isArray(filteredAdmin) && filteredAdmin.length > 0 ? (
+              filteredAdmin.map((data, index) => (
                 <div key={index} className="card mb-2 border shadow-sm">
                   <div className="card-body py-3 px-3 d-flex justify-content-between align-items-center">
                     <div className="text-truncate me-3">
                       <div className="fw-medium accounts-email">
-                        {data.email}
+                        <strong>Admin {index + 1}:</strong> {data.email}
                       </div>
                     </div>
 

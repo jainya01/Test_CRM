@@ -95,7 +95,7 @@ function ServiceCreate() {
   const removeSubCategory = (index) => {
     const updatedSubCategories = subCategories.filter((_, i) => i !== index);
     setSubCategories(updatedSubCategories);
-    setService((prev) => ({
+    setServices((prev) => ({
       ...prev,
       sub_category: updatedSubCategories.join(","),
     }));

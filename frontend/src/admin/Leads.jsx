@@ -123,6 +123,7 @@ function Leads() {
         console.error("error", error);
       }
     };
+
     allData();
   }, [API_URL]);
 
@@ -359,7 +360,9 @@ function Leads() {
                 value={selectedService}
                 onChange={(e) => setSelectedService(e.target.value)}
               >
-                <option value="" hidden>All services</option>
+                <option value="" hidden>
+                  All services
+                </option>
                 {Array.isArray(service) && service.length > 0 ? (
                   service
                     .filter((item) => item.status === "Active")
@@ -382,7 +385,9 @@ function Leads() {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-                  <option value="" hidden>All</option>
+                  <option value="" hidden>
+                    All
+                  </option>
                   <option value="New">New</option>
                   <option value="Contacted">Contacted</option>
                   <option value="Interested">Interested</option>
