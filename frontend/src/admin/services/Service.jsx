@@ -146,65 +146,69 @@ function CallerExecutive() {
                 </thead>
                 <tbody>
                   {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
-                    paginatedData.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
+                    paginatedData
+                      .sort((a, b) =>
+                        a.service_name.localeCompare(b.service_name),
+                      )
+                      .map((item, index) => (
+                        <tr key={item.id}>
+                          <td>{index + 1}</td>
 
-                        <td>
-                          <span className="short-name">
-                            {item?.service_name || "N/A"}
-                          </span>
-                        </td>
-
-                        <td
-                          className={
-                            item.status === "Active"
-                              ? "convert-no"
-                              : "convert-call"
-                          }
-                        >
-                          <div className="d-flex align-items-center">
-                            <div
-                              className={`status-dot me-1 ${
-                                item.status === "Active"
-                                  ? "custom-success"
-                                  : "custom-active"
-                              }`}
-                            />
-                            <span className="status-span">
-                              {item.status || "N/A"}
+                          <td>
+                            <span className="short-name">
+                              {item?.service_name || "N/A"}
                             </span>
-                          </div>
-                        </td>
+                          </td>
 
-                        <td className="text-start">
-                          <div className="d-flex align-items-center">
-                            <Link
-                              title="Edit"
-                              to={`/admin/services/edit/${item.id}`}
-                              className="p-1 d-inline-flex align-items-center justify-content-center"
-                            >
-                              <FontAwesomeIcon
-                                icon={faEdit}
-                                className="icons-color"
+                          <td
+                            className={
+                              item.status === "Active"
+                                ? "convert-no"
+                                : "convert-call"
+                            }
+                          >
+                            <div className="d-flex align-items-center">
+                              <div
+                                className={`status-dot me-1 ${
+                                  item.status === "Active"
+                                    ? "custom-success"
+                                    : "custom-active"
+                                }`}
                               />
-                            </Link>
+                              <span className="status-span">
+                                {item.status || "N/A"}
+                              </span>
+                            </div>
+                          </td>
 
-                            <button
-                              type="button"
-                              title="Delete"
-                              onClick={() => deleteData(item.id)}
-                              className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
-                            >
-                              <FontAwesomeIcon
-                                icon={faTrash}
-                                className="p-1 icons-color1"
-                              />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
+                          <td className="text-start">
+                            <div className="d-flex align-items-center">
+                              <Link
+                                title="Edit"
+                                to={`/admin/services/edit/${item.id}`}
+                                className="p-1 d-inline-flex align-items-center justify-content-center"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faEdit}
+                                  className="icons-color"
+                                />
+                              </Link>
+
+                              <button
+                                type="button"
+                                title="Delete"
+                                onClick={() => deleteData(item.id)}
+                                className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faTrash}
+                                  className="p-1 icons-color1"
+                                />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
                   ) : (
                     <tr>
                       <td colSpan="7" className="text-center text-muted">

@@ -1210,18 +1210,22 @@ router.patch(
   }),
 );
 
+
+
+
+
 // services
 
 router.post(
   "/servicepost",
   authenticate,
   asyncHandler(async (req, res) => {
-    const { service_name, status, notes } = req.body;
+    const { service_name, sub_category, status, notes } = req.body;
 
     const SQL =
-      "INSERT INTO services(service_name, status, notes) VALUES(?, ?, ?)";
+      "INSERT INTO services(service_name, sub_category, status, notes) VALUES(?, ?, ?, ?)";
 
-    const [result] = await pool.execute(SQL, [service_name, status, notes]);
+    const [result] = await pool.execute(SQL, [service_name, sub_category, status, notes]);
 
     if (result.affectedRows <= 0) {
       const error = new Error("data post failed");
@@ -1250,7 +1254,7 @@ router.get(
     }
 
     const SQL =
-      "SELECT id, service_name, status, notes FROM services ORDER BY id DESC";
+      "SELECT id, service_name, sub_category, status, notes FROM services ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
     if (result.length === 0) {
@@ -1309,7 +1313,7 @@ router.get(
     }
 
     const SQL =
-      "SELECT id, service_name, status, notes FROM services WHERE id = ?";
+      "SELECT id, service_name, sub_category, status, notes FROM services WHERE id = ?";
     const [result] = await pool.execute(SQL, [id]);
 
     if (result.length === 0) {
@@ -1335,11 +1339,11 @@ router.put(
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { service_name, status, notes } = req.body;
+    const { service_name, sub_category, status, notes } = req.body;
 
     const SQL =
-      "UPDATE services SET service_name = ?, status = ?, notes = ? WHERE id=?";
-    const [result] = await pool.execute(SQL, [service_name, status, notes, id]);
+      "UPDATE services SET service_name = ?, sub_category = ?, status = ?, notes = ? WHERE id=?";
+    const [result] = await pool.execute(SQL, [service_name, sub_category, status, notes, id]);
 
     if (result.affectedRows <= 0) {
       const error = new Error("data update failed");

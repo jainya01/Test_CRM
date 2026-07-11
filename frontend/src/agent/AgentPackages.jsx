@@ -1,82 +1,18 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faUsers, faWarning } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faX, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { authHeader } from "../utils/authHeader";
+import axios from "axios";
 
 function AgentPackages() {
-  const [search, setSearch] = useState("");
-  const [active, setActive] = useState("All");
-  const tabs = ["All", "Hajj", "Umrah", "Ticket", "Medical"];
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const data = [
-    {
-      service: "Hajj",
-      status: "Trending",
-      package_name: "Premium Hajj 2026 — 40 Days",
-      remaining_days: "40 days",
-      price: "INR 1850k",
-      seats: "12 seats left",
-    },
-    {
-      service: "Hajj",
-      status: "",
-      package_name: "Economy Hajj — Shifting",
-      remaining_days: "35 days",
-      price: "INR 1250k",
-      seats: "30 seats left",
-    },
-    {
-      service: "Umrah",
-      status: "Trending",
-      package_name: "Umrah Express — 10 Days",
-      remaining_days: "10 days",
-      price: "INR 285k",
-      seats: "8 seats left",
-      alert_days: "5d",
-    },
-    {
-      service: "Umrah",
-      status: "",
-      package_name: "Umrah Family Package — 14 Days",
-      remaining_days: "14 days",
-      price: "INR 425k",
-      seats: "24 seats left",
-    },
-    {
-      service: "Umrah",
-      status: "Trending",
-      package_name: "Ramadan Umrah Special",
-      remaining_days: "15 days",
-      price: "INR 540k",
-      seats: "6 seats left",
-      alert_days: "3d",
-    },
-    {
-      service: "Ticket",
-      status: "",
-      package_name: "Dubai-Jeddah Return Ticket",
-      remaining_days: "Open",
-      price: "INR 95k",
-      seats: "50 seats left",
-    },
-    {
-      service: "Medical",
-      status: "",
-      package_name: "Medical Visa — Thailand",
-      remaining_days: "21 days",
-      price: "INR 320k",
-      seats: "10 seats left",
-    },
-    {
-      service: "Medical",
-      status: "",
-      package_name: "Medical Visa — Turkey",
-      remaining_days: "30 days",
-      price: "INR 410k",
-      seats: "4 seats left",
-      alert_days: "2d",
-    },
-  ];
+  const today = new Date();
+  const [search, setSearch] = useState("");
+  const [packages, setPackages] = useState([]);
+  const [active, setActive] = useState("Hajj");
+  const tabs = ["Hajj", "Umrah", "Ticket"];
 
   const getServiceClass = (service) => {
     switch (service) {
@@ -86,25 +22,54 @@ function AgentPackages() {
         return "umrah-premium";
       case "Ticket":
         return "ticket-premium";
-      case "Medical":
-        return "medical-premium";
       default:
         return "";
     }
   };
 
-  const filteredData = data.filter(
-    (item) =>
-      (active === "All" || item.service === active) &&
-      item.package_name.toLowerCase().includes(search.toLowerCase()),
-  );
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = (item) => {
+    setSelectedPackage(item);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedPackage(null);
+  };
+
+  useEffect(() => {
+    const packagesData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/allpackages`, {
+          headers: authHeader(),
+        });
+
+        setPackages(response.data.result);
+        console.log(response.data.result);
+      } catch (error) {
+        console.error("error", error);
+      }
+    };
+    packagesData();
+  }, [API_URL]);
+
+  const filteredData = useMemo(() => {
+    return packages.filter(
+      (item) =>
+        item.service === active &&
+        item.package_name.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [packages, active, search]);
 
   return (
     <>
-      <title>Travel Packages | CRM Agent Portal</title>
+      <title>Packages Management | Travel CRM Portal</title>
       <meta
         name="description"
-        content="Explore travel packages for Hajj, Umrah, Ticket, and Medical Visa services. View pricing, availability, and booking details in the CRM Agent Portal."
+        content="Manage Hajj, Umrah, Ticket, and Medical Visa packages. Update pricing, track availability, monitor bookings, and organize travel services in the CRM Packages Portal."
       />
 
       <main className="content-wrapper">
@@ -173,34 +138,36 @@ function AgentPackages() {
             {Array.isArray(filteredData) && filteredData.length > 0 ? (
               filteredData.map((item, index) => (
                 <div className="col-12 col-sm-6 col-md-6 col-lg-3" key={index}>
-                  <div className="border rounded-3 h-100">
+                  <div className="border rounded-3 h-100 pointer-cursor">
                     <div
                       className={`rounded-3 common-code ${getServiceClass(item.service)}`}
+                      onClick={() => handleOpenModal(item)}
                     >
                       <span className="d-flex flex-wrap">
                         <div className="hajj-package ms-2">{item.service}</div>
-
-                        {item.status === "Trending" && (
-                          <div className="hajj-trend ms-2">🔥 Trending</div>
-                        )}
-
-                        <div className="hajj-trend ms-auto me-2">
-                          <FontAwesomeIcon icon={faWarning} className="me-1" />
-                          2d
-                        </div>
                       </span>
                     </div>
 
                     <div className="mt-2 px-3 py-1">
-                      <div className="package-name">{item.package_name}</div>
-                      <div className="ramains-day">{item.remaining_days}</div>
+                      <div className="package-name">
+                        {item.package_name}
+
+                        <div className="mt-1 days-client">
+                          {Math.ceil(
+                            (new Date(item.departure_date) - today) / 86400000,
+                          )}{" "}
+                          days
+                        </div>
+                      </div>
 
                       <div className="d-flex justify-content-between align-items-center flex-wrap">
                         <div className="d-flex flex-column">
-                          <div className="price-package mt-2">{item.price}</div>
+                          <div className="price-package mt-2">
+                            INR {item.package_price}
+                          </div>
                           <div className="seats-left mt-1 mb-2">
                             <FontAwesomeIcon icon={faUsers} className="me-2" />
-                            {item.seats}
+                            {item.number_of_seats} seats left
                           </div>
                         </div>
 
@@ -217,6 +184,58 @@ function AgentPackages() {
             ) : (
               <div className="text-center w-100 mt-3 text-muted">
                 No packages available
+              </div>
+            )}
+
+            {showModal && selectedPackage && (
+              <div className="modal-overlay-flyer" onClick={handleCloseModal}>
+                <div
+                  className="flyer-modal border border-light"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flyer-header d-flex justify-content-between">
+                    <div>
+                      <h4 className="mb-1 package-name-flyer">
+                        {selectedPackage.package_name}
+                      </h4>
+                      <span
+                        className={`badge ${
+                          selectedPackage.service === "Hajj"
+                            ? "bg-primary"
+                            : selectedPackage.service === "Umrah"
+                              ? "bg-success"
+                              : selectedPackage.service === "Ticket"
+                                ? "bg-warning"
+                                : "bg-info"
+                        }`}
+                      >
+                        {selectedPackage.service}
+                      </span>
+                    </div>
+
+                    <div onClick={handleCloseModal} className="pointer-cursor">
+                      <FontAwesomeIcon icon={faX} className="fw-bold" />
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <div className="flyer-body">
+                    <div className="flyer-item">
+                      <strong>Price:</strong> {selectedPackage.package_price}
+                    </div>
+
+                    <div className="flyer-item">
+                      <strong>Seats:</strong> {selectedPackage.number_of_seats}
+                    </div>
+                  </div>
+
+                  <div className="flyer-footer">
+                    <button className="btn new-leader new-books ms-2">
+                      Book Now
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

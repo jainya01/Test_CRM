@@ -11,20 +11,27 @@ function ServiceCreate() {
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const [subCategory, setSubCategory] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
 
   const [services, setServices] = useState({
     service_name: "",
+    sub_category: "",
     status: "",
     notes: "",
   });
 
-  const { service_name, status, notes } = services;
+  const { service_name, sub_category, status, notes } = services;
 
   const validateForm = () => {
     let newErrors = {};
 
     if (!service_name.trim()) {
       newErrors.service_name = "Service name is required";
+    }
+
+    if (!sub_category.trim()) {
+      newErrors.sub_category = "Sub Category name is required";
     }
 
     if (!status) {
@@ -61,6 +68,36 @@ function ServiceCreate() {
     setServices((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const addSubCategory = () => {
+    const value = subCategory.trim();
+    if (value && !subCategories.includes(value)) {
+      const updated = [...subCategories, value];
+      setSubCategories(updated);
+      setServices((prev) => ({
+        ...prev,
+        sub_category: updated.join(","),
+      }));
+      setSubCategory("");
+      console.log("After clearing");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addSubCategory();
+    }
+  };
+
+  const removeSubCategory = (index) => {
+    const updatedSubCategories = subCategories.filter((_, i) => i !== index);
+    setSubCategories(updatedSubCategories);
+    setService((prev) => ({
+      ...prev,
+      sub_category: updatedSubCategories.join(","),
     }));
   };
 
@@ -116,7 +153,7 @@ function ServiceCreate() {
               <div className="card-body">
                 <form action={handleFormSubmit}>
                   <div className="row">
-                    <div className="col-md-6 mb-3">
+                    <div className="col-md-6 mb-2">
                       <label htmlFor="service_name" className="form-label">
                         Service Name{" "}
                         <span className="text-danger fw-bolder">*</span>
@@ -136,6 +173,60 @@ function ServiceCreate() {
                           {errors.service_name}
                         </small>
                       )}
+                    </div>
+
+                    <div className="col-md-6 mb-2">
+                      <label className="form-label" htmlFor="sub_category">
+                        Sub Category
+                        <span className="text-danger fw-bold ms-1">*</span>
+                      </label>
+
+                      <div className="d-flex">
+                        <input
+                          type="text"
+                          id="sub_category"
+                          className="form-control sector-wise mb-1"
+                          placeholder="Enter Sub Category"
+                          value={subCategory}
+                          onChange={(e) => setSubCategory(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                        />
+                      </div>
+                      {errors.sub_category && (
+                        <small className="text-danger mt-1">
+                          {errors.sub_category}
+                        </small>
+                      )}
+
+                      <div className="d-flex flex-row justify-content-between">
+                        <div className="d-flex flex-row flex-wrap align-items-center">
+                          {subCategories.map((item, index) => (
+                            <div
+                              key={index}
+                              className="subcategory-crm border me-2 mb-2 px-2 py-1 rounded-pill d-inline-flex align-items-center"
+                            >
+                              <span>{item}</span>
+                              <span
+                                className="ms-2 subcategory-crm2"
+                                onClick={() => removeSubCategory(index)}
+                              >
+                                ×
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="d-flex justify-content-end">
+                          <button
+                            type="button"
+                            className="btn btn-success d-flex align-items-center rounded-5 ms-2"
+                            style={{ height: "30px", fontSize: "14px" }}
+                            onClick={addSubCategory}
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="col-md-6">
@@ -163,7 +254,7 @@ function ServiceCreate() {
                       )}
                     </div>
 
-                    <div className="col-12 mb-3">
+                    <div className="col-md-6 mb-3">
                       <label htmlFor="notes" className="form-label">
                         Notes (optional)
                       </label>
