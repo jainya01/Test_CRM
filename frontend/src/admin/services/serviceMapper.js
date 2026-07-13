@@ -2,6 +2,7 @@ import Appointment from "./pages/Appointment";
 import Attestation from "./pages/Attestation";
 import Documentation from "./pages/Documentation";
 import Emigration from "./pages/Emigration";
+import HajjBooking from "./pages/HajjBooking";
 import MedicalTest from "./pages/MedicalTest";
 import OTB from "./pages/OTB";
 import Passport from "./pages/Passport";
@@ -16,4 +17,5 @@ export const serviceMapper = {
   "visa-stamping": VisaStamping,
   passport: Passport,
   appointment: Appointment,
+  "hajj-booking": HajjBooking,
 };

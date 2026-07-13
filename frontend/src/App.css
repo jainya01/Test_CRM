@@ -1437,9 +1437,18 @@ body {
   background-color: #fff;
 }
 
+.reschedule-modal2 {
+  width: 920px;
+  background-color: #fff;
+}
+
 @media (max-width: 576px) {
   .reschedule-modal1 {
-    width: 410px;
+    width: 430px;
+  }
+
+  .reschedule-modal2 {
+    width: 430px;
   }
 }
 
