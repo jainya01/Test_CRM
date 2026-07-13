@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faPen, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faX } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const allBookings = [

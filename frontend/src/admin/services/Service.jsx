@@ -3,7 +3,12 @@ import "../../App.css";
 import { authHeader } from "../../utils/authHeader";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faBell,
+  faEdit,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -157,6 +162,7 @@ function CallerExecutive() {
                           <td>
                             <span className="short-name">
                               {item?.service_name || "N/A"}
+                              {/* <FontAwesomeIcon icon={faArrowRight} className="ms-2"/> */}
                             </span>
                           </td>
 
