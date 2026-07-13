@@ -45,6 +45,7 @@ const AgentProfile = lazy(() => import("./agent/AgentProfile"));
 
 import StaffDashboard from "./staff/StaffDashboard";
 import PackagesEdit from "./admin/Package/PackagesEdit";
+import ServiceRenderer from "./admin/ServiceRenderer";
 const StaffPackage = lazy(() => import("./staff/StaffPackage"));
 const StaffFollowup = lazy(() => import("./staff/StaffFollowup"));
 
@@ -84,6 +85,8 @@ function App() {
               <Route path="services/create" element={<ServiceCreate />} />
               <Route path="services/edit/:id" element={<ServicesEdit />} />
               <Route path="settings" element={<Settings />} />
+
+              <Route path="services/:slug" element={<ServiceRenderer />} />
             </Route>
           </Route>
 
