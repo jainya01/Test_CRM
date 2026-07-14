@@ -552,7 +552,7 @@ function Homepage() {
                                       />
                                     </div>
 
-                                    {reschedule.open && (
+                                    {/* {reschedule.open && (
                                       <div className="modal-overlay">
                                         <div
                                           className="reschedule-modal"
@@ -614,7 +614,7 @@ function Homepage() {
                                           </div>
                                         </div>
                                       </div>
-                                    )}
+                                    )} */}
                                   </span>
                                 </td>
                               </tr>

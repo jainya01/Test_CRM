@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { createServiceSlug } from "../../utils/createServiceSlug";
 
 function CallerExecutive() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -160,10 +161,16 @@ function CallerExecutive() {
                           <td>{index + 1}</td>
 
                           <td>
-                            <span className="short-name">
-                              {item?.service_name || "N/A"}
-                              {/* <FontAwesomeIcon icon={faArrowRight} className="ms-2"/> */}
-                            </span>
+                            <Link
+                              to={`/admin/services/${item.service_key}`}
+                              className="short-name text-decoration-none text-dark"
+                            >
+                              {item.service_name}
+                              <FontAwesomeIcon
+                                icon={faArrowRight}
+                                className="ms-2"
+                              />
+                            </Link>
                           </td>
 
                           <td

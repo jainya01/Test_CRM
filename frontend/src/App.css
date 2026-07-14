@@ -1410,7 +1410,7 @@ body {
   font-size: 16px;
 }
 
-.modal-overlay {
+/* .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -1421,7 +1421,28 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 9999;
+} */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 20px;
 }
+
+/* .reschedule-modal {
+  width: 400px;
+  background: #0f3d3e;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #fff;
+} */
 
 .reschedule-modal {
   width: 400px;
@@ -1430,6 +1451,8 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   color: #fff;
+  max-height: 92vh;
+  overflow-y: auto;
 }
 
 .reschedule-modal1 {
@@ -1739,4 +1762,137 @@ body {
 
 .form-switch .form-check-input:focus {
   box-shadow: none !important;
+}
+
+.customer-info {
+  font-size: 16px;
+}
+
+.customer-info-wrapper {
+  position: relative;
+  border: 1px solid #d5d5d5;
+  border-radius: 18px;
+  padding: 28px 18px 14px;
+  margin-top: 20px;
+  background: #fff;
+}
+
+.customer-info-heading {
+  position: absolute;
+  top: -12px;
+  left: 18px;
+  padding: 0 10px;
+  background: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+}
+
+.dotted-border {
+  border: 1.8px dotted black;
+  border-radius: 8px;
+  padding-right: 45px;
+}
+
+.customer-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.custom-type {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-inquiry {
+  background: #f5f1e8;
+  color: #8b6b1c;
+}
+
+.status-followup {
+  background: #eef9fb;
+  color: #0b7285;
+}
+
+.status-confirmed {
+  background: #16a34a !important;
+  color: #fff;
+}
+
+.status-visa {
+  background: #fef3c7 !important;
+  color: #92400e;
+}
+
+.status-ticket {
+  background: #dbeafe !important;
+  color: #1d4ed8;
+}
+
+.status-hotel {
+  background: #ede9fe !important;
+  color: #6d28d9;
+}
+
+.status-completed {
+  background: #dcfce7 !important;
+  color: #15803d;
+}
+
+.status-cancelled {
+  background: #fee2e2 !important;
+  color: #dc2626;
+}
+
+.status-refund {
+  background: #f3f4f6 !important;
+  color: #4b5563;
+}
+
+.service-not-found {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.service-not-found h1 {
+  font-size: 80px;
+  color: #dc3545;
+  margin: 0;
+}
+
+.service-not-found h3 {
+  margin: 10px 0;
+  color: #222;
+}
+
+.service-not-found p {
+  color: #777;
+}
+
+.back-service-btn {
+  padding: 8px 20px;
+  background: #006b57;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-service-btn:hover {
+  background: #005043;
+  color: #fff;
 }

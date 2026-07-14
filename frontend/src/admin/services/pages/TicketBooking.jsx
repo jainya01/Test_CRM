@@ -10,11 +10,11 @@ const allBookings = [
     customer: "Muhammad Tariq",
     phone: "+91 300 1000000",
     passport: "AB1234567",
-    package: "Premium Hajj 2026 — 40 Days",
+    package: "Dubai-Jeddah Return Ticket",
     travelDate: "27 Aug 2026",
     pax: 1,
-    total: "INR 1,850,000",
-    balance: "INR 350,000",
+    total: "INR 85,000",
+    balance: "INR 15,000",
     status: "Inquiry",
   },
   {
@@ -23,42 +23,16 @@ const allBookings = [
     customer: "Ayesha Siddiqui",
     phone: "+91 300 1000137",
     passport: "AB1234568",
-    package: "Economy Hajj — Shifting",
+    package: "Delhi-Jeddah Return Ticket",
     travelDate: "11 Sep 2026",
     pax: 2,
-    total: "INR 1,250,000",
-    balance: "INR 750,000",
+    total: "INR 1,20,000",
+    balance: "INR 20,000",
     status: "Follow-up",
-  },
-  {
-    id: 3,
-    bookingNo: "BKH1003",
-    customer: "Ali Khan",
-    phone: "+91 301 1234567",
-    passport: "AB1234569",
-    package: "Premium Umrah — 15 Days",
-    travelDate: "20 Sep 2026",
-    pax: 2,
-    total: "INR 980,000",
-    balance: "INR 250,000",
-    status: "Confirmed",
-  },
-  {
-    id: 4,
-    bookingNo: "BKH1004",
-    customer: "Fatima Noor",
-    phone: "+91 302 9876543",
-    passport: "AB1234570",
-    package: "Economy Umrah — 10 Days",
-    travelDate: "05 Oct 2026",
-    pax: 2,
-    total: "INR 650,000",
-    balance: "INR 650,000",
-    status: "Visa Processing",
   },
 ];
 
-function HajjBooking() {
+function TicketBooking() {
   const [search, setSearch] = useState("");
   const [search1, setSearch1] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -127,9 +101,9 @@ function HajjBooking() {
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
           <div>
-            <h5 className="fw-bold overview-dashboard">Hajj Bookings</h5>
+            <h5 className="fw-bold overview-dashboard">Ticket Bookings</h5>
             <p className="text-muted overview-lead fw-bold">
-              Manage Hajj package bookings — {filteredBookings.length} bookings
+              Manage group ticket bookings — {filteredBookings.length} bookings
             </p>
           </div>
 
@@ -143,7 +117,7 @@ function HajjBooking() {
                 }))
               }
             >
-              + New Hajj Booking
+              + New Ticket Booking
             </Link>
           </div>
         </div>
@@ -156,7 +130,7 @@ function HajjBooking() {
                 ref={scheduleRef}
               >
                 <div className="d-flex justify-content-between">
-                  <h5 className="fw-bold">New Hajj Booking</h5>
+                  <h5 className="fw-bold">New Ticket Booking</h5>
                   <div>
                     <FontAwesomeIcon
                       icon={faX}
@@ -281,11 +255,13 @@ function HajjBooking() {
                         <option value="" hidden>
                           Select Package
                         </option>
-                        <option value="Premium Hajj 2026 - 40 Days">
-                          Premium Hajj 2026 - 40 Days
+
+                        <option value="Dubai-Jeddah Return Ticket">
+                          Dubai-Jeddah Return Ticket
                         </option>
-                        <option value="Economy Hajj - Shifting">
-                          Economy Hajj - Shifting
+
+                        <option value="Mumbai-Madinah Return Ticket">
+                          Mumbai-Madinah Return Ticket
                         </option>
                       </select>
                     </div>
@@ -805,4 +781,4 @@ function HajjBooking() {
   );
 }
 
-export default HajjBooking;
+export default TicketBooking;

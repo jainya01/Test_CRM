@@ -1210,10 +1210,6 @@ router.patch(
   }),
 );
 
-
-
-
-
 // services
 
 router.post(
@@ -1222,10 +1218,22 @@ router.post(
   asyncHandler(async (req, res) => {
     const { service_name, sub_category, status, notes } = req.body;
 
-    const SQL =
-      "INSERT INTO services(service_name, sub_category, status, notes) VALUES(?, ?, ?, ?)";
+    const service_key = service_name
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
 
-    const [result] = await pool.execute(SQL, [service_name, sub_category, status, notes]);
+    const SQL =
+      "INSERT INTO services(service_name, service_key, sub_category, status, notes) VALUES(?, ?, ?, ?, ?)";
+
+    const [result] = await pool.execute(SQL, [
+      service_name,
+      service_key,
+      sub_category,
+      status,
+      notes,
+    ]);
 
     if (result.affectedRows <= 0) {
       const error = new Error("data post failed");
@@ -1254,7 +1262,7 @@ router.get(
     }
 
     const SQL =
-      "SELECT id, service_name, sub_category, status, notes FROM services ORDER BY id DESC";
+      "SELECT id, service_name, service_key, sub_category, status, notes FROM services ORDER BY id DESC";
     const [result] = await pool.execute(SQL);
 
     if (result.length === 0) {
@@ -1313,7 +1321,7 @@ router.get(
     }
 
     const SQL =
-      "SELECT id, service_name, sub_category, status, notes FROM services WHERE id = ?";
+      "SELECT id, service_name, service_key, sub_category, status, notes FROM services WHERE id = ?";
     const [result] = await pool.execute(SQL, [id]);
 
     if (result.length === 0) {
@@ -1343,7 +1351,13 @@ router.put(
 
     const SQL =
       "UPDATE services SET service_name = ?, sub_category = ?, status = ?, notes = ? WHERE id=?";
-    const [result] = await pool.execute(SQL, [service_name, sub_category, status, notes, id]);
+    const [result] = await pool.execute(SQL, [
+      service_name,
+      sub_category,
+      status,
+      notes,
+      id,
+    ]);
 
     if (result.affectedRows <= 0) {
       const error = new Error("data update failed");
@@ -1361,11 +1375,6 @@ router.put(
     });
   }),
 );
-
-
-
-
-
 
 // packages
 
@@ -1555,14 +1564,10 @@ router.get(
       result,
     };
 
-    await redisClient.setEx(
-      cacheKey,
-      600,
-      JSON.stringify(response)
-    );
+    await redisClient.setEx(cacheKey, 600, JSON.stringify(response));
 
     return res.status(200).json(response);
-  })
+  }),
 );
 
 router.put(
@@ -1709,7 +1714,7 @@ router.put(
       success: true,
       message: "Package updated successfully",
     });
-  })
+  }),
 );
 
 router.delete(
@@ -1806,22 +1811,10 @@ router.get(
     };
 
     // Cache for 10 minutes
-    await redisClient.setEx(
-      cacheKey,
-      600,
-      JSON.stringify(response)
-    );
+    await redisClient.setEx(cacheKey, 600, JSON.stringify(response));
 
     return res.status(200).json(response);
-  })
+  }),
 );
-
-
-
-
-
-
-
-
 
 export default router;

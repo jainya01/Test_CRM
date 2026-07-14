@@ -10,7 +10,7 @@ const allBookings = [
     customer: "Muhammad Tariq",
     phone: "+91 300 1000000",
     passport: "AB1234567",
-    package: "Premium Hajj 2026 — 40 Days",
+    package: "Umrah Express — 10 Days",
     travelDate: "27 Aug 2026",
     pax: 1,
     total: "INR 1,850,000",
@@ -23,7 +23,7 @@ const allBookings = [
     customer: "Ayesha Siddiqui",
     phone: "+91 300 1000137",
     passport: "AB1234568",
-    package: "Economy Hajj — Shifting",
+    package: "Premium Umrah — 12 Days",
     travelDate: "11 Sep 2026",
     pax: 2,
     total: "INR 1,250,000",
@@ -36,7 +36,7 @@ const allBookings = [
     customer: "Ali Khan",
     phone: "+91 301 1234567",
     passport: "AB1234569",
-    package: "Premium Umrah — 15 Days",
+    package: "Ramadan Umrah Special — 15 Days",
     travelDate: "20 Sep 2026",
     pax: 2,
     total: "INR 980,000",
@@ -47,18 +47,18 @@ const allBookings = [
     id: 4,
     bookingNo: "BKH1004",
     customer: "Fatima Noor",
-    phone: "+91 302 9876543",
+    phone: "+91 302 4567890",
     passport: "AB1234570",
-    package: "Economy Umrah — 10 Days",
+    package: "Deluxe Umrah — 7 Days",
     travelDate: "05 Oct 2026",
-    pax: 2,
-    total: "INR 650,000",
-    balance: "INR 650,000",
+    pax: 4,
+    total: "INR 2,400,000",
+    balance: "INR 900,000",
     status: "Visa Processing",
   },
 ];
 
-function HajjBooking() {
+function UmrahBooking() {
   const [search, setSearch] = useState("");
   const [search1, setSearch1] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -127,9 +127,9 @@ function HajjBooking() {
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
           <div>
-            <h5 className="fw-bold overview-dashboard">Hajj Bookings</h5>
+            <h5 className="fw-bold overview-dashboard">Umrah Bookings</h5>
             <p className="text-muted overview-lead fw-bold">
-              Manage Hajj package bookings — {filteredBookings.length} bookings
+              Manage Umrah package bookings — {filteredBookings.length} bookings
             </p>
           </div>
 
@@ -143,7 +143,7 @@ function HajjBooking() {
                 }))
               }
             >
-              + New Hajj Booking
+              + New Umrah Booking
             </Link>
           </div>
         </div>
@@ -156,7 +156,7 @@ function HajjBooking() {
                 ref={scheduleRef}
               >
                 <div className="d-flex justify-content-between">
-                  <h5 className="fw-bold">New Hajj Booking</h5>
+                  <h5 className="fw-bold">New Umrah Booking</h5>
                   <div>
                     <FontAwesomeIcon
                       icon={faX}
@@ -281,11 +281,14 @@ function HajjBooking() {
                         <option value="" hidden>
                           Select Package
                         </option>
-                        <option value="Premium Hajj 2026 - 40 Days">
-                          Premium Hajj 2026 - 40 Days
+                        <option value="Umrah Express — 10 Days">
+                          Umrah Express — 10 Days
                         </option>
-                        <option value="Economy Hajj - Shifting">
-                          Economy Hajj - Shifting
+                        <option value="Umrah Family Package — 14 Days">
+                          Umrah Family Package — 14 Days
+                        </option>
+                        <option value="Ramadan Umrah Special">
+                          Ramadan Umrah Special
                         </option>
                       </select>
                     </div>
@@ -805,4 +808,4 @@ function HajjBooking() {
   );
 }
 
-export default HajjBooking;
+export default UmrahBooking;

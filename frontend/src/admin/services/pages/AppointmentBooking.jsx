@@ -70,7 +70,7 @@ const tasheer = [
   },
 ];
 
-function Appointment() {
+function AppointmentBooking() {
   const [search, setSearch] = useState("");
   const [activeCard, setActiveCard] = useState(1);
   const [tableTitle, setTableTitle] = useState("All Appointments");
@@ -530,4 +530,4 @@ function Appointment() {
   );
 }
 
-export default Appointment;
+export default AppointmentBooking;
