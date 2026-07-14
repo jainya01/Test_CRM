@@ -51,7 +51,7 @@ const StaffFollowup = lazy(() => import("./staff/StaffFollowup"));
 
 function App() {
   return (
-    <BrowserRouter basename="/laraib">
+    <BrowserRouter>
       <Suspense>
         <Routes>
           <Route path="/" element={<Login />} />
