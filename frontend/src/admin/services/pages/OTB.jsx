@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faBell,
+  faTrash,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const travelRequests = [
@@ -106,11 +111,21 @@ function OTB() {
 
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
-          <div>
-            <h5 className="fw-bold overview-dashboard">OTB — Ok To Board</h5>
-            <p className="text-muted overview-lead fw-bold">
-              Manage OTB requests by destination and airline
-            </p>
+          <div className="d-flex justify-content-between">
+            <div className="mt-2 me-3">
+              <Link className="text-dark" to="/admin/services">
+                <FontAwesomeIcon icon={faArrowLeft} className="arrow-left" />
+              </Link>
+            </div>
+
+            <div>
+              <h5 className="fw-bold overview-dashboard mb-1">
+                OTB — Ok To Board
+              </h5>
+              <p className="text-muted overview-lead fw-bold">
+                Manage OTB requests by destination and airline
+              </p>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -157,7 +172,7 @@ function OTB() {
                     <input
                       type="text"
                       className="form-control sector-wise"
-                      placeholder="Enter Passenger Name"
+                      placeholder="e.g. John Doe"
                       value={reschedule.passengerName || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -173,7 +188,7 @@ function OTB() {
                     <input
                       type="text"
                       className="form-control sector-wise"
-                      placeholder="Enter Passport No."
+                      placeholder="e.g. A12345678"
                       value={reschedule.passportNo || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -256,16 +271,8 @@ function OTB() {
 
                   <div className="col-md-6 mb-3">
                     <label className="form-label">Status</label>
-                    <select
-                      className="form-control sector-wise"
-                      value={reschedule.status || "Requested"}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          status: e.target.value,
-                        }))
-                      }
-                    >
+                    <select className="form-select sector-wise">
+                      <option value="">Select Status</option>
                       <option value="Requested">Requested</option>
                       <option value="Approved">Approved</option>
                       <option value="Rejected">Rejected</option>
@@ -396,7 +403,7 @@ function OTB() {
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
                 <tr>
-                  <th>S/N</th>
+                  <th>#</th>
                   <th>Passenger</th>
                   <th>Passport</th>
                   <th>Destination</th>

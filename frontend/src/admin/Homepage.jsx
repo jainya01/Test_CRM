@@ -18,7 +18,7 @@ function Homepage() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [search, setSearch] = useState("");
-  const scheduleRef = useRef();
+  // const scheduleRef = useRef();
 
   const users = useMemo(
     () => [
@@ -80,20 +80,20 @@ function Homepage() {
     [],
   );
 
-  const [reschedule, setReschedule] = useState({
-    open: false,
-    date: "",
-  });
+  // const [reschedule, setReschedule] = useState({
+  //   open: false,
+  //   date: "",
+  // });
 
-  useEffect(() => {
-    const handler = (e) =>
-      scheduleRef.current &&
-      !scheduleRef.current.contains(e.target) &&
-      setReschedule((p) => ({ ...p, open: false }));
+  // useEffect(() => {
+  //   const handler = (e) =>
+  //     scheduleRef.current &&
+  //     !scheduleRef.current.contains(e.target) &&
+  //     setReschedule((p) => ({ ...p, open: false }));
 
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  //   document.addEventListener("mousedown", handler);
+  //   return () => document.removeEventListener("mousedown", handler);
+  // }, []);
 
   const [adminName, setAdminName] = useState("");
 
@@ -538,12 +538,12 @@ function Homepage() {
                                     <div
                                       className="ms-1"
                                       title="Reschedule"
-                                      onClick={() =>
-                                        setReschedule((prev) => ({
-                                          ...prev,
-                                          open: true,
-                                        }))
-                                      }
+                                      // onClick={() =>
+                                      //   setReschedule((prev) => ({
+                                      //     ...prev,
+                                      //     open: true,
+                                      //   }))
+                                      // }
                                       style={{ cursor: "pointer" }}
                                     >
                                       <FontAwesomeIcon

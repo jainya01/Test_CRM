@@ -11,7 +11,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { createServiceSlug } from "../../utils/createServiceSlug";
 
 function CallerExecutive() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -123,7 +122,7 @@ function CallerExecutive() {
         <div className="p-2 p-lg-3">
           <div className="d-flex justify-content-between flex-wrap">
             <div>
-              <h5 className="fw-bold overview-dashboard">Services</h5>
+              <h5 className="fw-bold overview-dashboard mb-1">Services</h5>
               <p className="text-muted overview-lead fw-bold">
                 {paginatedData.length} services
               </p>
@@ -144,7 +143,7 @@ function CallerExecutive() {
               <table className="table table-hover mb-0">
                 <thead className="table-success header-table text-nowrap">
                   <tr>
-                    <th className="py-2">S/N</th>
+                    <th className="py-2">#</th>
                     <th>Service Name</th>
                     <th>Status</th>
                     <th>Actions</th>

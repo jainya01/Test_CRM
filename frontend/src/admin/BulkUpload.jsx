@@ -145,7 +145,7 @@ function BulkUpload() {
 
         <div className="row mt-2 gx-2 ms-2 me-2 gy-12">
           <div className="mb-3">
-            <h5 className="fw-bold overview-dashboard">Bulk Upload</h5>
+            <h5 className="fw-bold overview-dashboard mb-1">Bulk Upload</h5>
             <p className="text-muted mb-md-0 overview-lead fw-bold">
               Import Contacts from Excel. Duplicates auto-skipped
             </p>

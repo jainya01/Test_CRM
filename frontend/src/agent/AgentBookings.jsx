@@ -120,7 +120,7 @@ function AgentBookings() {
 
         <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
           <div>
-            <h5 className="fw-bold overview-dashboard">Bookings</h5>
+            <h5 className="fw-bold overview-dashboard mb-1">Bookings</h5>
             <p className="text-muted overview-lead fw-bold">
               {filteredAgent.length} booking requests
             </p>

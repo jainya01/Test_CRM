@@ -1,6 +1,11 @@
 import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faBell,
+  faTrash,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const allAttestations = [
@@ -138,11 +143,21 @@ function AppointmentBooking() {
 
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
-          <div>
-            <h5 className="fw-bold overview-dashboard">Appointment Booking</h5>
-            <p className="text-muted overview-lead fw-bold">
-              Book and track appointments by portal
-            </p>
+          <div className="d-flex justify-content-between">
+            <div className="mt-2 me-3">
+              <Link className="text-dark" to="/admin/services">
+                <FontAwesomeIcon icon={faArrowLeft} className="arrow-left" />
+              </Link>
+            </div>
+
+            <div>
+              <h5 className="fw-bold overview-dashboard mb-1">
+                Appointment Booking
+              </h5>
+              <p className="text-muted overview-lead fw-bold">
+                Book and track appointments by portal
+              </p>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -189,6 +204,7 @@ function AppointmentBooking() {
                     <input
                       type="text"
                       className="form-control sector-wise"
+                      placeholder="e.g. John Doe"
                       value={reschedule.passengerName || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -204,6 +220,7 @@ function AppointmentBooking() {
                     <input
                       type="text"
                       className="form-control sector-wise"
+                      placeholder="e.g. A12345678"
                       value={reschedule.passportNo || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -240,7 +257,7 @@ function AppointmentBooking() {
                     </select>
                   </div>
 
-                  <div className="col-md-6 mb-3">
+                  <div className="col-md-6 mb-1">
                     <label className="form-label">Status</label>
                     <select
                       className="form-select sector-wise"
@@ -255,10 +272,14 @@ function AppointmentBooking() {
                       <option value="" hidden>
                         Select Status
                       </option>
+                      <option value="Pending">Pending</option>
+                      <option value="In Progress">In Progress</option>
                       <option value="Booked">Booked</option>
                       <option value="Confirmed">Confirmed</option>
+                      <option value="Rescheduled">Rescheduled</option>
                       <option value="Completed">Completed</option>
                       <option value="Cancelled">Cancelled</option>
+                      <option value="Rejected">Rejected</option>
                     </select>
                   </div>
 
@@ -280,28 +301,6 @@ function AppointmentBooking() {
                   <div className="col-md-6 mb-1">
                     <label className="form-label">Time</label>
                     <input type="time" className="form-control sector-wise" />
-                  </div>
-
-                  <div className="col-md-6 mb-3">
-                    <label className="form-label">Status</label>
-                    <select
-                      className="form-control sector-wise"
-                      value={reschedule.status || "Requested"}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          status: e.target.value,
-                        }))
-                      }
-                    >
-                      <option value="" hidden>
-                        Select Status
-                      </option>
-                      <option value="Confirmed">Confirmed</option>
-                      <option value="Booked">Booked</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Delivered">Delivered</option>
-                    </select>
                   </div>
                 </div>
 
@@ -446,7 +445,7 @@ function AppointmentBooking() {
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
                 <tr>
-                  <th>S/N</th>
+                  <th>#</th>
                   <th>Applicant</th>
                   <th>Passport</th>
                   <th>Type</th>

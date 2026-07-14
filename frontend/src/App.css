@@ -1896,3 +1896,7 @@ body {
   background: #005043;
   color: #fff;
 }
+
+.arrow-left {
+  font-size: 16px;
+}

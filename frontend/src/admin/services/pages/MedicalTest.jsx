@@ -1,6 +1,11 @@
 import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faBell,
+  faTrash,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const dubai = [
@@ -162,11 +167,21 @@ function MedicalTest() {
 
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
-          <div>
-            <h5 className="fw-bold overview-dashboard">Medical Test — GCC</h5>
-            <p className="text-muted overview-lead fw-bold">
-              Schedule and track candidate medicals by country
-            </p>
+          <div className="d-flex justify-content-between">
+            <div className="mt-2 me-3">
+              <Link className="text-dark" to="/admin/services">
+                <FontAwesomeIcon icon={faArrowLeft} className="arrow-left" />
+              </Link>
+            </div>
+
+            <div>
+              <h5 className="fw-bold overview-dashboard mb-1">
+                Medical Test — GCC
+              </h5>
+              <p className="text-muted overview-lead fw-bold">
+                Schedule and track candidate medicals by country
+              </p>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -213,6 +228,7 @@ function MedicalTest() {
                     <input
                       type="text"
                       className="form-control sector-wise"
+                      placeholder="e.g. John Doe"
                       value={reschedule.passengerName || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -228,6 +244,7 @@ function MedicalTest() {
                     <input
                       type="text"
                       className="form-control sector-wise"
+                      placeholder="e.g. A12345678"
                       value={reschedule.passportNo || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -474,7 +491,7 @@ function MedicalTest() {
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
                 <tr>
-                  <th>S/N</th>
+                  <th>#</th>
                   <th>Candidate</th>
                   <th>Passport</th>
                   <th>Country</th>

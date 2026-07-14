@@ -125,7 +125,7 @@ function AgentCustomers() {
 
         <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
           <div>
-            <h5 className="fw-bold overview-dashboard">Customers</h5>
+            <h5 className="fw-bold overview-dashboard mb-1">Customers</h5>
             <p className="text-muted mb-md-0 overview-lead fw-bold">
               {filteredCustomers.length} customers
             </p>

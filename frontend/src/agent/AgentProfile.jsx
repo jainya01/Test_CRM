@@ -127,7 +127,7 @@ function AgentEdit() {
 
         <div className="p-2 p-lg-3">
           <div className="mb-4">
-            <h5 className="fw-bold overview-dashboard">Your Profile</h5>
+            <h5 className="fw-bold overview-dashboard mb-1">Your Profile</h5>
           </div>
 
           <div className="col-12">

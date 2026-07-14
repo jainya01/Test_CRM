@@ -1,6 +1,12 @@
 import { useMemo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faPen, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faBell,
+  faPen,
+  faTrash,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const ksaVisas = [
@@ -349,11 +355,19 @@ function VisaStamping() {
 
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
-          <div>
-            <h5 className="fw-bold overview-dashboard">Visa Stamping</h5>
-            <p className="text-muted overview-lead fw-bold">
-              Manage visa types across countries
-            </p>
+          <div className="d-flex justify-content-between">
+            <div className="mt-2 me-3">
+              <Link className="text-dark" to="/admin/services">
+                <FontAwesomeIcon icon={faArrowLeft} className="arrow-left" />
+              </Link>
+            </div>
+
+            <div>
+              <h5 className="fw-bold overview-dashboard mb-1">Visa Stamping</h5>
+              <p className="text-muted overview-lead fw-bold">
+                Manage visa types across countries
+              </p>
+            </div>
           </div>
 
           <div className="mb-4">

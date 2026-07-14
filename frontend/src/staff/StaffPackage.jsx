@@ -110,7 +110,7 @@ function StaffPackage() {
         <div className="p-2 p-lg-3">
           <div className="d-flex justify-content-between flex-wrap">
             <div>
-              <h5 className="fw-bold overview-dashboard">Packages</h5>
+              <h5 className="fw-bold overview-dashboard mb-1">Packages</h5>
               <p className="text-muted overview-lead fw-bold">
                 {filteredData.length} active packages
               </p>

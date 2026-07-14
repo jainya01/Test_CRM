@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faX } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faBell, faX } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const allBookings = [
@@ -126,11 +126,22 @@ function UmrahBooking() {
 
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
-          <div>
-            <h5 className="fw-bold overview-dashboard">Umrah Bookings</h5>
-            <p className="text-muted overview-lead fw-bold">
-              Manage Umrah package bookings — {filteredBookings.length} bookings
-            </p>
+          <div className="d-flex justify-content-between">
+            <div className="mt-2 me-3">
+              <Link className="text-dark" to="/admin/services">
+                <FontAwesomeIcon icon={faArrowLeft} className="arrow-left" />
+              </Link>
+            </div>
+
+            <div>
+              <h5 className="fw-bold overview-dashboard mb-1">
+                Umrah Bookings
+              </h5>
+              <p className="text-muted overview-lead fw-bold">
+                Manage Umrah package bookings — {filteredBookings.length}{" "}
+                bookings
+              </p>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -660,7 +671,7 @@ function UmrahBooking() {
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
                 <tr>
-                  <th className="py-2">S/N</th>
+                  <th className="py-2">#</th>
                   <th>Booking No</th>
                   <th>Customer</th>
                   <th>Package</th>

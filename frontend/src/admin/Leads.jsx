@@ -335,7 +335,7 @@ function Leads() {
         <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
           <div className="d-flex justify-content-between">
             <div>
-              <h5 className="fw-bold overview-dashboard">Leads</h5>
+              <h5 className="fw-bold overview-dashboard mb-1">Leads</h5>
               <p className="text-muted overview-lead fw-bold">
                 {paginatedData.length} of {paginatedData.length} leads
               </p>

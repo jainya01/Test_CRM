@@ -98,7 +98,7 @@ function Agents() {
         <div className="row mt-2 gx-2 ms-2 me-2 gy-2">
           <div className="d-flex justify-content-between flex-wrap">
             <div>
-              <h5 className="fw-bold overview-dashboard">Agents</h5>
+              <h5 className="fw-bold overview-dashboard mb-1">Agents</h5>
               <p className="text-muted overview-lead fw-bold">B2B partners</p>
             </div>
 

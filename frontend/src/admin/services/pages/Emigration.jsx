@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faBell,
+  faTrash,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const travelRequests = [
@@ -218,13 +223,21 @@ function Emigration() {
 
       <div className="p-2 p-lg-3">
         <div className="d-flex justify-content-between flex-wrap">
-          <div>
-            <h5 className="fw-bold overview-dashboard">
-              Emigration / Immigration Clearance
-            </h5>
-            <p className="text-muted overview-lead fw-bold">
-              Track clearance cases by service type
-            </p>
+          <div className="d-flex justify-content-between">
+            <div className="mt-2 me-3">
+              <Link className="text-dark" to="/admin/services">
+                <FontAwesomeIcon icon={faArrowLeft} className="arrow-left" />
+              </Link>
+            </div>
+
+            <div>
+              <h5 className="fw-bold overview-dashboard mb-1">
+                Emigration / Immigration Clearance
+              </h5>
+              <p className="text-muted overview-lead fw-bold">
+                Track clearance cases by service type
+              </p>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -271,7 +284,7 @@ function Emigration() {
                     <input
                       type="text"
                       className="form-control sector-wise"
-                      placeholder="Enter Passenger Name"
+                      placeholder="e.g. John Doe"
                       value={reschedule.passengerName || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -287,7 +300,7 @@ function Emigration() {
                     <input
                       type="text"
                       className="form-control sector-wise"
-                      placeholder="Enter Passport No."
+                      placeholder="e.g. A12345678"
                       value={reschedule.passportNo || ""}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -310,7 +323,7 @@ function Emigration() {
                         }))
                       }
                     >
-                      <option value="">Select type</option>
+                      <option value="">Select Type</option>
                       <option value="Saudi Immigration">
                         Saudi Immigration
                       </option>
@@ -353,7 +366,7 @@ function Emigration() {
                   <div className="col-md-6 mb-3">
                     <label className="form-label">Status</label>
                     <select
-                      className="form-control sector-wise"
+                      className="form-select sector-wise"
                       value={reschedule.status || "Requested"}
                       onChange={(e) =>
                         setReschedule((prev) => ({
@@ -365,10 +378,42 @@ function Emigration() {
                       <option value="" hidden>
                         Select Status
                       </option>
-                      <option value="Filed">Filed</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Approved">Approved</option>
-                      <option value="Rejected">Rejected</option>
+                      <option value="Passport Submitted">
+                        Passport Submitted
+                      </option>
+                      <option value="Visa Processing">Visa Processing</option>
+                      <option value="Visa Approved">Visa Approved</option>
+                      <option value="Ticket Confirmed">Ticket Confirmed</option>
+                      <option value="Hotel Confirmed">Hotel Confirmed</option>
+                      <option value="Insurance Done">Insurance Done</option>
+                      <option value="Departure Scheduled">
+                        Departure Scheduled
+                      </option>
+                      <option value="Checked In">Checked In</option>
+                      <option value="India Immigration Cleared">
+                        India Immigration Cleared
+                      </option>
+                      <option value="Boarded Flight">Boarded Flight</option>
+                      <option value="Arrived in Saudi">Arrived in Saudi</option>
+                      <option value="Saudi Immigration Cleared">
+                        Saudi Immigration Cleared
+                      </option>
+                      <option value="Hotel Checked In">Hotel Checked In</option>
+                      <option value="Umrah/Hajj Completed">
+                        Umrah/Hajj Completed
+                      </option>
+                      <option value="Return Flight Confirmed">
+                        Return Flight Confirmed
+                      </option>
+                      <option value="Saudi Exit Immigration Cleared">
+                        Saudi Exit Immigration Cleared
+                      </option>
+                      <option value="Arrived Back in India">
+                        Arrived Back in India
+                      </option>
+                      <option value="Journey Completed">
+                        Journey Completed
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -572,7 +617,7 @@ function Emigration() {
             <table className="table table-hover mb-0">
               <thead className="table-success header-table text-nowrap">
                 <tr>
-                  <th>S/N</th>
+                  <th>#</th>
                   <th>Applicant</th>
                   <th>Passport</th>
                   <th>Type</th>
