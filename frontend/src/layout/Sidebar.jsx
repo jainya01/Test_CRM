@@ -34,11 +34,11 @@ const ADMIN_LINKS = [
   },
   { path: "/admin/leads", label: "Leads", icon: faUsers },
   { path: "/admin/packages", label: "Packages", icon: faBoxOpen },
+  { path: "/admin/services", label: "Services", icon: faTools },
   { path: "/admin/customers", label: "Customers", icon: faUserCircle },
   { path: "/admin/agents", label: "Agents", icon: faBriefcase },
   { path: "/admin/passports", label: "Passports", icon: faPassport },
   { path: "/admin/staffs", label: "Staffs", icon: faHeadset },
-  { path: "/admin/services", label: "Services", icon: faTools },
   { path: "/admin/bulk-upload", label: "Bulk Upload", icon: faUpload },
   { path: "/admin/settings", label: "Settings", icon: faCog },
 ];
