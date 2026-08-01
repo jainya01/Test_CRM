@@ -1528,7 +1528,6 @@ router.post(
     }
 
     await redisClient.del("crm2:services:all");
-
     res.status(200).json({
       success: true,
       message: "data post successfully",

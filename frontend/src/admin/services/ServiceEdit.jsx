@@ -31,10 +31,6 @@ function ServiceEdit() {
       newErrors.service_name = "Service name is required";
     }
 
-    if (!sub_category.trim()) {
-      newErrors.sub_category = "Sub category name is required";
-    }
-
     if (!status) {
       newErrors.status = "Status is required";
     }
@@ -53,7 +49,6 @@ function ServiceEdit() {
       });
 
       toast.success("service updated successfully");
-
       setTimeout(() => {
         navigate("/admin/services");
       }, 500);
@@ -207,7 +202,6 @@ function ServiceEdit() {
                     <div className="col-md-6 mb-2">
                       <label className="form-label" htmlFor="sub_category">
                         Sub Category
-                        <span className="text-danger fw-bold ms-1">*</span>
                       </label>
 
                       <div className="d-flex">

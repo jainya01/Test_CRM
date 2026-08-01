@@ -30,10 +30,6 @@ function ServiceCreate() {
       newErrors.service_name = "Service name is required";
     }
 
-    if (!sub_category.trim()) {
-      newErrors.sub_category = "Sub Category name is required";
-    }
-
     if (!status) {
       newErrors.status = "Status is required";
     }
@@ -52,7 +48,6 @@ function ServiceCreate() {
       });
 
       toast.success("service created successfully");
-
       setTimeout(() => {
         navigate("/admin/services");
       }, 500);
@@ -64,7 +59,6 @@ function ServiceCreate() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setServices((prev) => ({
       ...prev,
       [name]: value,
