@@ -515,7 +515,7 @@ router.get(
   }),
 );
 
-// callers or staff
+// staff
 
 router.get(
   "/allstaffs",
@@ -540,15 +540,39 @@ router.get(
 );
 
 router.post(
-  "/callerspost",
+  "/staffcreate",
   authenticate,
+  upload.fields([
+    { name: "high_school_certificate", maxCount: 1 },
+    { name: "intermediate_certificate", maxCount: 1 },
+    { name: "graduation_certificate", maxCount: 1 },
+    { name: "postgraduate_certificate", maxCount: 1 },
+    { name: "resume", maxCount: 1 },
+    { name: "bank_passbook", maxCount: 1 },
+    { name: "aadhaar_card", maxCount: 1 },
+    { name: "pan_card", maxCount: 1 },
+    { name: "passport", maxCount: 1 },
+    { name: "passport_size_photo", maxCount: 1 },
+  ]),
   asyncHandler(async (req, res) => {
-    const { fullname, email, password, status, notes } = req.body;
+    const {
+      fullname,
+      phone,
+      alternate_phone,
+      email,
+      password,
+      status,
+      notes,
+      aadhaar_number,
+      pan_number,
+      passport_number,
+    } = req.body;
 
-    if (!fullname || !email || !password || !status) {
-      const error = new Error("All fields are required");
-      error.statusCode = 400;
-      throw error;
+    if (!fullname || !phone || !email || !password || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
     const [existing] = await pool.execute(
@@ -557,16 +581,79 @@ router.post(
     );
 
     if (existing.length > 0) {
-      const error = new Error("Email already exists");
-      error.statusCode = 409;
-      throw error;
+      return res.status(409).json({
+        success: false,
+        message: "Email already exists",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const high_school_certificate =
+      req.files?.high_school_certificate?.[0]?.filename || null;
+
+    const intermediate_certificate =
+      req.files?.intermediate_certificate?.[0]?.filename || null;
+
+    const graduation_certificate =
+      req.files?.graduation_certificate?.[0]?.filename || null;
+
+    const postgraduate_certificate =
+      req.files?.postgraduate_certificate?.[0]?.filename || null;
+
+    const resume = req.files?.resume?.[0]?.filename || null;
+    const bank_passbook = req.files?.bank_passbook?.[0]?.filename || null;
+    const aadhaar_card = req.files?.aadhaar_card?.[0]?.filename || null;
+    const pan_card = req.files?.pan_card?.[0]?.filename || null;
+    const passport = req.files?.passport?.[0]?.filename || null;
+    const passport_size_photo =
+      req.files?.passport_size_photo?.[0]?.filename || null;
 
     const [result] = await pool.execute(
-      "INSERT INTO staff (fullname, email, password, status, notes) VALUES (?, ?, ?, ?, ?)",
-      [fullname, email, hashedPassword, status, notes],
+      `INSERT INTO staff (
+        fullname,
+        phone,
+        alternate_phone,
+        email,
+        password,
+        status,
+        notes,
+        aadhaar_number,
+        pan_number,
+        passport_number,
+        high_school_certificate,
+        intermediate_certificate,
+        graduation_certificate,
+        postgraduate_certificate,
+        resume,
+        bank_passbook,
+        aadhaar_card,
+        pan_card,
+        passport,
+        passport_size_photo
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        fullname,
+        phone,
+        alternate_phone || null,
+        email,
+        hashedPassword,
+        status,
+        notes || null,
+        aadhaar_number || null,
+        pan_number || null,
+        passport_number || null,
+        high_school_certificate,
+        intermediate_certificate,
+        graduation_certificate,
+        postgraduate_certificate,
+        resume,
+        bank_passbook,
+        aadhaar_card,
+        pan_card,
+        passport,
+        passport_size_photo,
+      ],
     );
 
     await redisClient.del("crm2:allstaffs:all");
@@ -580,77 +667,277 @@ router.post(
 );
 
 router.put(
-  "/callerupdate/:id",
+  "/staffupdate/:id",
   authenticate,
+  upload.fields([
+    { name: "high_school_certificate", maxCount: 1 },
+    { name: "intermediate_certificate", maxCount: 1 },
+    { name: "graduation_certificate", maxCount: 1 },
+    { name: "postgraduate_certificate", maxCount: 1 },
+    { name: "resume", maxCount: 1 },
+    { name: "bank_passbook", maxCount: 1 },
+    { name: "aadhaar_card", maxCount: 1 },
+    { name: "pan_card", maxCount: 1 },
+    { name: "passport", maxCount: 1 },
+    { name: "passport_size_photo", maxCount: 1 },
+  ]),
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { fullname, email, status, password, notes } = req.body;
+    const {
+      fullname,
+      phone,
+      alternate_phone,
+      email,
+      status,
+      password,
+      notes,
+      aadhaar_number,
+      pan_number,
+      passport_number,
+    } = req.body;
 
-    if (!fullname || !email || !status) {
-      const error = new Error("All fields are required");
-      error.statusCode = 400;
-      throw error;
+    if (!fullname || !phone || !email || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
-    let query =
-      "UPDATE staff SET fullname = ?, email = ?, status = ?, notes = ?";
-    let values = [fullname, email, status, notes];
+    const [staff] = await pool.execute(
+      `SELECT
+        high_school_certificate,
+        intermediate_certificate,
+        graduation_certificate,
+        postgraduate_certificate,
+        resume,
+        bank_passbook,
+        aadhaar_card,
+        pan_card,
+        passport,
+        passport_size_photo
+      FROM staff
+      WHERE id = ?`,
+      [id],
+    );
+
+    if (staff.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Staff not found",
+      });
+    }
+
+    const oldFiles = staff[0];
+    const deleteOldFile = (fileName) => {
+      if (!fileName) return;
+      const filePath = path.join(process.cwd(), "uploads", fileName);
+
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      } catch (err) {
+        console.error(`Failed to delete old file: ${fileName}`, err);
+      }
+    };
+
+    let query = `
+      UPDATE staff SET
+      fullname = ?,
+      phone = ?,
+      alternate_phone = ?,
+      email = ?,
+      status = ?,
+      notes = ?,
+      aadhaar_number = ?,
+      pan_number = ?,
+      passport_number = ?
+    `;
+
+    let values = [
+      fullname,
+      phone,
+      alternate_phone || null,
+      email,
+      status,
+      notes || null,
+      aadhaar_number || null,
+      pan_number || null,
+      passport_number || null,
+    ];
 
     if (password && password.trim() !== "") {
       const hashedPassword = await bcrypt.hash(password, 10);
-      query += ", password = ?";
+      query += `, password = ?`;
       values.push(hashedPassword);
     }
 
-    query += " WHERE id = ?";
+    const files = req.files || {};
+    if (files.high_school_certificate) {
+      deleteOldFile(oldFiles.high_school_certificate);
+      query += `, high_school_certificate = ?`;
+      values.push(files.high_school_certificate[0].filename);
+    }
+
+    if (files.intermediate_certificate) {
+      deleteOldFile(oldFiles.intermediate_certificate);
+      query += `, intermediate_certificate = ?`;
+      values.push(files.intermediate_certificate[0].filename);
+    }
+
+    if (files.graduation_certificate) {
+      deleteOldFile(oldFiles.graduation_certificate);
+      query += `, graduation_certificate = ?`;
+      values.push(files.graduation_certificate[0].filename);
+    }
+
+    if (files.postgraduate_certificate) {
+      deleteOldFile(oldFiles.postgraduate_certificate);
+      query += `, postgraduate_certificate = ?`;
+      values.push(files.postgraduate_certificate[0].filename);
+    }
+
+    if (files.resume) {
+      deleteOldFile(oldFiles.resume);
+      query += `, resume = ?`;
+      values.push(files.resume[0].filename);
+    }
+
+    if (files.bank_passbook) {
+      deleteOldFile(oldFiles.bank_passbook);
+      query += `, bank_passbook = ?`;
+      values.push(files.bank_passbook[0].filename);
+    }
+
+    if (files.aadhaar_card) {
+      deleteOldFile(oldFiles.aadhaar_card);
+      query += `, aadhaar_card = ?`;
+      values.push(files.aadhaar_card[0].filename);
+    }
+
+    if (files.pan_card) {
+      deleteOldFile(oldFiles.pan_card);
+      query += `, pan_card = ?`;
+      values.push(files.pan_card[0].filename);
+    }
+
+    if (files.passport) {
+      deleteOldFile(oldFiles.passport);
+      query += `, passport = ?`;
+      values.push(files.passport[0].filename);
+    }
+
+    if (files.passport_size_photo) {
+      deleteOldFile(oldFiles.passport_size_photo);
+      query += `, passport_size_photo = ?`;
+      values.push(files.passport_size_photo[0].filename);
+    }
+
+    query += ` WHERE id = ?`;
     values.push(id);
 
     const [result] = await pool.execute(query, values);
-
-    if (result.affectedRows <= 0) {
-      const error = new Error("Staff not found or not updated");
-      error.statusCode = 404;
-      throw error;
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Staff not found",
+      });
     }
 
-    await redisClient.del(`crm2:somecallers:${id}`);
+    await redisClient.del(`crm2:somestaffs:${id}`);
     await redisClient.del("crm2:allstaffs:all");
-
     return res.status(200).json({
       success: true,
       message: "Staff updated successfully",
-      result,
     });
   }),
 );
 
 router.delete(
-  "/callerdelete/:id",
+  "/staffdelete/:id",
   authenticate,
   asyncHandler(async (req, res) => {
-    const { id } = req.params;
-
-    const [result] = await pool.execute("DELETE FROM staff WHERE id = ?", [id]);
-
-    if (result.affectedRows <= 0) {
-      const error = new Error("Staff not found");
-      error.statusCode = 404;
-      throw error;
+    const callerId = Number(req.params.id);
+    if (!callerId || Number.isNaN(callerId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid caller id",
+      });
     }
 
-    await redisClient.del(`crm2:somecallers:${id}`);
-    await redisClient.del("crm2:allstaffs:all");
+    const [caller] = await pool.execute(
+      `SELECT
+          id,
+          high_school_certificate,
+          intermediate_certificate,
+          graduation_certificate,
+          postgraduate_certificate,
+          resume,
+          aadhaar_card,
+          pan_card,
+          passport,
+          passport_size_photo
+      FROM staff
+      WHERE id = ?`,
+      [callerId],
+    );
 
+    if (caller.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `Caller not found with id ${callerId}`,
+      });
+    }
+
+    const documents = caller[0];
+    const documentFields = [
+      "high_school_certificate",
+      "intermediate_certificate",
+      "graduation_certificate",
+      "postgraduate_certificate",
+      "resume",
+      "aadhaar_card",
+      "pan_card",
+      "passport",
+      "passport_size_photo",
+    ];
+
+    for (const field of documentFields) {
+      const fileName = documents[field];
+      if (!fileName) continue;
+      const filePath = path.join(process.cwd(), "uploads", fileName);
+
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      } catch (err) {
+        console.error(`Unable to delete ${fileName}`, err);
+      }
+    }
+
+    const [result] = await pool.execute("DELETE FROM staff WHERE id = ?", [
+      callerId,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Caller could not be deleted",
+      });
+    }
+
+    await redisClient.del(`crm2:somestaffs:${callerId}`);
+    await redisClient.del("crm2:allstaffs:all");
     return res.status(200).json({
       success: true,
-      message: "Staff deleted successfully",
-      result,
+      message: "Staff delete successfully",
     });
   }),
 );
 
 router.get(
-  "/allcallers",
+  "/allstaffs1",
   asyncHandler(async (req, res) => {
     const cacheKey = `crm2:allstaffs:all`;
     const cache = await redisClient.get(cacheKey);
@@ -659,7 +946,7 @@ router.get(
     }
 
     const SQL =
-      "SELECT id, fullname, email, role, status, role, notes, created_at FROM staff ORDER BY id DESC LIMIT 20";
+      "SELECT id, fullname, phone, alternate_phone, email, role, status, notes, created_at FROM staff ORDER BY id DESC LIMIT 20";
 
     const [result] = await pool.execute(SQL);
 
@@ -682,24 +969,23 @@ router.get(
 );
 
 router.get(
-  "/somecallers/:id",
+  "/somestaffs/:id",
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-
-    const cacheKey = `crm2:somecallers:${id}`;
+    const cacheKey = `crm2:somestaffs:${id}`;
     const cache = await redisClient.get(cacheKey);
     if (cache) {
       return res.status(200).json(JSON.parse(cache));
     }
 
     const SQL =
-      "SELECT id, fullname, email, role, status, notes FROM staff WHERE id = ?";
+      "SELECT id, fullname, phone, alternate_phone, email, role, status, notes, aadhaar_number, pan_number, passport_number FROM staff WHERE id = ?";
 
     const [result] = await pool.execute(SQL, [id]);
 
     if (result.length === 0) {
-      const error = new Error("Staff not found");
+      const error = new Error("Caller not found");
       error.statusCode = 404;
       throw error;
     }
@@ -715,7 +1001,7 @@ router.get(
   }),
 );
 
-// agent section
+// agents
 
 router.put(
   "/editprofile/:id",
@@ -1742,9 +2028,7 @@ router.get(
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-
     const cacheKey = `crm2:somepackages:${id}`;
-
     const cache = await redisClient.get(cacheKey);
     if (cache) {
       return res.status(200).json(JSON.parse(cache));
@@ -1810,9 +2094,7 @@ router.get(
       result: result[0],
     };
 
-    // Cache for 10 minutes
     await redisClient.setEx(cacheKey, 600, JSON.stringify(response));
-
     return res.status(200).json(response);
   }),
 );

@@ -12,21 +12,21 @@ import {
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-function CallerExecutive() {
+function StaffExecutive() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [search, setSearch] = useState("");
-  const [callers, setCallers] = useState([]);
+  const [staffs, setStaffs] = useState([]);
 
   useEffect(() => {
     const allData = async () => {
       try {
-        const [callerRes] = await Promise.allSettled([
-          axios.get(`${API_URL}/allcallers`, { headers: authHeader() }),
+        const [staffRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/allstaffs1`, { headers: authHeader() }),
         ]);
 
-        if (callerRes.status === "fulfilled") {
-          setCallers(callerRes.value.data.data);
+        if (staffRes.status === "fulfilled") {
+          setStaffs(staffRes.value.data.data);
         }
       } catch (error) {
         console.error("error", error);
@@ -35,20 +35,19 @@ function CallerExecutive() {
     allData();
   }, [API_URL]);
 
-  const filteredCallers = useMemo(() => {
+  const filteredStaffs = useMemo(() => {
     const keyword = search.toLowerCase().trim();
-
-    return callers.filter((item) =>
+    return staffs.filter((item) =>
       item.fullname?.toLowerCase().includes(keyword),
     );
-  }, [callers, search]);
+  }, [staffs, search]);
 
   const itemsPerPage = 14;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = filteredCallers.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(filteredCallers.length / itemsPerPage);
+  const paginatedData = filteredStaffs.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredStaffs.length / itemsPerPage);
 
   useEffect(() => {
     if (currentPage > totalPages) {
@@ -58,22 +57,20 @@ function CallerExecutive() {
 
   const deleteData = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this caller?",
+      "Are you sure you want to delete this staff?",
     );
 
     if (!confirmDelete) return;
-
     try {
-      await axios.delete(`${API_URL}/callerdelete/${id}`, {
+      await axios.delete(`${API_URL}/staffdelete/${id}`, {
         headers: authHeader(),
       });
 
-      setCallers((prev) => prev.filter((item) => item.id !== id));
-
-      toast.success("Caller deleted successfully");
+      setStaffs((prev) => prev.filter((item) => item.id !== id));
+      toast.success("Staff delete successfully");
     } catch (error) {
       console.error("error", error);
-      toast.error("Failed to delete caller");
+      toast.error(error.response?.data?.message || "Failed to delete staff");
     }
   };
 
@@ -356,4 +353,4 @@ function CallerExecutive() {
   );
 }
 
-export default CallerExecutive;
+export default StaffExecutive;

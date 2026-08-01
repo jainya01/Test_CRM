@@ -16,6 +16,7 @@ const Leads = lazy(() => import("./admin/Leads"));
 
 const Packages = lazy(() => import("./admin/Package/Packages"));
 const PackagesCreate = lazy(() => import("./admin/Package/PackagesCreate"));
+import PackagesEdit from "./admin/Package/PackagesEdit";
 
 const Customers = lazy(() => import("./admin/Customers"));
 
@@ -44,7 +45,6 @@ const AgentBookings = lazy(() => import("./agent/AgentBookings"));
 const AgentProfile = lazy(() => import("./agent/AgentProfile"));
 
 import StaffDashboard from "./staff/StaffDashboard";
-import PackagesEdit from "./admin/Package/PackagesEdit";
 import ServiceRenderer from "./admin/ServiceRenderer";
 const StaffPackage = lazy(() => import("./staff/StaffPackage"));
 const StaffFollowup = lazy(() => import("./staff/StaffFollowup"));

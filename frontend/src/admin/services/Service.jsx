@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-function CallerExecutive() {
+function Service() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [search, setSearch] = useState("");
@@ -276,4 +276,4 @@ function CallerExecutive() {
   );
 }
 
-export default CallerExecutive;
+export default Service;

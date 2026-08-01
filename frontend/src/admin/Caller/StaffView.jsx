@@ -6,28 +6,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-function CallersView() {
+function StaffView() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const { id } = useParams();
-  const [caller, setCaller] = useState([]);
+  const [staffs, setStaffs] = useState([]);
 
   useEffect(() => {
-    const callerData = async () => {
+    const staffsData = async () => {
       try {
-        const [callerRes] = await Promise.allSettled([
-          axios.get(`${API_URL}/somecallers/${id}`, { headers: authHeader() }),
+        const [staffRes] = await Promise.allSettled([
+          axios.get(`${API_URL}/somestaffs/${id}`, { headers: authHeader() }),
         ]);
 
-        if (callerRes.status === "fulfilled") {
-          setCaller(callerRes.value.data.data);
+        if (staffRes.status === "fulfilled") {
+          setStaffs(staffRes.value.data.data);
         }
       } catch (error) {
         console.error("error", error);
       }
     };
 
-    callerData();
+    staffsData();
   }, [API_URL, id]);
 
   return (
@@ -76,7 +76,7 @@ function CallersView() {
           <div className="col-lg-7 col-12">
             <div className="card shadow border-0">
               <div className="card-header profile-header custom-font">
-                View Staff: {caller.fullname || "N/A"}, {caller.email || "N/A"}
+                View Staff: {staffs.fullname || "N/A"}, {staffs.email || "N/A"}
               </div>
 
               <div className="card-body">
@@ -150,4 +150,4 @@ function CallersView() {
   );
 }
 
-export default CallersView;
+export default StaffView;
