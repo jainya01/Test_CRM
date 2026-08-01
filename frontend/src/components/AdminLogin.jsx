@@ -191,7 +191,7 @@ const AdminLogin = () => {
           </div>
         </div>
 
-        <ToastContainer position="bottom-right" autoClose={1500} />
+        <ToastContainer position="bottom-right" autoClose={1000} />
       </main>
     </>
   );

@@ -547,7 +547,7 @@ function Homepage() {
                                       style={{ cursor: "pointer" }}
                                     >
                                       <FontAwesomeIcon
-                                        icon={faClock}
+                                        // icon={faClock}
                                         className="custom-watch"
                                       />
                                     </div>

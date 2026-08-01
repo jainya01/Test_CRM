@@ -502,7 +502,7 @@ function Leads() {
                           <div className="mt-2">
                             <button
                               type="button"
-                              className="btn btn-primary apply-btn"
+                              className="btn btn-success rounded-4 apply-btn"
                               onClick={applyCustomRange}
                             >
                               Apply
@@ -510,7 +510,7 @@ function Leads() {
 
                             <button
                               type="button"
-                              className="btn btn-secondary mt-0 ms-2"
+                              className="btn btn-secondary rounded-4 mt-0 ms-2 apply-btn"
                               onClick={() => {
                                 setMonth(false);
                                 setPopoverStyle(null);

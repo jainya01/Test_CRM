@@ -1373,8 +1373,9 @@ body {
   padding: 5px 10px;
   border-radius: 13px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   margin-bottom: 10px;
+  height: 38px;
 }
 
 .spending-card {
@@ -1495,7 +1496,7 @@ body {
 }
 
 .status-span {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .status-span1 {
@@ -1883,4 +1884,8 @@ body {
 
 .arrow-left {
   font-size: 16px;
+}
+
+.apply-btn {
+  font-size: 14px;
 }

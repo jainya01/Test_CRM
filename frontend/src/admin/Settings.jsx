@@ -346,7 +346,7 @@ function Settings() {
                   <div className="d-flex gap-2 mb-1 mt-2 justify-content-end">
                     <button
                       type="button"
-                      className="btn btn-sm border text-dark"
+                      className="btn btn-sm border text-dark rounded-3"
                       onClick={handleCancelled}
                     >
                       Cancel
@@ -354,7 +354,7 @@ function Settings() {
 
                     <button
                       type="submit"
-                      className="btn btn-sm btn-outline-success px-2"
+                      className="btn btn-sm btn-outline-success px-2 rounded-3"
                     >
                       Add
                     </button>
@@ -430,14 +430,14 @@ function Settings() {
                   <div className="d-flex gap-2 mt-3 justify-content-start">
                     <button
                       type="submit"
-                      className="btn btn-sm btn-outline-success px-2"
+                      className="btn btn-sm btn-outline-success px-2 rounded-3"
                     >
                       Update
                     </button>
 
                     <button
                       type="button"
-                      className="btn btn-sm border text-dark"
+                      className="btn btn-sm border text-dark rounded-3"
                       onClick={handleCancelled1}
                     >
                       Cancel
@@ -486,7 +486,7 @@ function Settings() {
           </div>
         </div>
 
-        <ToastContainer position="bottom-right" autoClose={1500} />
+        <ToastContainer position="bottom-right" autoClose={1000} />
       </main>
     </>
   );

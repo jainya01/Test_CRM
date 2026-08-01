@@ -22,7 +22,7 @@ function ServiceEdit() {
     notes: "",
   });
 
-  const { service_name, sub_category, status, notes } = services;
+  const { service_name, status, notes } = services;
 
   const validateForm = () => {
     let newErrors = {};
@@ -312,7 +312,7 @@ function ServiceEdit() {
           </div>
         </div>
 
-        <ToastContainer position="bottom-right" autoClose={1500} />
+        <ToastContainer position="bottom-right" autoClose={1000} />
       </main>
     </>
   );

@@ -47,9 +47,7 @@ const StaffLogin = () => {
 
   const handleStaffLogin = async () => {
     if (!validateForm()) return;
-
     setErrorMessage("");
-
     try {
       const response = await axios.post(`${API_URL}/stafflogin`, staff);
       const { token, role, id } = response.data;
@@ -187,7 +185,7 @@ const StaffLogin = () => {
           </div>
         </div>
 
-        <ToastContainer position="bottom-right" autoClose={1500} />
+        <ToastContainer position="bottom-right" autoClose={1000} />
       </main>
     </>
   );

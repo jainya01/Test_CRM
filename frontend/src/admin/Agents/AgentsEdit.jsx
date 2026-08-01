@@ -13,6 +13,7 @@ function AgentsEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [agent, SetAgent] = useState({
     fullname: "",
@@ -307,7 +308,7 @@ function AgentsEdit() {
                       </label>
 
                       <input
-                        type={showPassword ? "text" : "password"}
+                        type={showConfirmPassword ? "text" : "password"}
                         id="confirmPassword"
                         className="form-control sector-wise pe-5"
                         placeholder="Enter Confirm Password"
@@ -325,10 +326,10 @@ function AgentsEdit() {
 
                       <span
                         className="eye-login1"
-                        onClick={() => setShowPassword(!showPassword)}
+                        onClick={() => setShowConfirmPassword((prev) => !prev)}
                       >
                         <FontAwesomeIcon
-                          icon={showPassword ? faEyeSlash : faEye}
+                          icon={showConfirmPassword ? faEyeSlash : faEye}
                           className="me-2"
                         />
                       </span>
@@ -367,7 +368,7 @@ function AgentsEdit() {
           </div>
         </div>
 
-        <ToastContainer position="bottom-right" autoClose={1500} />
+        <ToastContainer position="bottom-right" autoClose={1000} />
       </main>
     </>
   );
