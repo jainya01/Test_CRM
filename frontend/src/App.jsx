@@ -11,21 +11,21 @@ import AgentLogin from "./components/AgentLogin";
 import User from "./User";
 import Protected from "./components/Protected";
 
-import Homepage from "./admin/Homepage";
-const Leads = lazy(() => import("./admin/Leads"));
+import Homepage from "./admin/homepage/Homepage";
+const Leads = lazy(() => import("./admin/leads/Leads"));
 
 const Packages = lazy(() => import("./admin/Package/Packages"));
 const PackagesCreate = lazy(() => import("./admin/Package/PackagesCreate"));
 import PackagesEdit from "./admin/Package/PackagesEdit";
 
-const Customers = lazy(() => import("./admin/Customers"));
+const Customers = lazy(() => import("./admin/customers/Customers"));
 
 const Agents = lazy(() => import("./admin/Agents/Agents"));
 const AgentsCreate = lazy(() => import("./admin/Agents/AgentsCreate"));
 const AgentsEdit = lazy(() => import("./admin/Agents/AgentsEdit"));
 
-const Passport = lazy(() => import("./admin/Passport"));
-const BulkUpload = lazy(() => import("./admin/BulkUpload"));
+const Passport = lazy(() => import("./admin/passport/Passport"));
+const BulkUpload = lazy(() => import("./admin/bulkuploads/BulkUpload"));
 
 const StaffExecutive = lazy(() => import("./admin/Caller/StaffExecutive"));
 const StaffCreate = lazy(() => import("./admin/Caller/StaffCreate"));
@@ -36,7 +36,7 @@ const Service = lazy(() => import("./admin/services/Service"));
 const ServiceCreate = lazy(() => import("./admin/services/ServiceCreate"));
 const ServicesEdit = lazy(() => import("./admin/services/ServiceEdit"));
 
-const Settings = lazy(() => import("./admin/Settings"));
+const Settings = lazy(() => import("./admin/settings/Settings"));
 
 import AgentDashboard from "./agent/AgentDashboard";
 const AgentCustomers = lazy(() => import("./agent/AgentCustomers"));

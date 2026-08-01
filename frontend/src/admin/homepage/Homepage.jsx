@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import "../App.css";
-import { authHeader } from "../utils/authHeader";
+import "../../App.css";
+import { authHeader } from "../../utils/authHeader";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

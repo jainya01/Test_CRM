@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import "../App.css";
+import "../../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
