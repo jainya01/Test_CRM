@@ -1123,7 +1123,20 @@ router.post(
       ? req.files.passport_file[0].filename
       : null;
 
+    const deleteUploadedFiles = () => {
+      const files = [aadhaar_card, pan_card, passport_file];
+      files.forEach((file) => {
+        if (file) {
+          const filePath = path.join(process.cwd(), "uploads", file);
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+          }
+        }
+      });
+    };
+
     if (!fullname || !phone || !email || !password) {
+      deleteUploadedFiles(req);
       return res.status(400).json({
         success: false,
         message: "Fullname, phone, email and password are required",
@@ -1131,6 +1144,7 @@ router.post(
     }
 
     if (fullname.length < 3) {
+      deleteUploadedFiles(req);
       return res.status(400).json({
         success: false,
         message: "Fullname must be at least 3 characters",
@@ -1138,6 +1152,7 @@ router.post(
     }
 
     if (password.length < 6) {
+      deleteUploadedFiles(req);
       return res.status(400).json({
         success: false,
         message: "Password must be at least 6 characters",
@@ -1150,6 +1165,7 @@ router.post(
     );
 
     if (existingEmail.length > 0) {
+      deleteUploadedFiles(req);
       return res.status(409).json({
         success: false,
         message: "Email already exists",
@@ -1243,7 +1259,7 @@ router.post(
       current_state || null,
       current_country || null,
       current_pincode || null,
-      same_as_current_address ? 1 : 0,
+      same_as_current_address === "1" ? 1 : 0,
       permanent_house_no || null,
       permanent_street || null,
       permanent_area || null,
@@ -1414,7 +1430,7 @@ router.put(
       safe(current_state),
       safe(current_country),
       safe(current_pincode),
-      same_as_current_address ? 1 : 0,
+      Number(same_as_current_address),
       safe(permanent_house_no),
       safe(permanent_street),
       safe(permanent_area),
@@ -1677,21 +1693,52 @@ router.delete(
   authenticate,
   asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const [agentRows] = await pool.execute(
+      `
+      SELECT 
+        aadhaar_card,
+        pan_card,
+        passport_file
+      FROM agents
+      WHERE id = ?
+      `,
+      [id],
+    );
+
+    if (agentRows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Agent not found",
+      });
+    }
+
+    const agent = agentRows[0];
+    const deleteFile = (filename) => {
+      if (!filename) return;
+      const filePath = path.join(process.cwd(), "uploads", filename);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    };
+
+    deleteFile(agent.aadhaar_card);
+    deleteFile(agent.pan_card);
+    deleteFile(agent.passport_file);
+
     const SQL = "DELETE FROM agents WHERE id = ?";
     const [result] = await pool.execute(SQL, [id]);
-
     if (result.affectedRows <= 0) {
-      const error = new Error("data deleted failed");
-      error.statusCode = 404;
-      throw error;
+      return res.status(404).json({
+        success: false,
+        message: "Agent delete failed",
+      });
     }
 
     await redisClient.del(`crm2:someagents:${id}`);
     await redisClient.del("crm2:allagents:all");
-
     return res.status(200).json({
       success: true,
-      message: "agent deleted successfully",
+      message: "Agent deleted successfully",
       result,
     });
   }),

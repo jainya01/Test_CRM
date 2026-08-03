@@ -23,6 +23,7 @@ const Customers = lazy(() => import("./admin/customers/Customers"));
 const Agents = lazy(() => import("./admin/Agents/Agents"));
 const AgentsCreate = lazy(() => import("./admin/Agents/AgentsCreate"));
 const AgentsEdit = lazy(() => import("./admin/Agents/AgentsEdit"));
+const AgentsView = lazy(() => import("./admin/Agents/AgentsView"));
 
 const Passport = lazy(() => import("./admin/passport/Passport"));
 const BulkUpload = lazy(() => import("./admin/bulkuploads/BulkUpload"));
@@ -76,6 +77,7 @@ function App() {
               <Route path="agents" element={<Agents />} />
               <Route path="agents/create" element={<AgentsCreate />} />
               <Route path="agents/edit/:id" element={<AgentsEdit />} />
+              <Route path="agents/view/:id" element={<AgentsView />} />
 
               <Route path="customers" element={<Customers />} />
               <Route path="passports" element={<Passport />} />

@@ -21,12 +21,6 @@ function StaffCreate() {
   const [fileErrors, setFileErrors] = useState({});
 
   const [call, setCall] = useState({
-    // fullname: "",
-    // email: "",
-    // password: "",
-    // status: "",
-    // notes: "",
-
     fullname: "",
     phone: "",
     alternate_phone: "",

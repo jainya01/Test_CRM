@@ -150,46 +150,39 @@ function AgentsEdit() {
 
   const validateForm = () => {
     let newErrors = {};
+    let missingSections = [];
 
-    if (!fullname.trim()) {
-      newErrors.fullname = "Full name is required";
+    if (!fullname.trim()) newErrors.fullname = "Full name is required";
+    if (!phone.trim()) newErrors.phone = "Phone number is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    if (!status) newErrors.status = "Status is required";
+
+    if (
+      newErrors.fullname ||
+      newErrors.phone ||
+      newErrors.email ||
+      newErrors.status
+    ) {
+      missingSections.push("Personal Details");
     }
 
-    if (!phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    }
-
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
-    }
-
-    if (!status) {
-      newErrors.status = "Status is required";
-    }
-
-    if (!aadhaar_number.trim()) {
+    if (!aadhaar_number.trim())
       newErrors.aadhaar_number = "Aadhaar number is required";
+    if (!pan_number.trim()) newErrors.pan_number = "PAN number is required";
+    if (newErrors.aadhaar_number || newErrors.pan_number) {
+      missingSections.push("Identity Details");
     }
 
-    if (!pan_number.trim()) {
-      newErrors.pan_number = "PAN number is required";
-    }
-
-    if (!account_holder_name.trim()) {
+    if (!account_holder_name.trim())
       newErrors.account_holder_name = "Account holder name is required";
-    }
 
-    if (!bank_name.trim()) {
-      newErrors.bank_name = "Bank name is required";
-    }
+    if (!bank_name.trim()) newErrors.bank_name = "Bank name is required";
 
-    if (!account_number.trim()) {
+    if (!account_number.trim())
       newErrors.account_number = "Account number is required";
-    }
 
-    if (!confirm_account_number.trim()) {
+    if (!confirm_account_number.trim())
       newErrors.confirm_account_number = "Confirm account number is required";
-    }
 
     if (
       account_number &&
@@ -200,17 +193,29 @@ function AgentsEdit() {
         "Account number and confirm account number must be same";
     }
 
-    if (!ifsc_code.trim()) {
-      newErrors.ifsc_code = "IFSC code is required";
-    }
+    if (!ifsc_code.trim()) newErrors.ifsc_code = "IFSC code is required";
+    if (!branch_name.trim()) newErrors.branch_name = "Branch name is required";
 
-    if (!branch_name.trim()) {
-      newErrors.branch_name = "Branch name is required";
+    if (
+      newErrors.account_holder_name ||
+      newErrors.bank_name ||
+      newErrors.account_number ||
+      newErrors.confirm_account_number ||
+      newErrors.ifsc_code ||
+      newErrors.branch_name
+    ) {
+      missingSections.push("Bank Details");
     }
 
     setErrors(newErrors);
+    if (missingSections.length > 0) {
+      toast.error(
+        `Please complete the following section(s): ${missingSections.join(", ")}`,
+      );
+      return false;
+    }
 
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
   const handleFormSubmit = async (e) => {
@@ -227,8 +232,11 @@ function AgentsEdit() {
       ) {
         if (key === "password" && !agent.password) return;
         if (key === "confirmPassword") return;
-
-        formData.append(key, agent[key]);
+        if (key === "same_as_current_address") {
+          formData.append(key, agent[key] ? 1 : 0);
+        } else {
+          formData.append(key, agent[key]);
+        }
       }
     });
 
@@ -311,7 +319,7 @@ function AgentsEdit() {
           current_state: data?.current_state || "",
           current_country: data?.current_country || "",
           current_pincode: data?.current_pincode || "",
-          same_as_current_address: Boolean(data?.same_as_current_address),
+          same_as_current_address: Number(data?.same_as_current_address) === 1,
           permanent_house_no: data?.permanent_house_no || "",
           permanent_street: data?.permanent_street || "",
           permanent_area: data?.permanent_area || "",
@@ -498,7 +506,6 @@ function AgentsEdit() {
                             name="alternate_mobile_number"
                             value={alternate_mobile_number}
                             onChange={onInputChange}
-                            required
                           />
 
                           {errors.phone && (
@@ -524,7 +531,6 @@ function AgentsEdit() {
                             name="whatsapp_number"
                             value={whatsapp_number}
                             onChange={onInputChange}
-                            required
                           />
 
                           {errors.phone && (
@@ -676,9 +682,7 @@ function AgentsEdit() {
                         </div>
 
                         <div className="col-12">
-                          <h5 className="fw-bold">
-                            Address Details (Optional)
-                          </h5>
+                          <h5 className="fw-bold">Address Details</h5>
                           <hr />
                         </div>
 
@@ -688,7 +692,7 @@ function AgentsEdit() {
                           </h6>
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_house_no"
@@ -706,7 +710,7 @@ function AgentsEdit() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_street"
@@ -724,7 +728,7 @@ function AgentsEdit() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label className="form-label" htmlFor="current_area">
                             Area
                           </label>
@@ -739,7 +743,7 @@ function AgentsEdit() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_landmark"
@@ -757,7 +761,7 @@ function AgentsEdit() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label className="form-label" htmlFor="current_city">
                             City
                           </label>
@@ -772,7 +776,7 @@ function AgentsEdit() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_district"
@@ -790,7 +794,7 @@ function AgentsEdit() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label className="form-label" htmlFor="current_state">
                             State
                           </label>
@@ -805,7 +809,7 @@ function AgentsEdit() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_country"
@@ -1041,9 +1045,7 @@ function AgentsEdit() {
                         </div>
 
                         <div className="col-12 mt-3">
-                          <h5 className="fw-bold">
-                            Social Profiles (Optional)
-                          </h5>
+                          <h5 className="fw-bold">Social Profiles</h5>
                           <hr />
                         </div>
 
@@ -1099,7 +1101,6 @@ function AgentsEdit() {
 
                     {activeTab === "identity" && (
                       <>
-                        {/* Aadhaar Number */}
                         <div className="col-md-6 mb-3">
                           <label
                             className="form-label"
@@ -1128,7 +1129,6 @@ function AgentsEdit() {
                           )}
                         </div>
 
-                        {/* PAN Number */}
                         <div className="col-md-6 mb-3">
                           <label className="form-label" htmlFor="pan_number">
                             PAN Card Number{" "}
@@ -1154,7 +1154,6 @@ function AgentsEdit() {
                           )}
                         </div>
 
-                        {/* Passport Number */}
                         <div className="col-md-6 mb-3">
                           <label
                             className="form-label"

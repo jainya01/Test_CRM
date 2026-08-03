@@ -3,8 +3,9 @@ import "../../App.css";
 import { authHeader } from "../../utils/authHeader";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function Agents() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -50,6 +51,26 @@ function Agents() {
   const uploadsBase = API_URL
     ? API_URL.replace(/\/api\/?$/, "") + "/uploads"
     : "/uploads";
+
+  const deleteData = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this agent?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${API_URL}/agentsdelete/${id}`, {
+        headers: authHeader(),
+      });
+
+      setAgents((prev) => prev.filter((item) => item.id !== id));
+      toast.success("Agent deleted successfully");
+    } catch (error) {
+      console.error("error", error);
+      toast.error("Failed to delete agent");
+    }
+  };
 
   return (
     <>
@@ -148,22 +169,22 @@ function Agents() {
                       </div>
                     </Link>
 
-                    <div className="flex-grow-1">
+                    <div className="flex-grow-1 overflow-hidden">
                       <Link
                         className="text-dark text-decoration-none"
                         to={`/admin/agents/edit/${user.id}`}
                       >
-                        <h5 className="fw-semibold mb-1 customer-name">
+                        <h5 className="fw-semibold mb-1 customer-name text-truncate">
                           {user?.fullname || "N/A"}
                         </h5>
                       </Link>
 
-                      <p className="text-secondary customer-phone">
+                      <p className="text-secondary customer-phone text-truncate mb-0">
                         {user?.email || "N/A"}
                       </p>
                     </div>
 
-                    <div className="d-flex mt-2">
+                    <div className="card-actions d-flex align-items-center gap-1 flex-shrink-0">
                       <div
                         className={
                           user?.status === "Active"
@@ -174,6 +195,23 @@ function Agents() {
                         }
                       >
                         {user?.status || "N/A"}
+                      </div>
+
+                      <Link to={`/admin/agents/view/${user.id}`}>
+                        <FontAwesomeIcon
+                          icon={faEye}
+                          className="icons-color2 ms-1"
+                        />
+                      </Link>
+
+                      <div
+                        onClick={() => deleteData(user.id)}
+                        title="Agent delete"
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          className="icons-color1 ms-1"
+                        />
                       </div>
                     </div>
                   </div>
@@ -232,6 +270,8 @@ function Agents() {
             </div>
           )}
         </div>
+
+        <ToastContainer position="bottom-right" autoClose={1000} />
       </main>
     </>
   );

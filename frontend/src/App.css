@@ -78,6 +78,20 @@ body {
   }
 }
 
+.card-header-custom {
+  background-color: #032018;
+  font-size: 16px;
+}
+
+.agents-info {
+  font-size: 20px;
+}
+
+.agents-info1 {
+  font-size: 16px;
+  color: #00664d;
+}
+
 .custom-box {
   width: 37px;
   height: 37px;
@@ -978,6 +992,7 @@ body {
 .icons-color2 {
   color: #6c757d;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .icons-color2:hover {
@@ -1888,4 +1903,9 @@ body {
 
 .apply-btn {
   font-size: 14px;
+}
+
+.active-statuses {
+  font-size: 13px;
+  cursor: pointer;
 }

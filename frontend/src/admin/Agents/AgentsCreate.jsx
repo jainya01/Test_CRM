@@ -148,50 +148,50 @@ function AgentsCreate() {
 
   const validateForm = () => {
     let newErrors = {};
+    let missingSections = [];
 
-    if (!fullname.trim()) {
-      newErrors.fullname = "Full name is required";
+    if (!fullname.trim()) newErrors.fullname = "Full name is required";
+    if (!phone.trim()) newErrors.phone = "Phone number is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    if (!password.trim()) newErrors.password = "Password is required";
+    if (!status) newErrors.status = "Status is required";
+
+    if (
+      newErrors.fullname ||
+      newErrors.phone ||
+      newErrors.email ||
+      newErrors.password ||
+      newErrors.status
+    ) {
+      missingSections.push("Personal Details");
     }
 
-    if (!phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    }
-
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
-    }
-
-    if (!password.trim()) {
-      newErrors.password = "Password is required";
-    }
-
-    if (!status) {
-      newErrors.status = "Status is required";
-    }
-
-    if (!aadhaar_number.trim()) {
+    if (!aadhaar_number.trim())
       newErrors.aadhaar_number = "Aadhaar number is required";
+
+    if (!pan_number.trim()) newErrors.pan_number = "PAN number is required";
+
+    if (newErrors.aadhaar_number || newErrors.pan_number) {
+      missingSections.push("Identity Details");
     }
 
-    if (!pan_number.trim()) {
-      newErrors.pan_number = "PAN number is required";
+    if (!aadhaar_card) newErrors.aadhaar_card = "Aadhaar Card is required";
+    if (!pan_card) newErrors.pan_card = "PAN Card is required";
+
+    if (newErrors.aadhaar_card || newErrors.pan_card) {
+      missingSections.push("Documents");
     }
 
-    if (!account_holder_name.trim()) {
+    if (!account_holder_name.trim())
       newErrors.account_holder_name = "Account holder name is required";
-    }
 
-    if (!bank_name.trim()) {
-      newErrors.bank_name = "Bank name is required";
-    }
+    if (!bank_name.trim()) newErrors.bank_name = "Bank name is required";
 
-    if (!account_number.trim()) {
+    if (!account_number.trim())
       newErrors.account_number = "Account number is required";
-    }
 
-    if (!confirm_account_number.trim()) {
+    if (!confirm_account_number.trim())
       newErrors.confirm_account_number = "Confirm account number is required";
-    }
 
     if (
       account_number &&
@@ -202,25 +202,29 @@ function AgentsCreate() {
         "Account number and confirm account number must be same";
     }
 
-    if (!ifsc_code.trim()) {
-      newErrors.ifsc_code = "IFSC code is required";
-    }
+    if (!ifsc_code.trim()) newErrors.ifsc_code = "IFSC code is required";
+    if (!branch_name.trim()) newErrors.branch_name = "Branch name is required";
 
-    if (!branch_name.trim()) {
-      newErrors.branch_name = "Branch name is required";
-    }
-
-    if (!aadhaar_card) {
-      newErrors.aadhaar_card = "Aadhaar card is required";
-    }
-
-    if (!pan_card) {
-      newErrors.pan_card = "PAN card is required";
+    if (
+      newErrors.account_holder_name ||
+      newErrors.bank_name ||
+      newErrors.account_number ||
+      newErrors.confirm_account_number ||
+      newErrors.ifsc_code ||
+      newErrors.branch_name
+    ) {
+      missingSections.push("Bank Details");
     }
 
     setErrors(newErrors);
+    if (missingSections.length > 0) {
+      toast.error(
+        `Please complete the following section(s): ${missingSections.join(", ")}`,
+      );
+      return false;
+    }
 
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
   const handleFormSubmit = async () => {
@@ -234,7 +238,11 @@ function AgentsCreate() {
         key !== "pan_card" &&
         key !== "passport_file"
       ) {
-        formData.append(key, agent[key]);
+        if (key === "same_as_current_address") {
+          formData.append(key, agent[key] ? "1" : "0");
+        } else {
+          formData.append(key, agent[key] ?? "");
+        }
       }
     });
 
@@ -567,9 +575,7 @@ function AgentsCreate() {
                         </div>
 
                         <div className="col-12">
-                          <h5 className="fw-bold">
-                            Address Details (Optional)
-                          </h5>
+                          <h5 className="fw-bold">Address Details</h5>
                           <hr />
                         </div>
 
@@ -579,7 +585,7 @@ function AgentsCreate() {
                           </h6>
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_house_no"
@@ -597,7 +603,7 @@ function AgentsCreate() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_street"
@@ -615,7 +621,7 @@ function AgentsCreate() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label className="form-label" htmlFor="current_area">
                             Area
                           </label>
@@ -630,7 +636,7 @@ function AgentsCreate() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_landmark"
@@ -648,7 +654,7 @@ function AgentsCreate() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label className="form-label" htmlFor="current_city">
                             City
                           </label>
@@ -663,7 +669,7 @@ function AgentsCreate() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_district"
@@ -681,7 +687,7 @@ function AgentsCreate() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label className="form-label" htmlFor="current_state">
                             State
                           </label>
@@ -696,7 +702,7 @@ function AgentsCreate() {
                           />
                         </div>
 
-                        <div className="col-md-4 mb-2">
+                        <div className="col-md-4 col-sm-6 mb-2">
                           <label
                             className="form-label"
                             htmlFor="current_country"
@@ -931,9 +937,7 @@ function AgentsCreate() {
                         </div>
 
                         <div className="col-12 mt-3">
-                          <h5 className="fw-bold">
-                            Social Profiles (Optional)
-                          </h5>
+                          <h5 className="fw-bold">Social Profiles</h5>
                           <hr />
                         </div>
 
@@ -989,7 +993,6 @@ function AgentsCreate() {
 
                     {activeTab === "identity" && (
                       <>
-                        {/* Aadhaar Number */}
                         <div className="col-md-6 mb-3">
                           <label
                             className="form-label"
@@ -1018,7 +1021,6 @@ function AgentsCreate() {
                           )}
                         </div>
 
-                        {/* PAN Number */}
                         <div className="col-md-6 mb-3">
                           <label className="form-label" htmlFor="pan_number">
                             PAN Card Number{" "}
@@ -1044,7 +1046,6 @@ function AgentsCreate() {
                           )}
                         </div>
 
-                        {/* Passport Number */}
                         <div className="col-md-6 mb-3">
                           <label
                             className="form-label"
