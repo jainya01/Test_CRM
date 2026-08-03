@@ -138,7 +138,6 @@ function StaffCreate() {
     }
 
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   };
 
@@ -185,13 +184,11 @@ function StaffCreate() {
 
       setFileErrors({});
       setErrors({});
-
       setTimeout(() => {
         navigate("/admin/staffs");
       }, 1000);
     } catch (error) {
       console.error(error);
-
       toast.error(error?.response?.data?.message || "Failed to add staff");
     }
   };

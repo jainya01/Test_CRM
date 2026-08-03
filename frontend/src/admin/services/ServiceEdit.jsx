@@ -51,7 +51,7 @@ function ServiceEdit() {
       toast.success("service updated successfully");
       setTimeout(() => {
         navigate("/admin/services");
-      }, 500);
+      }, 1000);
     } catch (error) {
       console.error("error", error);
       toast.error("service update failed");
@@ -117,6 +117,12 @@ function ServiceEdit() {
   };
 
   const removeSubCategory = (index) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this Sub category?",
+    );
+
+    if (!confirmDelete) return;
+
     const updatedSubCategories = subCategories.filter((_, i) => i !== index);
     setSubCategories(updatedSubCategories);
     setServices((prev) => ({

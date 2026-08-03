@@ -50,7 +50,7 @@ function ServiceCreate() {
       toast.success("service created successfully");
       setTimeout(() => {
         navigate("/admin/services");
-      }, 500);
+      }, 1000);
     } catch (error) {
       console.error("error", error);
       toast.error("service post failed");
@@ -86,6 +86,12 @@ function ServiceCreate() {
   };
 
   const removeSubCategory = (index) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this Sub category?",
+    );
+
+    if (!confirmDelete) return;
+
     const updatedSubCategories = subCategories.filter((_, i) => i !== index);
     setSubCategories(updatedSubCategories);
     setServices((prev) => ({
@@ -140,7 +146,7 @@ function ServiceCreate() {
           <div className="col-12">
             <div className="card shadow border-0">
               <div className="card-header profile-header">
-                Create New Services
+                Create New Service
               </div>
 
               <div className="card-body">
@@ -171,7 +177,6 @@ function ServiceCreate() {
                     <div className="col-md-6 mb-2">
                       <label className="form-label" htmlFor="sub_category">
                         Sub Category
-                        <span className="text-danger fw-bold ms-1">*</span>
                       </label>
 
                       <div className="d-flex">

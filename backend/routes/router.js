@@ -1063,27 +1063,84 @@ router.put(
 router.post(
   "/agentpost",
   authenticate,
+  upload.fields([
+    { name: "aadhaar_card", maxCount: 1 },
+    { name: "pan_card", maxCount: 1 },
+    { name: "passport_file", maxCount: 1 },
+  ]),
   asyncHandler(async (req, res) => {
-    const { fullname, phone, email, password, status, notes = null } = req.body;
+    const {
+      fullname,
+      phone,
+      alternate_mobile_number,
+      whatsapp_number,
+      email,
+      password,
+      status,
+      notes = null,
+      current_house_no,
+      current_street,
+      current_area,
+      current_landmark,
+      current_city,
+      current_district,
+      current_state,
+      current_country,
+      current_pincode,
+      same_as_current_address,
+      permanent_house_no,
+      permanent_street,
+      permanent_area,
+      permanent_landmark,
+      permanent_city,
+      permanent_district,
+      permanent_state,
+      permanent_country,
+      permanent_pincode,
+      facebook,
+      instagram,
+      linkedin,
+      aadhaar_number,
+      pan_number,
+      passport_number,
+      account_holder_name,
+      bank_name,
+      account_number,
+      ifsc_code,
+      branch_name,
+      upi_id,
+    } = req.body;
+
+    const aadhaar_card = req.files?.aadhaar_card
+      ? req.files.aadhaar_card[0].filename
+      : null;
+
+    const pan_card = req.files?.pan_card
+      ? req.files.pan_card[0].filename
+      : null;
+
+    const passport_file = req.files?.passport_file
+      ? req.files.passport_file[0].filename
+      : null;
 
     if (!fullname || !phone || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: "Fullname, phone, email and password are required",
       });
     }
 
     if (fullname.length < 3) {
       return res.status(400).json({
         success: false,
-        message: "Fullname at least 3 characters",
+        message: "Fullname must be at least 3 characters",
       });
     }
 
     if (password.length < 6) {
       return res.status(400).json({
         success: false,
-        message: "Password at least 6 characters",
+        message: "Password must be at least 6 characters",
       });
     }
 
@@ -1112,24 +1169,108 @@ router.post(
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const SQL = `
-      INSERT INTO agents
-      (fullname, phone, email, password, status, notes)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO agents (
+        fullname,
+        phone,
+        alternate_mobile_number,
+        whatsapp_number,
+        email,
+        password,
+        status,
+        notes,
+        current_house_no,
+        current_street,
+        current_area,
+        current_landmark,
+        current_city,
+        current_district,
+        current_state,
+        current_country,
+        current_pincode,
+        same_as_current_address,
+        permanent_house_no,
+        permanent_street,
+        permanent_area,
+        permanent_landmark,
+        permanent_city,
+        permanent_district,
+        permanent_state,
+        permanent_country,
+        permanent_pincode,
+        facebook,
+        instagram,
+        linkedin,
+        aadhaar_number,
+        pan_number,
+        passport_number,
+        aadhaar_card,
+        pan_card,
+        passport_file,
+        account_holder_name,
+        bank_name,
+        account_number,
+        ifsc_code,
+        branch_name,
+        upi_id
+      )
+      VALUES (
+        ?,?,?,?,?,?,?,?,
+        ?,?,?,?,?,?,?,?,?,?,
+        ?,?,?,?,?,?,?,?,?,?,
+        ?,?,?,
+        ?,?,?,
+        ?,?,?,?,
+        ?,?,?,?
+      )
     `;
 
     const [result] = await pool.execute(SQL, [
       fullname,
       phone,
+      alternate_mobile_number || null,
+      whatsapp_number || null,
       email,
       hashedPassword,
       status || "Active",
       notes,
+      current_house_no || null,
+      current_street || null,
+      current_area || null,
+      current_landmark || null,
+      current_city || null,
+      current_district || null,
+      current_state || null,
+      current_country || null,
+      current_pincode || null,
+      same_as_current_address ? 1 : 0,
+      permanent_house_no || null,
+      permanent_street || null,
+      permanent_area || null,
+      permanent_landmark || null,
+      permanent_city || null,
+      permanent_district || null,
+      permanent_state || null,
+      permanent_country || null,
+      permanent_pincode || null,
+      facebook || null,
+      instagram || null,
+      linkedin || null,
+      aadhaar_number || null,
+      pan_number || null,
+      passport_number || null,
+      aadhaar_card,
+      pan_card,
+      passport_file,
+      account_holder_name || null,
+      bank_name || null,
+      account_number || null,
+      ifsc_code || null,
+      branch_name || null,
+      upi_id || null,
     ]);
 
     await redisClient.del("crm2:allagents:all");
-
     return res.status(201).json({
       success: true,
       message: "Agent created successfully",
@@ -1141,13 +1282,62 @@ router.post(
 router.put(
   "/agentsedit/:id",
   authenticate,
+  upload.fields([
+    { name: "aadhaar_card", maxCount: 1 },
+    { name: "pan_card", maxCount: 1 },
+    { name: "passport_file", maxCount: 1 },
+  ]),
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { fullname, phone, email, password, status, notes } = req.body;
+    const safe = (value) => {
+      return value === undefined || value === "" ? null : value;
+    };
+
+    const {
+      fullname,
+      phone,
+      email,
+      password,
+      status,
+      notes,
+      alternate_mobile_number,
+      whatsapp_number,
+      current_house_no,
+      current_street,
+      current_area,
+      current_landmark,
+      current_city,
+      current_district,
+      current_state,
+      current_country,
+      current_pincode,
+      same_as_current_address,
+      permanent_house_no,
+      permanent_street,
+      permanent_area,
+      permanent_landmark,
+      permanent_city,
+      permanent_district,
+      permanent_state,
+      permanent_country,
+      permanent_pincode,
+      facebook,
+      instagram,
+      linkedin,
+      aadhaar_number,
+      pan_number,
+      passport_number,
+      account_holder_name,
+      bank_name,
+      account_number,
+      ifsc_code,
+      branch_name,
+      upi_id,
+    } = req.body;
 
     const [emailRows] = await pool.execute(
       "SELECT id FROM agents WHERE email = ? AND id != ?",
-      [email, id],
+      [safe(email), id],
     );
 
     if (emailRows.length > 0) {
@@ -1157,52 +1347,213 @@ router.put(
       });
     }
 
-    let result;
+    const [oldAgent] = await pool.execute(
+      `
+      SELECT 
+        aadhaar_card,
+        pan_card,
+        passport_file
+      FROM agents
+      WHERE id=?
+      `,
+      [id],
+    );
+
+    if (!oldAgent.length) {
+      return res.status(404).json({
+        success: false,
+        message: "Agent not found",
+      });
+    }
+
+    const oldData = oldAgent[0];
+    const deleteOldFile = (file) => {
+      if (!file) return;
+
+      const filePath = path.join(process.cwd(), "uploads", file);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    };
+
+    let aadhaar_card = oldData.aadhaar_card;
+    let pan_card = oldData.pan_card;
+    let passport_file = oldData.passport_file;
+    if (req.files?.aadhaar_card) {
+      deleteOldFile(oldData.aadhaar_card);
+      aadhaar_card = req.files.aadhaar_card[0].filename;
+    }
+
+    if (req.files?.pan_card) {
+      deleteOldFile(oldData.pan_card);
+      pan_card = req.files.pan_card[0].filename;
+    }
+
+    if (req.files?.passport_file) {
+      deleteOldFile(oldData.passport_file);
+      passport_file = req.files.passport_file[0].filename;
+    }
+
+    let SQL;
+    let values;
+
+    const commonValues = [
+      safe(fullname),
+      safe(phone),
+      safe(email),
+      safe(status),
+      safe(notes),
+      safe(alternate_mobile_number),
+      safe(whatsapp_number),
+      safe(current_house_no),
+      safe(current_street),
+      safe(current_area),
+      safe(current_landmark),
+      safe(current_city),
+      safe(current_district),
+      safe(current_state),
+      safe(current_country),
+      safe(current_pincode),
+      same_as_current_address ? 1 : 0,
+      safe(permanent_house_no),
+      safe(permanent_street),
+      safe(permanent_area),
+      safe(permanent_landmark),
+      safe(permanent_city),
+      safe(permanent_district),
+      safe(permanent_state),
+      safe(permanent_country),
+      safe(permanent_pincode),
+      safe(facebook),
+      safe(instagram),
+      safe(linkedin),
+      safe(aadhaar_number),
+      safe(pan_number),
+      safe(passport_number),
+      safe(aadhaar_card),
+      safe(pan_card),
+      safe(passport_file),
+      safe(account_holder_name),
+      safe(bank_name),
+      safe(account_number),
+      safe(ifsc_code),
+      safe(branch_name),
+      safe(upi_id),
+
+      id,
+    ];
 
     if (password && password.trim() !== "") {
       const hashedPassword = await bcrypt.hash(password, 10);
-
-      const SQL = `
-        UPDATE agents
-        SET fullname=?, phone=?, email=?, password=?, status=?, notes=?
-        WHERE id=?
+      SQL = `
+      UPDATE agents SET
+      fullname=?,
+      phone=?,
+      email=?,
+      status=?,
+      notes=?,
+      alternate_mobile_number=?,
+      whatsapp_number=?,
+      current_house_no=?,
+      current_street=?,
+      current_area=?,
+      current_landmark=?,
+      current_city=?,
+      current_district=?,
+      current_state=?,
+      current_country=?,
+      current_pincode=?,
+      same_as_current_address=?,
+      permanent_house_no=?,
+      permanent_street=?,
+      permanent_area=?,
+      permanent_landmark=?,
+      permanent_city=?,
+      permanent_district=?,
+      permanent_state=?,
+      permanent_country=?,
+      permanent_pincode=?,
+      facebook=?,
+      instagram=?,
+      linkedin=?,
+      aadhaar_number=?,
+      pan_number=?,
+      passport_number=?,
+      aadhaar_card=?,
+      pan_card=?,
+      passport_file=?,
+      account_holder_name=?,
+      bank_name=?,
+      account_number=?,
+      ifsc_code=?,
+      branch_name=?,
+      upi_id=?,
+      password=?
+      WHERE id=?
       `;
 
-      [result] = await pool.execute(SQL, [
-        fullname,
-        phone,
-        email,
-        hashedPassword,
-        status,
-        notes,
-        id,
-      ]);
+      values = [...commonValues.slice(0, -1), hashedPassword, id];
     } else {
-      const SQL = `
-        UPDATE agents
-        SET fullname=?, phone=?, email=?, status=?, notes=?
-        WHERE id=?
-      `;
+      SQL = `
+      UPDATE agents SET
 
-      [result] = await pool.execute(SQL, [
-        fullname,
-        phone,
-        email,
-        status,
-        notes,
-        id,
-      ]);
+      fullname=?,
+      phone=?,
+      email=?,
+      status=?,
+      notes=?,
+      alternate_mobile_number=?,
+      whatsapp_number=?,
+      current_house_no=?,
+      current_street=?,
+      current_area=?,
+      current_landmark=?,
+      current_city=?,
+      current_district=?,
+      current_state=?,
+      current_country=?,
+      current_pincode=?,
+      same_as_current_address=?,
+      permanent_house_no=?,
+      permanent_street=?,
+      permanent_area=?,
+      permanent_landmark=?,
+      permanent_city=?,
+      permanent_district=?,
+      permanent_state=?,
+      permanent_country=?,
+      permanent_pincode=?,
+      facebook=?,
+      instagram=?,
+      linkedin=?,
+      aadhaar_number=?,
+      pan_number=?,
+      passport_number=?,
+      aadhaar_card=?,
+      pan_card=?,
+      passport_file=?,
+      account_holder_name=?,
+      bank_name=?,
+      account_number=?,
+      ifsc_code=?,
+      branch_name=?,
+      upi_id=?
+      WHERE id=?
+      `;
+      values = commonValues;
     }
 
+    values = values.map((value) => (value === undefined ? null : value));
+    const [result] = await pool.execute(SQL, values);
     if (result.affectedRows <= 0) {
-      const error = new Error("Agent update failed");
-      error.statusCode = 404;
-      throw error;
+      return res.status(404).json({
+        success: false,
+        message: "Agent update failed",
+      });
     }
 
     await redisClient.del(`crm2:someagents:${id}`);
     await redisClient.del("crm2:allagents:all");
-
     return res.status(200).json({
       success: true,
       message: "Agent updated successfully",
@@ -1222,10 +1573,56 @@ router.get(
       return res.status(200).json(JSON.parse(cache));
     }
 
-    const SQL =
-      "SELECT id, fullname, phone, email, status, notes FROM agents WHERE id = ?";
+    const SQL = `
+    SELECT 
+      id,
+      fullname,
+      phone,
+      email,
+      status,
+      notes,
+      alternate_mobile_number,
+      whatsapp_number,
+      current_house_no,
+      current_street,
+      current_area,
+      current_landmark,
+      current_city,
+      current_district,
+      current_state,
+      current_country,
+      current_pincode,
+      same_as_current_address,
+      permanent_house_no,
+      permanent_street,
+      permanent_area,
+      permanent_landmark,
+      permanent_city,
+      permanent_district,
+      permanent_state,
+      permanent_country,
+      permanent_pincode,
+      facebook,
+      instagram,
+      linkedin,
+      aadhaar_number,
+      pan_number,
+      passport_number,
+      aadhaar_card,
+      pan_card,
+      passport_file,
+      account_holder_name,
+      bank_name,
+      account_number,
+      ifsc_code,
+      branch_name,
+      upi_id,
+      created_at,
+      updated_at
+    FROM agents 
+    WHERE id = ?
+  `;
     const [result] = await pool.execute(SQL, [id]);
-
     if (result.length === 0) {
       const error = new Error("data load failed");
       error.statusCode = 404;

@@ -112,7 +112,7 @@ function PackagesEdit() {
 
       setTimeout(() => {
         navigate("/admin/packages");
-      }, 500);
+      }, 1000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to update package");
     }

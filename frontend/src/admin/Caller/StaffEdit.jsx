@@ -144,7 +144,7 @@ function StaffEdit() {
 
       setTimeout(() => {
         navigate("/admin/staffs");
-      }, 500);
+      }, 1000);
     } catch (error) {
       console.error(error);
       toast.error(error?.response?.data?.message || "Failed to update staff");
