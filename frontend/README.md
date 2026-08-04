@@ -308,10 +308,13 @@ DB_NAME=crm
 ```text
 backend/
 ├── config/
+├── config/migrations
+├── middleware/
 ├── middleware/
 ├── routes/
 ├── uploads/
 ├── api.js
+├── knexfile.js
 ├── package.json
 └── .env
 ```

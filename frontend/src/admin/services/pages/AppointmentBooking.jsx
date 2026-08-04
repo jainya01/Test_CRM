@@ -1,107 +1,251 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { authHeader } from "../../../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faBell,
+  faEdit,
   faTrash,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-
-const allAttestations = [
-  {
-    id: 1,
-    passenger: "Muhammad Tariq",
-    passport: "AB1000234",
-    type: "NFS Appointment",
-    date: "5 Jul 2026",
-    status: "Booked",
-  },
-  {
-    id: 2,
-    passenger: "Ayesha Siddiqui",
-    passport: "AB1000255",
-    type: "VFS Appointment",
-    date: "2 Jul 2026",
-    status: "Completed",
-  },
-  {
-    id: 3,
-    passenger: "Imran Malik",
-    passport: "AB1000267",
-    type: "TASHEER Appointment",
-    date: "8 Jul 2026",
-    status: "Confirmed",
-  },
-];
-
-const nfs = [
-  {
-    passenger: "Kamran Akmal",
-    passport: "AB1000401",
-    type: "NFS Appointment",
-    date: "14 Jul 2026",
-    status: "Confirmed",
-  },
-];
-
-const takamul = [
-  {
-    passenger: "Saima Jamil",
-    passport: "AB1000410",
-    type: "Takamul Appointment",
-    date: "16 Jul 2026",
-    status: "Requested",
-  },
-];
-
-const VFS = [
-  {
-    passenger: "Ahmed Raza",
-    passport: "AB1000425",
-    type: "VFS Appointment",
-    date: "18 Jul 2026",
-    status: "Approved",
-  },
-];
-
-const tasheer = [
-  {
-    passenger: "Ali Hassan",
-    passport: "AB1000455",
-    type: "TASHEER Appointment",
-    date: "20 Jul 2026",
-    status: "Requested",
-  },
-];
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function AppointmentBooking() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [search, setSearch] = useState("");
   const [activeCard, setActiveCard] = useState(1);
   const [tableTitle, setTableTitle] = useState("All Appointments");
-
-  const requestsMap = {
-    1: allAttestations,
-    2: nfs,
-    3: takamul,
-    4: VFS,
-    5: tasheer,
-  };
-
-  const [allRequests, setAllRequests] = useState(requestsMap);
   const scheduleRef = useRef();
 
   const [reschedule, setReschedule] = useState({
     open: false,
+    isEdit: false,
+    id: null,
   });
 
-  const activeTableData = allRequests[activeCard] || [];
+  const [formData, setFormData] = useState({
+    applicant_name: "",
+    passport_no: "",
+    appointment_type: "",
+    status: "",
+    date: "",
+    time: "",
+  });
 
-  const deleteData = (index) => {
-    setAllRequests((prev) => ({
+  const { applicant_name, passport_no, appointment_type, status, date, time } =
+    formData;
+
+  const [, setErrors] = useState({});
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!applicant_name.trim()) {
+      newErrors.applicant_name = "Applicant Name is required";
+    }
+
+    if (!passport_no.trim()) {
+      newErrors.passport_no = "Passport No is required";
+    }
+
+    if (!appointment_type.trim()) {
+      newErrors.appointment_type = "Appointment Type is required";
+    }
+
+    if (!status.trim()) {
+      newErrors.status = "Status is required";
+    }
+
+    if (!date.trim()) {
+      newErrors.date = "Date is required";
+    }
+
+    if (!time.trim()) {
+      newErrors.time = "Time is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const isValid = validateForm();
+    if (!isValid) return;
+
+    try {
+      let response;
+      if (reschedule.isEdit) {
+        response = await axios.put(
+          `${API_URL}/appointmentedit/${reschedule.id}`,
+          formData,
+        );
+      } else {
+        response = await axios.post(`${API_URL}/postbooking`, formData);
+      }
+
+      toast.success(
+        response.data.message ||
+          (reschedule.isEdit
+            ? "Appointment updated successfully"
+            : "Appointment created successfully"),
+      );
+
+      await bookingData();
+
+      setTimeout(() => {
+        setFormData({
+          applicant_name: "",
+          passport_no: "",
+          appointment_type: "",
+          status: "",
+          date: "",
+          time: "",
+        });
+
+        setReschedule({
+          open: false,
+          isEdit: false,
+          id: null,
+        });
+      }, 500);
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [activeCard]: prev[activeCard].filter((_, i) => i !== index),
+      [name]: value,
     }));
+  };
+
+  const [booking, setBooking] = useState([]);
+
+  const bookingData = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/allappointment`);
+      setBooking(response.data.result || []);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [API_URL]);
+
+  useEffect(() => {
+    bookingData();
+  }, [bookingData]);
+
+  const activeTableData = useMemo(() => {
+    let filtered = booking;
+
+    switch (activeCard) {
+      case 2:
+        filtered = filtered.filter(
+          (item) => item.appointment_type === "NFS Appointment",
+        );
+        break;
+
+      case 3:
+        filtered = filtered.filter(
+          (item) => item.appointment_type === "Takamul Appointment",
+        );
+        break;
+
+      case 4:
+        filtered = filtered.filter(
+          (item) => item.appointment_type === "VFS Appointment",
+        );
+        break;
+
+      case 5:
+        filtered = filtered.filter(
+          (item) => item.appointment_type === "TASHEER Appointment",
+        );
+        break;
+
+      default:
+        break;
+    }
+
+    if (search.trim()) {
+      filtered = filtered.filter(
+        (item) =>
+          item.applicant_name?.toLowerCase().includes(search.toLowerCase()) ||
+          item.passport_no?.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
+
+    return filtered;
+  }, [booking, activeCard, search]);
+
+  const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(activeTableData.length / itemsPerPage);
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return activeTableData.slice(start, start + itemsPerPage);
+  }, [activeTableData, currentPage]);
+
+  const allAttestations = booking;
+
+  const nfs = booking.filter(
+    (item) => item.appointment_type === "NFS Appointment",
+  );
+
+  const takamul = booking.filter(
+    (item) => item.appointment_type === "Takamul Appointment",
+  );
+
+  const VFS = booking.filter(
+    (item) => item.appointment_type === "VFS Appointment",
+  );
+
+  const tasheer = booking.filter(
+    (item) => item.appointment_type === "TASHEER Appointment",
+  );
+
+  const deleteData = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this service?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${API_URL}/appointmentdelete/${id}`, {
+        headers: authHeader(),
+      });
+
+      setBooking((prev) => prev.filter((item) => item.id !== id));
+      toast.success("Service deleted successfully");
+    } catch (error) {
+      console.error("error", error);
+      toast.error("Failed to delete service");
+    }
+  };
+
+  const editAppointment = (item) => {
+    setFormData({
+      applicant_name: item.applicant_name,
+      passport_no: item.passport_no,
+      appointment_type: item.appointment_type,
+      status: item.status,
+      date: item.date,
+      time: item.time,
+    });
+
+    setReschedule({
+      open: true,
+      isEdit: true,
+      id: item.id,
+    });
   };
 
   return (
@@ -114,7 +258,7 @@ function AppointmentBooking() {
                 <input
                   type="search"
                   className="form-control sector-wise"
-                  placeholder="Search by applicant name"
+                  placeholder="Search by applicant name & passport"
                   value={search}
                   onChange={(e) => setSearch(e.target.value.trim())}
                 />
@@ -167,6 +311,8 @@ function AppointmentBooking() {
                 setReschedule((prev) => ({
                   ...prev,
                   open: true,
+                  isEdit: false,
+                  id: null,
                 }))
               }
             >
@@ -183,7 +329,9 @@ function AppointmentBooking() {
                 ref={scheduleRef}
               >
                 <div className="d-flex justify-content-between">
-                  <h5 className="fw-bold">New Appointment</h5>
+                  <h5>
+                    {reschedule.isEdit ? "Edit Appointment" : "New Appointment"}
+                  </h5>
                   <div>
                     <FontAwesomeIcon
                       icon={faX}
@@ -198,144 +346,140 @@ function AppointmentBooking() {
                   </div>
                 </div>
 
-                <div className="row mt-3">
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Applicant Name</label>
-                    <input
-                      type="text"
-                      className="form-control sector-wise"
-                      placeholder="e.g. John Doe"
-                      value={reschedule.passengerName || ""}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          passengerName: e.target.value,
-                        }))
-                      }
-                    />
+                <form onSubmit={handleFormSubmit}>
+                  <div className="row mt-3">
+                    <div className="col-md-6 mb-1">
+                      <label className="form-label">
+                        Applicant Name{" "}
+                        <span className="text-danger fw-bold">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control sector-wise"
+                        placeholder="e.g. John Doe"
+                        name="applicant_name"
+                        value={applicant_name}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="col-md-6 mb-1">
+                      <label className="form-label">
+                        Passport No.{" "}
+                        <span className="text-danger fw-bold">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control sector-wise"
+                        placeholder="e.g. A12345678"
+                        name="passport_no"
+                        value={passport_no}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="col-md-6 mb-1">
+                      <label className="form-label">
+                        Appointment Type{" "}
+                        <span className="text-danger fw-bold">*</span>
+                      </label>
+                      <select
+                        className="form-select sector-wise"
+                        name="appointment_type"
+                        value={appointment_type}
+                        onChange={onInputChange}
+                        required
+                      >
+                        <option value="" hidden>
+                          Select Type
+                        </option>
+                        <option value="NFS Appointment">NFS Appointment</option>
+                        <option value="Takamul Appointment">
+                          Takamul Appointment
+                        </option>
+                        <option value="VFS Appointment">VFS Appointment</option>
+                        <option value="TASHEER Appointment">
+                          TASHEER Appointment
+                        </option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6 mb-1">
+                      <label className="form-label">
+                        Status <span className="text-danger fw-bold">*</span>
+                      </label>
+                      <select
+                        className="form-select sector-wise"
+                        name="status"
+                        value={status}
+                        onChange={onInputChange}
+                        required
+                      >
+                        <option value="" hidden>
+                          Select Status
+                        </option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Booked">Booked</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Rescheduled">Rescheduled</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                        <option value="Rejected">Rejected</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6 mb-1">
+                      <label className="form-label">
+                        Date <span className="text-danger fw-bold">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        className="form-control sector-wise"
+                        name="date"
+                        value={date}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="col-md-6 mb-1">
+                      <label className="form-label">
+                        Time <span className="text-danger fw-bold">*</span>
+                      </label>
+                      <input
+                        type="time"
+                        className="form-control sector-wise"
+                        name="time"
+                        value={time}
+                        onChange={onInputChange}
+                        required
+                      />
+                    </div>
                   </div>
 
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Passport No.</label>
-                    <input
-                      type="text"
-                      className="form-control sector-wise"
-                      placeholder="e.g. A12345678"
-                      value={reschedule.passportNo || ""}
-                      onChange={(e) =>
+                  <div className="d-flex justify-content-end gap-2">
+                    <button
+                      className="btn btn-outline-transparent text-dark border rounded-3 cancel-schedule"
+                      onClick={() =>
                         setReschedule((prev) => ({
                           ...prev,
-                          passportNo: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Appointment Type</label>
-                    <select
-                      className="form-select sector-wise"
-                      value={reschedule.type || ""}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          type: e.target.value,
+                          open: false,
                         }))
                       }
                     >
-                      <option value="" hidden>
-                        Select Type
-                      </option>
-                      <option value="NFS Appointment">NFS Appointment</option>
-                      <option value="Takamul Appointment">
-                        Takamul Appointment
-                      </option>
-                      <option value="VFS Appointment">VFS Appointment</option>
-                      <option value="TASHEER Appointment">
-                        TASHEER Appointment
-                      </option>
-                    </select>
+                      Cancel
+                    </button>
+
+                    <button className="btn btn-update" type="submit">
+                      {reschedule.isEdit
+                        ? "Update Appointment"
+                        : "Create Appointment"}
+                    </button>
                   </div>
-
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Status</label>
-                    <select
-                      className="form-select sector-wise"
-                      value={reschedule.status || "Requested"}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          status: e.target.value,
-                        }))
-                      }
-                    >
-                      <option value="" hidden>
-                        Select Status
-                      </option>
-                      <option value="Pending">Pending</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Booked">Booked</option>
-                      <option value="Confirmed">Confirmed</option>
-                      <option value="Rescheduled">Rescheduled</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Cancelled">Cancelled</option>
-                      <option value="Rejected">Rejected</option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Date</label>
-                    <input
-                      type="date"
-                      className="form-control sector-wise"
-                      value={reschedule.flightDate || ""}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          flightDate: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Time</label>
-                    <input type="time" className="form-control sector-wise" />
-                  </div>
-                </div>
-
-                <div className="d-flex justify-content-end gap-2">
-                  <button
-                    className="btn btn-outline-transparent text-dark border rounded-3 cancel-schedule"
-                    onClick={() =>
-                      setReschedule((prev) => ({
-                        ...prev,
-                        open: false,
-                      }))
-                    }
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    className="btn btn-update"
-                    onClick={() => {
-                      console.log(reschedule);
-                      setReschedule({
-                        open: false,
-                        passengerName: "",
-                        passportNo: "",
-                        type: "",
-                        airline: "",
-                        flightNo: "",
-                        flightDate: "",
-                        status: "Requested",
-                      });
-                    }}
-                  >
-                    Create Appointment
-                  </button>
-                </div>
+                </form>
               </div>
             </div>
           </>
@@ -437,7 +581,7 @@ function AppointmentBooking() {
           <div className="d-flex justify-content-between align-items-center">
             <div className="py-3 px-2 fw-medium">{tableTitle}</div>
             <div className="me-3 bg-counter border rounded-pill">
-              {activeTableData.length}
+              {paginatedData.length}
             </div>
           </div>
 
@@ -456,24 +600,26 @@ function AppointmentBooking() {
               </thead>
 
               <tbody>
-                {activeTableData.length > 0 ? (
-                  activeTableData.map((item, index) => (
+                {paginatedData.length > 0 ? (
+                  paginatedData.map((item, index) => (
                     <tr key={index}>
-                      <td>{index + 1}</td>
+                      <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
 
                       <td>
                         <span className="short-name">
-                          {item.passenger || "N/A"}
+                          {item.applicant_name || "N/A"}
                         </span>
                       </td>
 
                       <td>
                         <span className="short-name">
-                          {item.passport || "N/A"}
+                          {item.passport_no || "N/A"}
                         </span>
                       </td>
 
-                      <td className="short-name">{item.type || "N/A"}</td>
+                      <td className="short-name">
+                        {item.appointment_type || "N/A"}
+                      </td>
                       <td className="short-name">{item.date || "N/A"}</td>
 
                       <td
@@ -499,17 +645,28 @@ function AppointmentBooking() {
                       </td>
 
                       <td className="text-start">
-                        <button
+                        <Link
+                          title="Edit"
+                          className="d-inline-flex align--center justify-content-center border-0 bg-transparent"
+                        >
+                          <FontAwesomeIcon
+                            icon={faEdit}
+                            className="p-1 icons-color"
+                            onClick={() => editAppointment(item)}
+                          />
+                        </Link>
+
+                        <span
                           type="button"
                           title="Delete"
-                          onClick={() => deleteData(index)}
+                          onClick={() => deleteData(item.id)}
                           className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
                         >
                           <FontAwesomeIcon
                             icon={faTrash}
                             className="p-1 icons-color1"
                           />
-                        </button>
+                        </span>
                       </td>
                     </tr>
                   ))
@@ -522,9 +679,47 @@ function AppointmentBooking() {
                 )}
               </tbody>
             </table>
+
+            {activeTableData.length > itemsPerPage && (
+              <div className="d-flex justify-content-center align-items-center flex-wrap mt-3 mb-3 gap-2">
+                <button
+                  className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                    currentPage <= 1
+                      ? "btn-light border text-muted"
+                      : "btn-success border-0"
+                  }`}
+                  disabled={currentPage <= 1}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                >
+                  ← Prev
+                </button>
+
+                <span className="fw-semibold px-2">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  className={`btn rounded-pill px-3 py-1 shadow-sm ${
+                    currentPage >= totalPages
+                      ? "btn-light border text-muted"
+                      : "btn-success border-0"
+                  }`}
+                  disabled={currentPage >= totalPages}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                >
+                  Next →
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      <ToastContainer position="bottom-right" autoClose={1000} />
     </main>
   );
 }

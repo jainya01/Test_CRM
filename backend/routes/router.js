@@ -2285,7 +2285,6 @@ router.get(
     `;
 
     const [result] = await pool.execute(SQL);
-
     const response = {
       success: true,
       message: "Packages fetched successfully",
@@ -2294,7 +2293,6 @@ router.get(
     };
 
     await redisClient.setEx(cacheKey, 600, JSON.stringify(response));
-
     return res.status(200).json(response);
   }),
 );
@@ -2539,6 +2537,318 @@ router.get(
 
     await redisClient.setEx(cacheKey, 600, JSON.stringify(response));
     return res.status(200).json(response);
+  }),
+);
+
+// Appointment Booking
+
+router.post(
+  "/postbooking",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const {
+      applicant_name,
+      passport_no,
+      appointment_type,
+      status,
+      date,
+      time,
+    } = req.body;
+
+    if (
+      !applicant_name ||
+      !passport_no ||
+      !appointment_type ||
+      !status ||
+      !date ||
+      !time
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required.",
+      });
+    }
+
+    const sql = `
+      INSERT INTO appointment
+      (
+        applicant_name,
+        passport_no,
+        appointment_type,
+        status,
+        date,
+        time
+      )
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(sql, [
+      applicant_name,
+      passport_no,
+      appointment_type,
+      status,
+      date,
+      time,
+    ]);
+
+    await redisClient.del("crm2:allappointment:all");
+    res.status(201).json({
+      success: true,
+      message: "Appointment created successfully.",
+      insertId: result.insertId,
+    });
+  }),
+);
+
+router.get(
+  "/allappointment",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const cacheKey = `crm2:allappointment:all`;
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
+    const SQL =
+      "SELECT id, applicant_name, passport_no, appointment_type, status, date, time FROM appointment ORDER BY id DESC";
+    const [result] = await pool.execute(SQL);
+    const response = {
+      success: true,
+      message: "Service fetched successfully",
+      count: result.length,
+      result,
+    };
+
+    await redisClient.setEx(cacheKey, 120, JSON.stringify(response));
+    return res.status(200).json(response);
+  }),
+);
+
+router.delete(
+  "/appointmentdelete/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const SQL = "DELETE FROM appointment WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.affectedRows <= 0) {
+      const error = new Error("data deleted failed");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await redisClient.del("crm2:allappointment:all");
+    return res.status(200).json(result);
+  }),
+);
+
+router.put(
+  "/appointmentedit/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const {
+      applicant_name,
+      passport_no,
+      appointment_type,
+      status,
+      date,
+      time,
+    } = req.body;
+
+    if (
+      !applicant_name ||
+      !passport_no ||
+      !appointment_type ||
+      !status ||
+      !date ||
+      !time
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required.",
+      });
+    }
+
+    const SQL = `
+      UPDATE appointment
+      SET
+        applicant_name = ?,
+        passport_no = ?,
+        appointment_type = ?,
+        status = ?,
+        date = ?,
+        time = ?
+      WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(SQL, [
+      applicant_name,
+      passport_no,
+      appointment_type,
+      status,
+      date,
+      time,
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Appointment not found.",
+      });
+    }
+
+    await redisClient.del("crm2:allappointment:all");
+    return res.status(200).json({
+      success: true,
+      message: "Appointment updated successfully.",
+    });
+  }),
+);
+
+// Document Attestation
+
+router.post(
+  "/postattestation",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const {
+      applicant_name,
+      passport_no,
+      attestation_type,
+      submitted_date,
+      status,
+    } = req.body;
+
+    const SQL = `
+      INSERT INTO attestation
+      (applicant_name, passport_no, attestation_type, submitted_date, status)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(SQL, [
+      applicant_name,
+      passport_no,
+      attestation_type,
+      submitted_date,
+      status,
+    ]);
+
+    await redisClient.del("crm2:allattestation:all");
+    return res.status(201).json({
+      success: true,
+      message: "Attestation created successfully",
+      insertId: result.insertId,
+    });
+  }),
+);
+
+router.get(
+  "/allattestation",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const cacheKey = "crm2:allattestation:all";
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return res.status(200).json(JSON.parse(cache));
+    }
+
+    const SQL = `
+      SELECT
+        id,
+        applicant_name,
+        passport_no,
+        attestation_type,
+        submitted_date,
+        status
+      FROM attestation
+      ORDER BY id DESC
+    `;
+
+    const [result] = await pool.execute(SQL);
+    const response = {
+      success: true,
+      message: "Attestation fetched successfully",
+      count: result.length,
+      result,
+    };
+
+    await redisClient.setEx(cacheKey, 600, JSON.stringify(response));
+    return res.status(200).json(response);
+  }),
+);
+
+router.put(
+  "/attestationedit/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const {
+      applicant_name,
+      passport_no,
+      attestation_type,
+      submitted_date,
+      status,
+    } = req.body;
+
+    const SQL = `
+      UPDATE attestation
+      SET
+        applicant_name = ?,
+        passport_no = ?,
+        attestation_type = ?,
+        submitted_date = ?,
+        status = ?
+      WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(SQL, [
+      applicant_name,
+      passport_no,
+      attestation_type,
+      submitted_date,
+      status,
+      id,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Attestation not found",
+      });
+    }
+
+    await redisClient.del("crm2:allattestation:all");
+    return res.status(200).json({
+      success: true,
+      message: "Attestation updated successfully",
+    });
+  }),
+);
+
+router.delete(
+  "/attestationdelete/:id",
+  authenticate,
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const SQL = "DELETE FROM attestation WHERE id = ?";
+    const [result] = await pool.execute(SQL, [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Attestation not found",
+      });
+    }
+
+    await redisClient.del("crm2:allattestation:all");
+    return res.status(200).json({
+      success: true,
+      message: "Attestation deleted successfully",
+    });
   }),
 );
 

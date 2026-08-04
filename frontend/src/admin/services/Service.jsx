@@ -75,6 +75,7 @@ function Service() {
     }
   };
 
+  const [selectedFilter, setSelectedFilter] = useState("halfYearly");
   const [months, setMonths] = useState("");
   const monthPillRef = useRef(null);
   const popoverRef = useRef(null);
@@ -82,7 +83,6 @@ function Service() {
   const [popoverStyle, setPopoverStyle] = useState(null);
   const [customFrom, setCustomFrom] = useState("");
   const [customTo, setCustomTo] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("halfYearly");
 
   useEffect(() => {
     const updateMonth = () => {
@@ -414,6 +414,7 @@ function Service() {
                   <tr>
                     <th className="py-2">#</th>
                     <th>Service Name</th>
+                    <th>Pending</th>
                     <th>Booking</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -443,6 +444,7 @@ function Service() {
                           </td>
 
                           <td className="short-name">120</td>
+                          <td className="short-name">20</td>
 
                           <td
                             className={

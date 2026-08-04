@@ -138,6 +138,7 @@ function StaffCreate() {
   const handleFormSubmit = async () => {
     const isValid = validateForm();
     if (!isValid) return;
+
     const formData = new FormData();
 
     Object.keys(call).forEach((key) => {

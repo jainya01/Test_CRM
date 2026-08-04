@@ -1,129 +1,270 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useEffect, useMemo } from "react";
+import { authHeader } from "../../../utils/authHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faBell,
   faTrash,
+  faEdit,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-
-const allAttestations = [
-  {
-    id: 1,
-    passenger: "Muhammad Tariq",
-    passport: "AB1000234",
-    destination: "Degree Certificate Attestation",
-    date: "5 Jul 2026",
-    status: "In Process",
-  },
-  {
-    id: 2,
-    passenger: "Ayesha Siddiqui",
-    passport: "AB1000255",
-    destination: "Marriage Certificate Attestation",
-    date: "2 Jul 2026",
-    status: "Completed",
-  },
-  {
-    id: 3,
-    passenger: "Imran Malik",
-    passport: "AB1000267",
-    destination: "Nikahnama Attestation",
-    date: "8 Jul 2026",
-    status: "Received",
-  },
-];
-
-const degreeCertificateRequests = [
-  {
-    passenger: "Kamran Akmal",
-    passport: "AB1000401",
-    destination: "Degree Certificate Attestation",
-    date: "14 Jul 2026",
-    status: "Approved",
-  },
-];
-
-const marriageCertificateRequests = [
-  {
-    passenger: "Saima Jamil",
-    passport: "AB1000410",
-    destination: "Marriage Certificate Attestation",
-    date: "16 Jul 2026",
-    status: "Requested",
-  },
-];
-
-const nikahnamaRequests = [
-  {
-    passenger: "Ahmed Raza",
-    passport: "AB1000425",
-    destination: "Nikahnama Attestation",
-    date: "18 Jul 2026",
-    status: "Approved",
-  },
-];
-
-const powerOfAttorneyRequests = [
-  {
-    passenger: "Ali Hassan",
-    passport: "AB1000455",
-    destination: "Power of Attorney Attestation",
-    date: "20 Jul 2026",
-    status: "Requested",
-  },
-];
-
-const birthCertificateRequests = [
-  {
-    passenger: "Hina Malik",
-    passport: "AB1000502",
-    destination: "Birth Certificate Attestation",
-    date: "21 Jul 2026",
-    status: "Approved",
-  },
-];
-
-const commercialDocumentRequests = [
-  {
-    passenger: "Mariam Khan",
-    passport: "AB1000514",
-    destination: "Commercial Document Attestation",
-    date: "24 Jul 2026",
-    status: "Approved",
-  },
-];
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function Attestation() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [search, setSearch] = useState("");
   const [activeCard, setActiveCard] = useState(1);
-  const [tableTitle, setTableTitle] = useState("All Requests");
-
-  const requestsMap = {
-    1: allAttestations,
-    2: degreeCertificateRequests,
-    3: marriageCertificateRequests,
-    4: nikahnamaRequests,
-    5: powerOfAttorneyRequests,
-    6: birthCertificateRequests,
-    7: commercialDocumentRequests,
-  };
-
-  const [allRequests, setAllRequests] = useState(requestsMap);
+  const [tableTitle, setTableTitle] = useState("All Appointments");
   const scheduleRef = useRef();
 
   const [reschedule, setReschedule] = useState({
     open: false,
+    isEdit: false,
+    id: null,
   });
 
-  const activeTableData = allRequests[activeCard] || [];
+  const [formData, setFormData] = useState({
+    applicant_name: "",
+    passport_no: "",
+    attestation_type: "",
+    submitted_date: "",
+    status: "",
+  });
 
-  const deleteData = (index) => {
-    setAllRequests((prev) => ({
+  const {
+    applicant_name,
+    passport_no,
+    attestation_type,
+    submitted_date,
+    status,
+  } = formData;
+
+  const [, setErrors] = useState({});
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!applicant_name.trim()) {
+      newErrors.applicant_name = "Applicant Name is required";
+    }
+
+    if (!passport_no.trim()) {
+      newErrors.passport_no = "Passport No is required";
+    }
+
+    if (!attestation_type.trim()) {
+      newErrors.attestation_type = "Attestation Type is required";
+    }
+
+    if (!submitted_date.trim()) {
+      newErrors.submitted_date = "Submitted Date is required";
+    }
+
+    if (!status.trim()) {
+      newErrors.status = "Status is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const isValid = validateForm();
+    if (!isValid) return;
+
+    try {
+      let response;
+
+      if (reschedule.isEdit) {
+        response = await axios.put(
+          `${API_URL}/attestationedit/${reschedule.id}`,
+          formData,
+        );
+      } else {
+        response = await axios.post(`${API_URL}/postattestation`, formData);
+      }
+
+      toast.success(
+        response.data.message ||
+          (reschedule.isEdit
+            ? "Attestation updated successfully"
+            : "Attestation created successfully"),
+      );
+
+      await attestationData();
+
+      setTimeout(() => {
+        setFormData({
+          applicant_name: "",
+          passport_no: "",
+          attestation_type: "",
+          submitted_date: "",
+          status: "",
+        });
+
+        setReschedule({
+          open: false,
+          isEdit: false,
+          id: null,
+        });
+      }, 500);
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [activeCard]: prev[activeCard].filter((_, i) => i !== index),
+      [name]: value,
     }));
+  };
+
+  const [attestation, setAttestation] = useState([]);
+
+  const attestationData = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/allattestation`);
+      setAttestation(response.data.result || []);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [API_URL]);
+
+  useEffect(() => {
+    attestationData();
+  }, [attestationData]);
+
+  const activeTableData = useMemo(() => {
+    let filtered = attestation;
+
+    switch (activeCard) {
+      case 2:
+        filtered = filtered.filter(
+          (item) => item.attestation_type === "Degree Certificate",
+        );
+        break;
+
+      case 3:
+        filtered = filtered.filter(
+          (item) => item.attestation_type === "Marriage Certificate",
+        );
+        break;
+
+      case 4:
+        filtered = filtered.filter(
+          (item) => item.attestation_type === "Nikahnama",
+        );
+        break;
+
+      case 5:
+        filtered = filtered.filter(
+          (item) => item.attestation_type === "Power of Attorney",
+        );
+        break;
+
+      case 6:
+        filtered = filtered.filter(
+          (item) => item.attestation_type === "Birth Certificate",
+        );
+        break;
+
+      case 7:
+        filtered = filtered.filter(
+          (item) => item.attestation_type === "Commercial Document",
+        );
+        break;
+
+      default:
+        break;
+    }
+
+    if (search.trim()) {
+      filtered = filtered.filter(
+        (item) =>
+          item.applicant_name?.toLowerCase().includes(search.toLowerCase()) ||
+          item.passport_no?.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
+
+    return filtered;
+  }, [attestation, activeCard, search]);
+
+  const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(activeTableData.length / itemsPerPage);
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return activeTableData.slice(start, start + itemsPerPage);
+  }, [activeTableData, currentPage]);
+
+  const allAttestations = attestation;
+
+  const degreeCertificate = attestation.filter(
+    (item) => item.attestation_type === "Degree Certificate",
+  );
+
+  const marriageCertificate = attestation.filter(
+    (item) => item.attestation_type === "Marriage Certificate",
+  );
+
+  const nikahnama = attestation.filter(
+    (item) => item.attestation_type === "Nikahnama",
+  );
+
+  const powerOfAttorney = attestation.filter(
+    (item) => item.attestation_type === "Power of Attorney",
+  );
+
+  const birthCertificate = attestation.filter(
+    (item) => item.attestation_type === "Birth Certificate",
+  );
+
+  const commercialDocument = attestation.filter(
+    (item) => item.attestation_type === "Commercial Document",
+  );
+
+  const deleteData = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this attestation?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${API_URL}/attestationdelete/${id}`, {
+        headers: authHeader(),
+      });
+
+      setAttestation((prev) => prev.filter((item) => item.id !== id));
+      toast.success("Attestation deleted successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete attestation");
+    }
+  };
+
+  const editAttestation = (item) => {
+    setFormData({
+      applicant_name: item.applicant_name,
+      passport_no: item.passport_no,
+      attestation_type: item.attestation_type,
+      submitted_date: item.submitted_date,
+      status: item.status,
+    });
+
+    setReschedule({
+      open: true,
+      isEdit: true,
+      id: item.id,
+    });
   };
 
   return (
@@ -136,7 +277,7 @@ function Attestation() {
                 <input
                   type="search"
                   className="form-control sector-wise"
-                  placeholder="Search by applicant name"
+                  placeholder="Search by applicant name & passport"
                   value={search}
                   onChange={(e) => setSearch(e.target.value.trim())}
                 />
@@ -198,125 +339,139 @@ function Attestation() {
         </div>
 
         {reschedule.open && (
-          <>
-            <div className="modal-overlay">
-              <div
-                className="reschedule-modal reschedule-modal1 text-dark"
-                ref={scheduleRef}
-              >
-                <div className="d-flex justify-content-between">
-                  <h5 className="fw-bold">New Attestation Case</h5>
-                  <div>
-                    <FontAwesomeIcon
-                      icon={faX}
-                      className="pointer-cursor"
-                      onClick={() =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          open: false,
-                        }))
-                      }
-                    />
-                  </div>
-                </div>
+          <div className="modal-overlay">
+            <div
+              className="reschedule-modal reschedule-modal1 text-dark"
+              ref={scheduleRef}
+            >
+              <div className="d-flex justify-content-between align-items-center">
+                <h5 className="fw-bold">
+                  {reschedule.isEdit
+                    ? "Edit Attestation Case"
+                    : "New Attestation Case"}
+                </h5>
 
+                <FontAwesomeIcon
+                  icon={faX}
+                  className="pointer-cursor"
+                  onClick={() =>
+                    setReschedule((prev) => ({
+                      ...prev,
+                      open: false,
+                    }))
+                  }
+                />
+              </div>
+
+              <form onSubmit={handleFormSubmit}>
                 <div className="row mt-3">
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Applicant Name</label>
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">
+                      Applicant Name{" "}
+                      <span className="text-danger fw-bold">*</span>
+                    </label>
+
                     <input
                       type="text"
                       className="form-control sector-wise"
-                      placeholder="e.g. Jphn Doe"
-                      value={reschedule.passengerName || ""}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          passengerName: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Passport No.</label>
-                    <input
-                      type="text"
-                      className="form-control sector-wise"
-                      placeholder="e.g. A12345678"
-                      value={reschedule.passportNo || ""}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          passportNo: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Attestation Type</label>
-                    <select
-                      className="form-select sector-wise"
-                      value={reschedule.destination || ""}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          destination: e.target.value,
-                        }))
-                      }
-                    >
-                      <option value="">Select Service</option>
-                      <option value="Degree Certificate Attestation">
-                        Degree Certificate Attestation
-                      </option>
-                      <option value="Marriage Certificate Attestation">
-                        Marriage Certificate Attestation
-                      </option>
-                      <option value="Nikahnama Attestation">
-                        Nikahnama Attestation
-                      </option>
-                      <option value="Power of Attorney Attestation">
-                        Power of Attorney Attestation
-                      </option>
-                      <option value="Birth Certificate Attestation">
-                        Birth Certificate Attestation
-                      </option>
-                      <option value="Commercial Document Attestation">
-                        Commercial Document Attestation
-                      </option>
-                    </select>
-                  </div>
-
-                  <div className="col-md-6 mb-1">
-                    <label className="form-label">Submitted Date</label>
-                    <input
-                      type="date"
-                      className="form-control sector-wise"
-                      value={reschedule.flightDate || ""}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          flightDate: e.target.value,
-                        }))
-                      }
+                      placeholder="e.g. John Doe"
+                      name="applicant_name"
+                      value={applicant_name}
+                      onChange={onInputChange}
+                      required
                     />
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label">Status</label>
+                    <label className="form-label">
+                      Passport No.{" "}
+                      <span className="text-danger fw-bold">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control sector-wise"
+                      placeholder="e.g. A12345678"
+                      name="passport_no"
+                      value={passport_no}
+                      onChange={onInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">
+                      Attestation Type{" "}
+                      <span className="text-danger fw-bold">*</span>
+                    </label>
+
                     <select
                       className="form-select sector-wise"
-                      value={reschedule.status || "Requested"}
-                      onChange={(e) =>
-                        setReschedule((prev) => ({
-                          ...prev,
-                          status: e.target.value,
-                        }))
-                      }
+                      name="attestation_type"
+                      value={attestation_type}
+                      onChange={onInputChange}
+                      required
+                    >
+                      <option value="" hidden>
+                        Select Type
+                      </option>
+
+                      <option value="Degree Certificate">
+                        Degree Certificate
+                      </option>
+
+                      <option value="Marriage Certificate">
+                        Marriage Certificate
+                      </option>
+
+                      <option value="Nikahnama">Nikahnama</option>
+
+                      <option value="Power of Attorney">
+                        Power of Attorney
+                      </option>
+
+                      <option value="Birth Certificate">
+                        Birth Certificate
+                      </option>
+
+                      <option value="Commercial Document">
+                        Commercial Document
+                      </option>
+                    </select>
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">
+                      Submitted Date{" "}
+                      <span className="text-danger fw-bold">*</span>
+                    </label>
+
+                    <input
+                      type="date"
+                      className="form-control sector-wise"
+                      name="submitted_date"
+                      value={submitted_date}
+                      onChange={onInputChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">
+                      Status <span className="text-danger fw-bold">*</span>
+                    </label>
+
+                    <select
+                      className="form-select sector-wise"
+                      name="status"
+                      value={status}
+                      onChange={onInputChange}
+                      required
                     >
                       <option value="" hidden>
                         Select Status
                       </option>
+
                       <option value="Received">Received</option>
                       <option value="In Process">In Process</option>
                       <option value="Completed">Completed</option>
@@ -327,6 +482,7 @@ function Attestation() {
 
                 <div className="d-flex justify-content-end gap-2">
                   <button
+                    type="button"
                     className="btn btn-outline-transparent text-dark border rounded-3 cancel-schedule"
                     onClick={() =>
                       setReschedule((prev) => ({
@@ -338,28 +494,13 @@ function Attestation() {
                     Cancel
                   </button>
 
-                  <button
-                    className="btn btn-update"
-                    onClick={() => {
-                      console.log(reschedule);
-                      setReschedule({
-                        open: false,
-                        passengerName: "",
-                        passportNo: "",
-                        destination: "",
-                        airline: "",
-                        flightNo: "",
-                        flightDate: "",
-                        status: "Requested",
-                      });
-                    }}
-                  >
-                    Create Case
+                  <button type="submit" className="btn btn-update">
+                    {reschedule.isEdit ? "Update Case" : "Create Case"}
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
-          </>
+          </div>
         )}
 
         <div className="row g-2 mb-2">
@@ -392,10 +533,8 @@ function Attestation() {
               }}
             >
               <div className="d-flex flex-column">
-                <span className="locations-span">
-                  Degree Certificate Attestation
-                </span>
-                <span className="mt-2">{allRequests[2].length}</span>
+                <span className="locations-span">Degree Certificate</span>
+                <span className="mt-2">{degreeCertificate.length}</span>
                 <span className="requests-span">cases</span>
               </div>
             </div>
@@ -412,10 +551,8 @@ function Attestation() {
               }}
             >
               <div className="d-flex flex-column">
-                <span className="locations-span">
-                  Marriage Certificate Attestation
-                </span>
-                <span className="mt-2">{allRequests[3].length}</span>
+                <span className="locations-span">Marriage Certificate</span>
+                <span className="mt-2">{marriageCertificate.length}</span>
                 <span className="requests-span">cases</span>
               </div>
             </div>
@@ -432,8 +569,8 @@ function Attestation() {
               }}
             >
               <div className="d-flex flex-column">
-                <span className="locations-span">Nikahnama Attestation</span>
-                <span className="mt-2">{allRequests[4].length}</span>
+                <span className="locations-span">Nikahnama</span>
+                <span className="mt-2">{nikahnama.length}</span>
                 <span className="requests-span">cases</span>
               </div>
             </div>
@@ -450,10 +587,8 @@ function Attestation() {
               }}
             >
               <div className="d-flex flex-column">
-                <span className="locations-span">
-                  Power of Attorney Attestation
-                </span>
-                <span className="mt-2">{allRequests[5].length}</span>
+                <span className="locations-span">Power of Attorney</span>
+                <span className="mt-2">{powerOfAttorney.length}</span>
                 <span className="requests-span">cases</span>
               </div>
             </div>
@@ -470,10 +605,8 @@ function Attestation() {
               }}
             >
               <div className="d-flex flex-column">
-                <span className="locations-span">
-                  Birth Certificate Attestation
-                </span>
-                <span className="mt-2">{allRequests[6].length}</span>
+                <span className="locations-span">Birth Certificate</span>
+                <span className="mt-2">{birthCertificate.length}</span>
                 <span className="requests-span">cases</span>
               </div>
             </div>
@@ -490,10 +623,8 @@ function Attestation() {
               }}
             >
               <div className="d-flex flex-column">
-                <span className="locations-span">
-                  Commercial Document Attestation
-                </span>
-                <span className="mt-2">{allRequests[7].length}</span>
+                <span className="locations-span">Commercial Document</span>
+                <span className="mt-2">{commercialDocument.length}</span>
                 <span className="requests-span">cases</span>
               </div>
             </div>
@@ -523,36 +654,39 @@ function Attestation() {
               </thead>
 
               <tbody>
-                {activeTableData.length > 0 ? (
-                  activeTableData.map((item, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
+                {paginatedData.length > 0 ? (
+                  paginatedData.map((item, index) => (
+                    <tr key={item.id}>
+                      <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
 
                       <td>
                         <span className="short-name">
-                          {item.passenger || "N/A"}
+                          {item.applicant_name || "N/A"}
                         </span>
                       </td>
 
                       <td>
                         <span className="short-name">
-                          {item.passport || "N/A"}
+                          {item.passport_no || "N/A"}
                         </span>
                       </td>
 
                       <td className="short-name">
-                        {item.destination || "N/A"}
+                        {item.attestation_type || "N/A"}
                       </td>
 
-                      <td className="short-name">{item.date || "N/A"}</td>
+                      <td className="short-name">
+                        {item.submitted_date || "N/A"}
+                      </td>
 
                       <td
                         className={
-                          item.status === "In Process" ||
-                          item.status === "Completed" ||
-                          item.status === "Approved" ||
-                          item.status === "Requested" ||
-                          item.status === "Received"
+                          [
+                            "Received",
+                            "In Process",
+                            "Completed",
+                            "Delivered",
+                          ].includes(item.status)
                             ? "convert-no"
                             : "convert-call"
                         }
@@ -560,9 +694,13 @@ function Attestation() {
                         <div className="d-flex align-items-center">
                           <div
                             className={`status-dot me-1 ${
-                              item.status === "Approved" ? "custom-no" : ""
+                              item.status === "Completed" ||
+                              item.status === "Delivered"
+                                ? "custom-success"
+                                : ""
                             }`}
                           />
+
                           <span className="status-span">
                             {item.status || "N/A"}
                           </span>
@@ -572,8 +710,20 @@ function Attestation() {
                       <td className="text-start">
                         <button
                           type="button"
+                          title="Edit"
+                          onClick={() => editAttestation(item)}
+                          className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
+                        >
+                          <FontAwesomeIcon
+                            icon={faEdit}
+                            className="p-1 icons-color"
+                          />
+                        </button>
+
+                        <button
+                          type="button"
                           title="Delete"
-                          onClick={() => deleteData(index)}
+                          onClick={() => deleteData(item.id)}
                           className="d-inline-flex align-items-center justify-content-center border-0 bg-transparent"
                         >
                           <FontAwesomeIcon
@@ -593,9 +743,53 @@ function Attestation() {
                 )}
               </tbody>
             </table>
+
+            {activeTableData.length > itemsPerPage && (
+              <div className="d-flex justify-content-center align-items-center gap-2 flex-wrap mt-3 mb-3">
+                <button
+                  className={`btn rounded-pill px-3 py-1 ${
+                    currentPage === 1
+                      ? "btn-light border text-muted"
+                      : "btn-success border-0"
+                  }`}
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                >
+                  ← Prev
+                </button>
+
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index}
+                    className={`btn rounded-circle ${
+                      currentPage === index + 1
+                        ? "btn-success"
+                        : "btn-outline-secondary"
+                    }`}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+
+                <button
+                  className={`btn rounded-pill px-3 py-1 ${
+                    currentPage === totalPages
+                      ? "btn-light border text-muted"
+                      : "btn-success border-0"
+                  }`}
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      <ToastContainer position="bottom-right" autoClose={1000} />
     </main>
   );
 }
